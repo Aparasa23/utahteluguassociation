@@ -19,7 +19,18 @@ import {
   Compass,
   LayoutGrid,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { SoundController } from './SoundController';
+
+const ThreeScene = dynamic(() => import('./ThreeScene'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full min-h-[580px] flex flex-col items-center justify-center bg-[#040714] text-slate-400 gap-3">
+      <div className="w-10 h-10 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+      <span className="text-xs uppercase tracking-widest text-amber-300 font-mono">Initializing 3D Universe...</span>
+    </div>
+  ),
+});
 
 export type DestinationId = 'PAVILION' | 'ARENA' | 'MEMBERSHIP' | 'GALLERY' | 'SPONSORS' | 'VOLUNTEER';
 export type FestivalTheme = 'SANKRANTHI' | 'UGADI' | 'BATHUKAMMA' | 'DIWALI';
@@ -445,7 +456,12 @@ export function UniverseCanvas() {
       {/* Main Experience Area: 3D Canvas OR 2D Fallback */}
       {viewMode === '3D' ? (
         <div className="relative w-full h-[580px] sm:h-[640px]">
-          <canvas ref={canvasRef} className="w-full h-full block" />
+          <ThreeScene
+            activeDestination={activeDestination}
+            onSelectDestination={setActiveDestination}
+            seasonalTheme={seasonalTheme}
+            isRotating={isRotating}
+          />
 
           {/* Floating Spatial Inspection Card for Selected Destination */}
           <div className="absolute bottom-20 left-4 right-4 sm:left-6 sm:max-w-md z-20 pointer-events-auto">

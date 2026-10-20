@@ -73,31 +73,31 @@ export default async function HomePage() {
         {/* The 3D Universe Spatial Canvas */}
         <UniverseCanvas />
 
-        {/* Quick Association Metric Pillars */}
+        {/* Quick Association Metric Pillars with Tactile Lusion Glassmorphism */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-          <div className="glass-panel p-4 rounded-xl border border-white/10 text-center">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-amber-400 font-display">
+          <div className="glass-panel-interactive p-5 rounded-2xl border border-white/10 text-center group">
+            <span className="block text-3xl sm:text-4xl font-extrabold text-gradient-gold font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
               {memberCount > 0 ? `${memberCount}+` : '280+'}
             </span>
-            <span className="text-xs text-slate-300">Active Telugu Families</span>
+            <span className="text-xs uppercase tracking-wider text-slate-300 font-semibold mt-1 block">Active Telugu Families</span>
           </div>
-          <div className="glass-panel p-4 rounded-xl border border-white/10 text-center">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-emerald-400 font-display">
+          <div className="glass-panel-interactive p-5 rounded-2xl border border-white/10 text-center group">
+            <span className="block text-3xl sm:text-4xl font-extrabold text-emerald-400 font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
               {events.length}+
             </span>
-            <span className="text-xs text-slate-300">Annual Festivals & Events</span>
+            <span className="text-xs uppercase tracking-wider text-slate-300 font-semibold mt-1 block">Annual Festivals & Events</span>
           </div>
-          <div className="glass-panel p-4 rounded-xl border border-white/10 text-center">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-sky-400 font-display">
+          <div className="glass-panel-interactive p-5 rounded-2xl border border-white/10 text-center group">
+            <span className="block text-3xl sm:text-4xl font-extrabold text-sky-400 font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
               {tournamentCount > 0 ? tournamentCount : '4'}
             </span>
-            <span className="text-xs text-slate-300">Sports Championships</span>
+            <span className="text-xs uppercase tracking-wider text-slate-300 font-semibold mt-1 block">Sports Championships</span>
           </div>
-          <div className="glass-panel p-4 rounded-xl border border-white/10 text-center">
-            <span className="block text-2xl sm:text-3xl font-extrabold text-rose-400 font-display">
+          <div className="glass-panel-interactive p-5 rounded-2xl border border-white/10 text-center group">
+            <span className="block text-3xl sm:text-4xl font-extrabold text-rose-400 font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
               25+
             </span>
-            <span className="text-xs text-slate-300">Years of Utah Heritage</span>
+            <span className="text-xs uppercase tracking-wider text-slate-300 font-semibold mt-1 block">Years of Utah Heritage</span>
           </div>
         </div>
       </section>
@@ -129,7 +129,7 @@ export default async function HomePage() {
           {events.map((evt) => (
             <div
               key={evt.id}
-              className="glass-panel rounded-2xl border border-white/10 overflow-hidden flex flex-col justify-between hover:border-amber-400/40 transition-all group"
+              className="glass-panel-interactive rounded-2xl overflow-hidden flex flex-col justify-between group"
             >
               {/* Event Image Banner */}
               <div className="relative h-48 w-full bg-slate-900 overflow-hidden">
@@ -141,7 +141,7 @@ export default async function HomePage() {
                   alt={evt.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#060a17] via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#040714] via-transparent to-transparent" />
                 <span className="absolute top-3 left-3 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-amber-300 border border-white/10">
                   {evt.category.label}
                 </span>
@@ -185,7 +185,7 @@ export default async function HomePage() {
                   </div>
                   <Link
                     href={`/events/${evt.slug}`}
-                    className="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs shadow-md transition-all flex items-center gap-1"
+                    className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-bold text-xs btn-magnetic shadow-md transition-all flex items-center gap-1"
                   >
                     <span>Details & Tickets</span>
                     <ArrowRight className="w-3.5 h-3.5" />

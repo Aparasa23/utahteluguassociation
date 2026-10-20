@@ -80,50 +80,50 @@ export function VolunteerFormClient({ shifts }: { shifts: ShiftItem[] }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 text-xs text-slate-300">
+    <form onSubmit={handleSubmit} className="space-y-6 text-xs text-[#e7d5b8]">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block font-semibold mb-1">Full Legal Name *</label>
+          <label className="block font-bold text-white mb-1">Full Legal Name *</label>
           <input
             type="text"
             required
             placeholder="e.g. Venkat Rao"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Email Address *</label>
+          <label className="block font-bold text-white mb-1">Email Address *</label>
           <input
             type="email"
             required
             placeholder="volunteer@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Mobile Phone (for SMS notifications)</label>
+          <label className="block font-bold text-white mb-1">Mobile Phone (for SMS notifications)</label>
           <input
             type="tel"
             placeholder="(801) 555-0123"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
           />
         </div>
 
         {shifts.length > 0 && (
           <div>
-            <label className="block font-semibold mb-1">Select Specific Shift (Optional)</label>
+            <label className="block font-bold text-white mb-1">Select Specific Shift (Optional)</label>
             <select
               value={selectedShiftId}
               onChange={(e) => setSelectedShiftId(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+              className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
             >
               <option value="">General Volunteer Pool (Contact me for any event)</option>
               {shifts.map((s) => (
@@ -138,7 +138,7 @@ export function VolunteerFormClient({ shifts }: { shifts: ShiftItem[] }) {
 
       {/* Interest Checkboxes */}
       <div className="space-y-2">
-        <label className="block font-semibold">Service Interests & Skills</label>
+        <label className="block font-bold text-white">Service Interests & Skills</label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {availableInterests.map((interest) => {
             const isChecked = interests.includes(interest);
@@ -146,14 +146,16 @@ export function VolunteerFormClient({ shifts }: { shifts: ShiftItem[] }) {
               <label
                 key={interest}
                 className={`p-2.5 rounded-xl border flex items-center gap-2.5 cursor-pointer transition-colors ${
-                  isChecked ? 'border-purple-400 bg-purple-400/10 text-white' : 'border-white/5 bg-white/5 text-slate-400'
+                  isChecked
+                    ? 'border-[#f4bb59] bg-[#f4bb59]/20 text-white font-bold shadow-md'
+                    : 'border-[#f4bb59]/20 bg-[#071a20]/80 text-[#a5c2cb] hover:border-[#f4bb59]/50'
                 }`}
               >
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => toggleInterest(interest)}
-                  className="rounded border-slate-700 text-purple-500"
+                  className="rounded border-[#f4bb59]/30 text-[#f4bb59] focus:ring-[#f4bb59]"
                 />
                 <span>{interest}</span>
               </label>
@@ -166,11 +168,11 @@ export function VolunteerFormClient({ shifts }: { shifts: ShiftItem[] }) {
         <div
           className={`p-3 rounded-xl border flex items-center gap-2 ${
             isSuccess
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+              ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
+              : 'bg-rose-950/40 border-rose-500/30 text-rose-300'
           }`}
         >
-          {isSuccess ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+          {isSuccess ? <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" /> : <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />}
           <span>{statusMessage}</span>
         </div>
       )}
@@ -178,9 +180,9 @@ export function VolunteerFormClient({ shifts }: { shifts: ShiftItem[] }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="px-6 py-2.5 rounded-xl bg-purple-500 hover:bg-purple-400 text-slate-950 font-bold shadow-md disabled:opacity-50 flex items-center gap-2"
+        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#f4bb59] to-[#d8972b] hover:brightness-110 text-[#071a20] font-extrabold shadow-xl disabled:opacity-50 flex items-center gap-2 text-xs transition-all"
       >
-        <HeartHandshake className="w-4 h-4" />
+        <HeartHandshake className="w-4 h-4 text-[#071a20]" />
         <span>{isSubmitting ? 'Registering...' : 'Sign Up to Volunteer'}</span>
       </button>
     </form>

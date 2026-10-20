@@ -11,12 +11,14 @@ export async function POST(req: Request) {
 
     const trimmed = tokenOrNumber.trim();
 
-    // Check by membershipNumber first, then by qrVerificationToken
+    // Check by membershipNumber first, then by qrVerificationToken, email, or phone
     let profile = await prisma.memberProfile.findFirst({
       where: {
         OR: [
           { membershipNumber: trimmed },
           { memberships: { some: { qrVerificationToken: trimmed } } },
+          { user: { email: trimmed } },
+          { user: { phone: { contains: trimmed } } },
         ],
       },
       include: {

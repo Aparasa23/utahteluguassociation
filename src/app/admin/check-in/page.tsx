@@ -62,29 +62,31 @@ export default function AdminCheckInPage() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-900/10 pb-4">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
+          <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-3 py-1 rounded-full border border-amber-300">
             Venue Gate Operations
           </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white font-display mt-0.5">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#1c140e] font-display mt-2">
             Idempotent Event QR Check-In
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[#705544]">
             Real-time barcode/QR scanner with duplicate-scan prevention and audit logging.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-          <span className="text-xs font-bold text-emerald-400 font-mono">GATE SCANNER ACTIVE</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+          <span className="text-xs font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-300 font-mono">
+            GATE SCANNER ACTIVE
+          </span>
         </div>
       </div>
 
       {/* Main Scanner Box */}
-      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-white/15 space-y-6 shadow-2xl">
+      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-900/15 bg-white/95 shadow-md space-y-6">
         <div>
-          <label className="block text-xs font-bold text-white uppercase tracking-wider mb-2">
+          <label className="block text-xs font-bold text-[#1c140e] uppercase tracking-wider mb-2">
             Scan Barcode / Enter QR Token or Ticket ID
           </label>
           <div className="flex gap-2">
@@ -97,12 +99,12 @@ export default function AdminCheckInPage() {
                 if (e.key === 'Enter') handleScan();
               }}
               placeholder="e.g. TKT-SKR-2027-0101 or scan token from ticket"
-              className="flex-1 px-4 py-3 rounded-2xl bg-slate-900 border border-white/20 text-white text-sm focus:border-amber-400 font-mono"
+              className="flex-1 px-4 py-3 rounded-2xl bg-white border border-amber-900/20 text-[#1c140e] text-sm focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-500 font-mono placeholder:text-[#8c7664]"
             />
             <button
               onClick={() => handleScan()}
               disabled={isScanning || !tokenInput.trim()}
-              className="px-6 py-3 rounded-2xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 shadow-lg disabled:opacity-40"
+              className="btn-magnetic px-6 py-3 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-md disabled:opacity-40"
             >
               <Search className="w-4 h-4" />
               <span>{isScanning ? 'Verifying...' : 'Check-In Attendee'}</span>
@@ -111,8 +113,8 @@ export default function AdminCheckInPage() {
         </div>
 
         {/* Quick Testing Simulation Shortcuts */}
-        <div className="p-4 rounded-2xl bg-white/5 border border-white/5 space-y-2 text-xs">
-          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-900/10 space-y-2 text-xs">
+          <span className="text-[11px] font-bold text-[#705544] uppercase tracking-wider">
             Fast Test Scenarios (Click to test idempotency):
           </span>
           <div className="flex flex-wrap gap-2">
@@ -121,7 +123,7 @@ export default function AdminCheckInPage() {
                 setTokenInput('TKT-SKR-2027-0101');
                 handleScan('TKT-SKR-2027-0101');
               }}
-              className="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 font-semibold"
+              className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 font-semibold"
             >
               Scan Ticket #1 (Venkat Rao)
             </button>
@@ -130,7 +132,7 @@ export default function AdminCheckInPage() {
                 setTokenInput('TKT-SKR-2027-0102');
                 handleScan('TKT-SKR-2027-0102');
               }}
-              className="px-3 py-1.5 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30 font-semibold"
+              className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200 font-semibold"
             >
               Scan Ticket #2 (Priya Rao)
             </button>
@@ -139,7 +141,7 @@ export default function AdminCheckInPage() {
                 setTokenInput('INVALID-TICKET-9999');
                 handleScan('INVALID-TICKET-9999');
               }}
-              className="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/30 hover:bg-rose-500/30 font-semibold"
+              className="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-800 border border-rose-300 hover:bg-rose-200 font-semibold"
             >
               Scan Fake / Invalid Ticket
             </button>
@@ -151,26 +153,26 @@ export default function AdminCheckInPage() {
           <div
             className={`p-6 rounded-2xl border animate-in zoom-in-95 ${
               scanResult.status === 'VERIFIED'
-                ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-300'
+                ? 'bg-emerald-50 border-emerald-300 text-emerald-900'
                 : scanResult.status === 'DUPLICATE'
-                ? 'bg-amber-500/10 border-amber-500/50 text-amber-300'
-                : 'bg-rose-500/10 border-rose-500/50 text-rose-300'
+                ? 'bg-amber-50 border-amber-300 text-amber-900'
+                : 'bg-rose-50 border-rose-300 text-rose-900'
             }`}
           >
             <div className="flex items-start gap-4">
               {scanResult.status === 'VERIFIED' ? (
-                <CheckCircle2 className="w-8 h-8 text-emerald-400 shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-8 h-8 text-emerald-700 shrink-0 mt-0.5" />
               ) : (
-                <AlertTriangle className="w-8 h-8 text-amber-400 shrink-0 mt-0.5" />
+                <AlertTriangle className="w-8 h-8 text-amber-700 shrink-0 mt-0.5" />
               )}
               <div className="space-y-1">
-                <h3 className="font-bold text-base text-white">{scanResult.message}</h3>
+                <h3 className="font-bold text-base text-[#1c140e]">{scanResult.message}</h3>
                 {scanResult.attendeeName && (
-                  <div className="text-xs space-y-0.5 text-slate-300 pt-1">
-                    <p>Attendee: <strong className="text-white">{scanResult.attendeeName}</strong></p>
+                  <div className="text-xs space-y-0.5 text-[#5a483a] pt-1">
+                    <p>Attendee: <strong className="text-[#1c140e]">{scanResult.attendeeName}</strong></p>
                     <p>Event: {scanResult.eventName}</p>
                     <p>Admission Tier: {scanResult.ticketType}</p>
-                    <p className="font-mono text-[10px] text-slate-400">Reference: {scanResult.ticketNumber}</p>
+                    <p className="font-mono text-[10px] text-[#705544]">Reference: {scanResult.ticketNumber}</p>
                   </div>
                 )}
               </div>
@@ -181,8 +183,8 @@ export default function AdminCheckInPage() {
 
       {/* Live Gate Feed */}
       <div className="space-y-4">
-        <h2 className="text-base font-bold text-white font-display flex items-center gap-2">
-          <Clock className="w-4 h-4 text-amber-400" />
+        <h2 className="text-base font-bold text-[#1c140e] font-display flex items-center gap-2">
+          <Clock className="w-4 h-4 text-amber-700" />
           <span>Live Check-In Activity (This Session)</span>
         </h2>
 
@@ -191,21 +193,21 @@ export default function AdminCheckInPage() {
             {recentScans.map((scan, idx) => (
               <div
                 key={idx}
-                className="glass-panel p-3.5 rounded-xl border border-white/5 flex items-center justify-between text-xs"
+                className="glass-panel p-3.5 rounded-xl border border-amber-900/15 bg-white/95 shadow-sm flex items-center justify-between text-xs"
               >
                 <div className="flex items-center gap-3">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <div>
-                    <span className="font-bold text-white block">{scan.attendeeName}</span>
-                    <span className="text-[11px] text-slate-400">{scan.ticketType} • {scan.ticketNumber}</span>
+                    <span className="font-bold text-[#1c140e] block">{scan.attendeeName}</span>
+                    <span className="text-[11px] text-[#705544]">{scan.ticketType} • {scan.ticketNumber}</span>
                   </div>
                 </div>
-                <span className="font-mono text-emerald-300 text-xs font-semibold">{scan.time} MDT</span>
+                <span className="font-mono text-emerald-800 text-xs font-semibold">{scan.time} MDT</span>
               </div>
             ))}
           </div>
         ) : (
-          <p className="text-xs text-slate-500 italic">No tickets checked in during this session yet.</p>
+          <p className="text-xs text-[#8c7664] italic">No tickets checked in during this session yet.</p>
         )}
       </div>
     </div>

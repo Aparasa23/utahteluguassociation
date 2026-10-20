@@ -24,12 +24,12 @@ export default async function MemberPaymentsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-900/10 pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-white font-display">
+          <h1 className="text-2xl font-bold text-[#1c140e] font-display">
             Payment Receipts & Invoices
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#705544] mt-0.5">
             Audit logs and official non-profit receipts for your records.
           </p>
         </div>
@@ -39,18 +39,18 @@ export default async function MemberPaymentsPage() {
         {transactions.map((tx) => (
           <div
             key={tx.id}
-            className="glass-panel p-5 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+            className="glass-panel p-5 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
                 <Receipt className="w-5 h-5" />
               </div>
               <div className="space-y-0.5">
-                <span className="font-mono text-xs font-bold text-amber-400">
+                <span className="font-mono text-xs font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded border border-amber-300">
                   {tx.transactionId || 'ZEF-TX-202601'}
                 </span>
-                <h4 className="text-sm font-bold text-white">{tx.membership.plan.name}</h4>
-                <p className="text-xs text-slate-400">
+                <h4 className="text-sm font-bold text-[#1c140e]">{tx.membership.plan.name}</h4>
+                <p className="text-xs text-[#5a483a]">
                   Paid via {tx.provider} • {formatUtahDate(tx.createdAt, 'short')}
                 </p>
               </div>
@@ -58,10 +58,10 @@ export default async function MemberPaymentsPage() {
 
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <span className="text-base font-extrabold text-white block">
+                <span className="text-base font-extrabold text-[#1c140e] block">
                   {formatCurrency(tx.amount)}
                 </span>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold uppercase">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold uppercase">
                   {tx.paymentStatus}
                 </span>
               </div>

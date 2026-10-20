@@ -35,12 +35,12 @@ export function MemberSidebar() {
   ];
 
   return (
-    <aside className="w-64 glass-panel bg-[#080d22]/80 border-r border-white/10 p-4 space-y-2 shrink-0 hidden md:block">
+    <aside className="w-64 glass-panel bg-white/90 border-r border-amber-900/10 p-4 space-y-2 shrink-0 hidden md:block shadow-sm">
       <div className="px-3 py-2 mb-2">
-        <span className="text-[11px] font-bold text-amber-400 tracking-wider uppercase">
+        <span className="text-[11px] font-bold text-amber-800 tracking-wider uppercase">
           Member Portal
         </span>
-        <p className="text-xs text-slate-400">Venkat & Priya Rao</p>
+        <p className="text-xs text-[#705544]">Venkat & Priya Rao</p>
       </div>
 
       <nav className="space-y-1">
@@ -54,11 +54,11 @@ export function MemberSidebar() {
               href={link.href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-amber-100/90 text-amber-900 border border-amber-300 shadow-xs'
+                  : 'text-[#5a483a] hover:text-[#1c140e] hover:bg-amber-50/60'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-amber-400' : 'text-slate-400'}`} />
+              <Icon className={`w-4 h-4 ${isActive ? 'text-amber-700' : 'text-[#8c7664]'}`} />
               <span>{link.label}</span>
             </Link>
           );

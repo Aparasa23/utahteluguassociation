@@ -24,10 +24,10 @@ interface BracketViewerProps {
 
 export function BracketViewer({ tournamentTitle, rounds }: BracketViewerProps) {
   return (
-    <div className="w-full overflow-x-auto p-4 sm:p-6 bg-slate-950/70 rounded-2xl border border-white/10 shadow-xl scrollbar-thin">
+    <div className="w-full overflow-x-auto p-4 sm:p-6 bg-white/95 rounded-2xl border border-amber-900/15 shadow-sm scrollbar-thin">
       <div className="flex items-center gap-3 mb-6">
-        <Trophy className="w-5 h-5 text-amber-400" />
-        <h3 className="text-base font-bold text-white font-display">
+        <Trophy className="w-5 h-5 text-amber-700" />
+        <h3 className="text-base font-bold text-[#1c140e] font-display">
           Championship Playoff Bracket — {tournamentTitle}
         </h3>
       </div>
@@ -35,8 +35,8 @@ export function BracketViewer({ tournamentTitle, rounds }: BracketViewerProps) {
       <div className="flex items-start gap-8 min-w-[700px] justify-between">
         {rounds.map((round, rIdx) => (
           <div key={rIdx} className="flex-1 space-y-4">
-            <div className="text-center pb-2 border-b border-white/10">
-              <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+            <div className="text-center pb-2 border-b border-amber-900/10">
+              <span className="text-xs font-bold text-amber-800 uppercase tracking-wider bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
                 {round.roundName}
               </span>
             </div>
@@ -45,17 +45,17 @@ export function BracketViewer({ tournamentTitle, rounds }: BracketViewerProps) {
               {round.matches.map((m) => (
                 <div
                   key={m.id}
-                  className="rounded-xl border border-white/10 bg-slate-900/90 p-3 shadow-lg hover:border-amber-400/40 transition-colors space-y-1.5"
+                  className="rounded-xl border border-amber-900/15 bg-amber-50/50 p-3 shadow-xs hover:border-amber-500/50 transition-colors space-y-1.5"
                 >
-                  <div className="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+                  <div className="text-[10px] text-[#705544] font-mono flex items-center justify-between">
                     <span>Match #{m.matchNumber}</span>
-                    <span className="text-emerald-400">{m.status}</span>
+                    <span className="text-emerald-800 font-bold">{m.status}</span>
                   </div>
 
                   {/* Team 1 */}
                   <div
                     className={`flex items-center justify-between p-1.5 rounded ${
-                      m.team1.isWinner ? 'bg-amber-500/10 text-amber-300 font-bold' : 'text-slate-300'
+                      m.team1.isWinner ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-[#4a382c]'
                     }`}
                   >
                     <span className="text-xs truncate max-w-[140px]">{m.team1.name}</span>
@@ -65,7 +65,7 @@ export function BracketViewer({ tournamentTitle, rounds }: BracketViewerProps) {
                   {/* Team 2 */}
                   <div
                     className={`flex items-center justify-between p-1.5 rounded ${
-                      m.team2.isWinner ? 'bg-amber-500/10 text-amber-300 font-bold' : 'text-slate-300'
+                      m.team2.isWinner ? 'bg-amber-100 text-amber-900 font-bold border border-amber-300' : 'text-[#4a382c]'
                     }`}
                   >
                     <span className="text-xs truncate max-w-[140px]">{m.team2.name}</span>

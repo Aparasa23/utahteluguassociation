@@ -145,7 +145,7 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
     <form onSubmit={handleSubmit} className="space-y-8 max-w-3xl mx-auto">
       {/* Plan Selection Radio Cards */}
       <div className="space-y-3">
-        <label className="block text-sm font-bold text-white uppercase tracking-wider">
+        <label className="block text-sm font-bold text-white uppercase tracking-wider font-display">
           1. Select Your Membership Plan
         </label>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -160,18 +160,18 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
                 }}
                 className={`p-4 rounded-xl border cursor-pointer transition-all ${
                   isSelected
-                    ? 'border-amber-400 bg-amber-400/10 shadow-lg shadow-amber-500/10'
-                    : 'border-white/10 bg-white/5 hover:border-white/20'
+                    ? 'border-[#f4bb59] bg-[#f4bb59]/20 shadow-xl'
+                    : 'border-[#f4bb59]/20 bg-[#09222c]/90 hover:border-[#f4bb59]/50'
                 }`}
               >
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-white text-sm">{p.name}</span>
-                  <span className="text-base font-extrabold text-amber-400">
+                  <span className="text-base font-black text-[#f4bb59] font-display">
                     {formatCurrency(p.price)}
                   </span>
                 </div>
-                <p className="text-xs text-slate-400 mt-1">{p.description}</p>
-                <span className="inline-block mt-2 text-[10px] font-semibold text-slate-300 px-2 py-0.5 rounded bg-black/40">
+                <p className="text-xs text-[#a5c2cb] mt-1">{p.description}</p>
+                <span className="inline-block mt-2 text-[10px] font-bold text-[#071a20] bg-[#f4bb59] px-2 py-0.5 rounded font-bold">
                   Max Family Capacity: {p.maxFamilyMembers} members
                 </span>
               </div>
@@ -181,86 +181,86 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
       </div>
 
       {/* Primary Member Information */}
-      <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
-        <h3 className="text-base font-bold text-white flex items-center gap-2">
-          <Users className="w-4 h-4 text-amber-400" />
+      <div className="glass-panel p-6 rounded-2xl border border-[#f4bb59]/25 bg-[#09222c]/90 shadow-xl space-y-4">
+        <h3 className="text-base font-bold text-white flex items-center gap-2 font-display">
+          <Users className="w-4 h-4 text-[#f4bb59]" />
           <span>2. Primary Member Information (Utah Resident)</span>
         </h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Full Legal Name *</label>
+            <label className="block text-xs font-bold text-white mb-1">Full Legal Name *</label>
             <input
               type="text"
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="e.g. Venkat Rao"
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm focus:border-amber-400"
+              className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
+            <label className="block text-xs font-bold text-white mb-1">Email Address *</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="e.g. member@utahtelugu.org"
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm focus:border-amber-400"
+              className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Phone Number (Cell) *</label>
+            <label className="block text-xs font-bold text-white mb-1">Phone Number (Cell) *</label>
             <input
               type="tel"
               required
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="(801) 555-0123"
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm focus:border-amber-400"
+              className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Street Address</label>
+            <label className="block text-xs font-bold text-white mb-1">Street Address</label>
             <input
               type="text"
               value={addressLine1}
               onChange={(e) => setAddressLine1(e.target.value)}
               placeholder="11422 S Grandville Ave"
-              className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm focus:border-amber-400"
+              className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59] placeholder:text-[#6f8a96]"
             />
           </div>
 
           <div className="grid grid-cols-3 gap-2 sm:col-span-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">City</label>
+              <label className="block text-xs font-bold text-white mb-1">City</label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm"
+                className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">State</label>
+              <label className="block text-xs font-bold text-white mb-1">State</label>
               <input
                 type="text"
                 value={state}
                 disabled
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-white/10 text-slate-400 text-sm"
+                className="w-full px-3 py-2 rounded-lg bg-[#071a20]/60 border border-[#f4bb59]/20 text-[#a5c2cb] text-sm"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">ZIP</label>
+              <label className="block text-xs font-bold text-white mb-1">ZIP</label>
               <input
                 type="text"
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-white/10 text-white text-sm"
+                className="w-full px-3 py-2 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-sm focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
               />
             </div>
           </div>
@@ -269,11 +269,11 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
 
       {/* Family Members Roster (when applicable) */}
       {currentPlan.maxFamilyMembers > 1 && (
-        <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
+        <div className="glass-panel p-6 rounded-2xl border border-[#f4bb59]/25 bg-[#09222c]/90 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-base font-bold text-white">3. Eligible Family Members Roster</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-base font-bold text-white font-display">3. Eligible Family Members Roster</h3>
+              <p className="text-xs text-[#a5c2cb]">
                 Spouse and dependent children residing in the same Utah household.
               </p>
             </div>
@@ -281,7 +281,7 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
               type="button"
               onClick={addFamilyMember}
               disabled={totalFamilyCount >= currentPlan.maxFamilyMembers}
-              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30 transition-colors flex items-center gap-1 disabled:opacity-50"
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-[#f4bb59]/15 text-[#f4bb59] border border-[#f4bb59]/30 hover:bg-[#f4bb59]/25 transition-colors flex items-center gap-1 disabled:opacity-50"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Member</span>
@@ -290,21 +290,21 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
 
           <div className="space-y-3">
             {familyMembers.map((member, idx) => (
-              <div key={idx} className="p-3 rounded-xl bg-slate-900/80 border border-white/10 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
+              <div key={idx} className="p-3 rounded-xl bg-[#071a20]/90 border border-[#f4bb59]/20 grid grid-cols-1 sm:grid-cols-12 gap-2 items-center">
                 <div className="sm:col-span-5">
                   <input
                     type="text"
                     placeholder="Full Name"
                     value={member.fullName}
                     onChange={(e) => updateFamilyMember(idx, 'fullName', e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 text-white text-xs"
+                    className="w-full px-3 py-1.5 rounded-lg bg-[#041216] border border-[#f4bb59]/30 text-white text-xs focus:outline-none focus:border-[#f4bb59]"
                   />
                 </div>
                 <div className="sm:col-span-3">
                   <select
                     value={member.relationship}
                     onChange={(e) => updateFamilyMember(idx, 'relationship', e.target.value)}
-                    className="w-full px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 text-white text-xs"
+                    className="w-full px-3 py-1.5 rounded-lg bg-[#041216] border border-[#f4bb59]/30 text-white text-xs focus:outline-none focus:border-[#f4bb59]"
                   >
                     <option value="SPOUSE">Spouse</option>
                     <option value="CHILD">Child</option>
@@ -317,14 +317,14 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
                     placeholder="Age"
                     value={member.age}
                     onChange={(e) => updateFamilyMember(idx, 'age', parseInt(e.target.value) || '')}
-                    className="w-full px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 text-white text-xs"
+                    className="w-full px-3 py-1.5 rounded-lg bg-[#041216] border border-[#f4bb59]/30 text-white text-xs focus:outline-none focus:border-[#f4bb59]"
                   />
                 </div>
                 <div className="sm:col-span-2 flex justify-end">
                   <button
                     type="button"
                     onClick={() => removeFamilyMember(idx)}
-                    className="p-1.5 text-slate-400 hover:text-rose-400 rounded-lg hover:bg-rose-500/10"
+                    className="p-1.5 text-[#a5c2cb] hover:text-rose-400 rounded-lg hover:bg-rose-950/40"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
@@ -336,51 +336,51 @@ export function FamilyForm({ plans, selectedPlanCode = 'FAMILY_ANNUAL' }: Family
       )}
 
       {/* Consent & Association Bylaws Check */}
-      <div className="p-4 rounded-xl bg-slate-900 border border-white/10 space-y-3">
+      <div className="p-4 rounded-xl bg-[#071a20]/90 border border-[#f4bb59]/20 space-y-3">
         <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
             checked={consentRules}
             onChange={(e) => setConsentRules(e.target.checked)}
-            className="mt-1 w-4 h-4 rounded border-slate-700 text-amber-500 focus:ring-amber-400"
+            className="mt-1 w-4 h-4 rounded border-[#f4bb59]/30 text-[#f4bb59] focus:ring-[#f4bb59]"
           />
-          <span className="text-xs text-slate-300 leading-relaxed">
+          <span className="text-xs text-[#e7d5b8] leading-relaxed">
             I confirm that all registered family members reside at this Utah address and agree to abide by the bylaws, non-profit community guidelines, and volunteer policies of the Utah Telugu Association (UTA).
           </span>
         </label>
       </div>
 
       {errorMessage && (
-        <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 shrink-0" />
+        <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2">
+          <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {successMessage && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-          <Check className="w-4 h-4 shrink-0" />
+        <div className="p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+          <Check className="w-4 h-4 shrink-0 text-emerald-400" />
           <span>{successMessage}</span>
         </div>
       )}
 
       {/* Submit Button */}
-      <div className="flex items-center justify-between pt-4 border-t border-white/10">
+      <div className="flex items-center justify-between pt-4 border-t border-[#f4bb59]/20">
         <div>
-          <span className="text-xs text-slate-400">Total Annual Dues:</span>
-          <p className="text-2xl font-extrabold text-amber-400">{formatCurrency(currentPlan.price)}</p>
+          <span className="text-xs text-[#a5c2cb]">Total Annual Dues:</span>
+          <p className="text-2xl font-black text-[#f4bb59] font-display">{formatCurrency(currentPlan.price)}</p>
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-6 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 shadow-xl shadow-amber-500/20 flex items-center gap-2 disabled:opacity-50"
+          className="px-6 py-3 rounded-xl font-extrabold bg-gradient-to-r from-[#f4bb59] to-[#d8972b] hover:brightness-110 text-[#071a20] shadow-xl flex items-center gap-2 disabled:opacity-50 text-xs transition-all"
         >
           {isSubmitting ? (
             <span>Processing Enrollment...</span>
           ) : (
             <>
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4 text-[#071a20]" />
               <span>Complete Enrollment & Issue ID</span>
             </>
           )}

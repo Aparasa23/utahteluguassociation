@@ -13,11 +13,11 @@ export default async function MemberNotificationsPage() {
 
   return (
     <div className="max-w-3xl space-y-6">
-      <div className="border-b border-white/10 pb-4">
-        <h1 className="text-2xl font-bold text-white font-display">
+      <div className="border-b border-amber-900/10 pb-4">
+        <h1 className="text-2xl font-bold text-[#1c140e] font-display">
           Announcements & Notifications
         </h1>
-        <p className="text-xs text-slate-400 mt-0.5">
+        <p className="text-xs text-[#705544] mt-0.5">
           Important updates regarding venue parking, stage rehearsals, and ticket issuance.
         </p>
       </div>
@@ -26,22 +26,22 @@ export default async function MemberNotificationsPage() {
         {announcements.map((a) => (
           <div
             key={a.id}
-            className="glass-panel p-5 rounded-2xl border border-white/10 flex items-start gap-4"
+            className="glass-panel p-5 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm flex items-start gap-4"
           >
-            <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 shrink-0 mt-0.5">
+            <div className="p-2.5 rounded-xl bg-amber-100 text-amber-800 shrink-0 mt-0.5">
               <Megaphone className="w-5 h-5" />
             </div>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-white text-sm">{a.title}</h3>
+                <h3 className="font-bold text-[#1c140e] text-sm">{a.title}</h3>
                 {a.isUrgent && (
-                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-rose-500 text-white">
+                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded bg-rose-600 text-white">
                     Action Required
                   </span>
                 )}
               </div>
-              <p className="text-xs text-slate-300 leading-relaxed">{a.content}</p>
-              <span className="text-[10px] text-slate-500 block pt-1">
+              <p className="text-xs text-[#5a483a] leading-relaxed">{a.content}</p>
+              <span className="text-[10px] text-[#8c7664] block pt-1">
                 {formatUtahDate(a.createdAt, 'short')}
               </span>
             </div>

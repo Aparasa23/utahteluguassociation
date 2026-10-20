@@ -42,17 +42,17 @@ export default async function MemberTicketsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-900/10 pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-white font-display">
+          <h1 className="text-2xl font-bold text-[#1c140e] font-display">
             My Event Admission Passes
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-[#705544] mt-0.5">
             Present these digital tickets at venue entrance tables for barcode/QR scanning.
           </p>
         </div>
 
-        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
           {tickets.length} Active Tickets
         </span>
       </div>
@@ -61,19 +61,19 @@ export default async function MemberTicketsPage() {
         {ticketsWithQRs.map((t) => (
           <div
             key={t.id}
-            className="glass-panel p-6 rounded-3xl border border-white/10 flex flex-col justify-between space-y-6 shadow-2xl relative overflow-hidden"
+            className="glass-panel p-6 rounded-3xl border border-amber-900/15 bg-white/95 shadow-md flex flex-col justify-between space-y-6 relative overflow-hidden"
           >
             <div className="space-y-4">
-              <div className="flex items-center justify-between border-b border-white/10 pb-3">
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <div className="flex items-center justify-between border-b border-amber-900/10 pb-3">
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
                   {t.ticketType.name}
                 </span>
 
                 <span
-                  className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full ${
+                  className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                     t.isCheckedIn
-                      ? 'bg-amber-500/20 text-amber-300'
-                      : 'bg-emerald-500/20 text-emerald-300'
+                      ? 'bg-amber-100 text-amber-800 border-amber-300'
+                      : 'bg-emerald-100 text-emerald-800 border-emerald-300'
                   }`}
                 >
                   {t.isCheckedIn ? 'CHECKED IN' : 'READY TO SCAN'}
@@ -81,29 +81,29 @@ export default async function MemberTicketsPage() {
               </div>
 
               <div>
-                <h3 className="text-base font-bold text-white leading-tight">
+                <h3 className="text-base font-bold text-[#1c140e] leading-tight">
                   {t.registration.event.title}
                 </h3>
-                <p className="text-xs text-slate-400 mt-1">
-                  Ticket Holder: <strong className="text-white">{t.attendeeName}</strong>
+                <p className="text-xs text-[#5a483a] mt-1">
+                  Ticket Holder: <strong className="text-[#1c140e] font-semibold">{t.attendeeName}</strong>
                 </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 items-center">
-                <div className="space-y-1.5 text-xs text-slate-300">
+                <div className="space-y-1.5 text-xs text-[#5a483a]">
                   <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <Calendar className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                     <span>{formatUtahDate(t.registration.event.startDateTime, 'short')}</span>
                   </div>
                   {t.registration.event.venue && (
                     <div className="flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                      <MapPin className="w-3.5 h-3.5 text-[#8c7664] shrink-0" />
                       <span className="truncate">{t.registration.event.venue.city}, UT</span>
                     </div>
                   )}
                   <div className="pt-2">
-                    <span className="text-[10px] text-slate-500 uppercase block">Ticket #</span>
-                    <span className="font-mono text-xs font-bold text-amber-300">
+                    <span className="text-[10px] text-[#8c7664] uppercase block font-semibold">Ticket #</span>
+                    <span className="font-mono text-xs font-bold text-amber-900">
                       {t.ticketNumber}
                     </span>
                   </div>
@@ -111,15 +111,15 @@ export default async function MemberTicketsPage() {
 
                 {/* QR Code Container */}
                 <div className="flex flex-col items-center">
-                  <div className="bg-white p-2 rounded-2xl shadow-lg border border-white/20">
+                  <div className="bg-white p-2 rounded-2xl shadow-sm border border-amber-900/15">
                     <img src={t.qrUrl} alt="Ticket QR" className="w-28 h-28 block" />
                   </div>
-                  <span className="text-[9px] font-mono text-slate-400 mt-1">Scan at Entrance</span>
+                  <span className="text-[9px] font-mono text-[#8c7664] mt-1">Scan at Entrance</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-white/5 text-[10px] text-slate-500 text-center font-mono">
+            <div className="pt-3 border-t border-amber-900/10 text-[10px] text-[#8c7664] text-center font-mono">
               Idempotent Verification Token: {t.qrToken.substring(0, 16)}...
             </div>
           </div>

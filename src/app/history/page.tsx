@@ -44,48 +44,48 @@ export default function HistoryPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-          Heritage & Legacy
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[var(--accent-gold)]/10 text-[var(--accent-gold)] border border-[var(--border-card)] text-xs font-bold uppercase tracking-wider">
+          <span>Heritage & Legacy</span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">
           Association History & Milestones
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-xl mx-auto font-normal">
           Over two decades of Telugu cultural pride, community service, and family fellowship across the Wasatch Front.
         </p>
       </div>
 
       {/* Chronological Timeline */}
-      <div className="relative border-l border-amber-400/30 pl-6 sm:pl-8 ml-4 sm:ml-8 space-y-10">
+      <div className="relative border-l-2 border-[var(--border-card)] pl-6 sm:pl-8 ml-4 sm:ml-8 space-y-10">
         {timeline.map((item, idx) => (
           <div key={idx} className="relative group">
             {/* Timeline node */}
-            <div className="absolute -left-[35px] sm:-left-[43px] top-1.5 w-6 h-6 rounded-full bg-[#060a17] border-2 border-amber-400 flex items-center justify-center text-amber-400 shadow-md">
-              <span className="w-2 h-2 rounded-full bg-amber-400" />
+            <div className="absolute -left-[32px] sm:-left-[41px] top-1.5 w-5 h-5 rounded-full bg-[var(--bg-primary)] border-2 border-[#f4bb59] flex items-center justify-center shadow-md">
+              <span className="w-2 h-2 rounded-full bg-[#f4bb59]" />
             </div>
 
-            <div className="glass-panel p-6 rounded-2xl border border-white/10 group-hover:border-amber-400/40 transition-colors space-y-2">
-              <span className="text-xs font-mono font-bold text-amber-400 px-2 py-0.5 rounded bg-amber-500/10">
+            <div className="glass-panel p-6 rounded-2xl border border-[var(--border-card)] bg-[#09222c]/90 shadow-xl group-hover:border-[#f4bb59]/50 transition-all space-y-2">
+              <span className="text-xs font-mono font-bold text-[var(--accent-gold)] px-2 py-0.5 rounded bg-[#f4bb59]/15 border border-[var(--border-card)] inline-block">
                 {item.year}
               </span>
-              <h3 className="text-lg font-bold text-white pt-1">{item.title}</h3>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{item.description}</p>
+              <h3 className="text-lg font-bold text-white font-display pt-1">{item.title}</h3>
+              <p className="text-xs sm:text-sm text-[#a5c2cb] leading-relaxed">{item.description}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="p-8 rounded-2xl glass-panel-gold border border-amber-400/30 text-center space-y-4">
+      <div className="p-8 rounded-3xl glass-panel bg-[#09222c]/95 border border-[var(--border-card)] text-center space-y-4 shadow-2xl">
         <h3 className="text-xl font-bold text-white font-display">Be Part of the Next Chapter</h3>
-        <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto">
+        <p className="text-xs sm:text-sm text-[var(--text-secondary)] max-w-md mx-auto">
           Join hundreds of Telugu families who call Utah home. Enroll today and preserve heritage for generations to come.
         </p>
         <Link
           href="/membership/join"
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#f4bb59] to-[#d8972b] hover:brightness-110 text-[#071a20] font-extrabold text-xs shadow-xl transition-all"
         >
           <span>Enroll Your Family in UTA</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 text-[#071a20]" />
         </Link>
       </div>
     </div>

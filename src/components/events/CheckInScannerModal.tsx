@@ -47,29 +47,29 @@ export function CheckInScannerModal({ isOpen, onClose, staffName = 'Executive Vo
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-lg rounded-2xl glass-panel bg-[#0b132b] border border-white/20 p-6 shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-lg rounded-3xl glass-panel bg-[#fdfbf7] border border-amber-900/20 p-6 shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-lg hover:bg-white/5"
+          className="absolute top-4 right-4 p-2 text-[#705544] hover:text-[#1c140e] rounded-xl hover:bg-amber-100/50 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-2.5 mb-4 border-b border-white/10 pb-3">
-          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+        <div className="flex items-center gap-2.5 mb-4 border-b border-amber-900/10 pb-3">
+          <div className="p-2 rounded-xl bg-amber-100 text-amber-800">
             <QrCode className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white font-display">On-Site Ticket Check-In</h3>
-            <p className="text-xs text-slate-400">Authorized Event Staff Portal ({staffName})</p>
+            <h3 className="text-base font-bold text-[#1c140e] font-display">On-Site Ticket Check-In</h3>
+            <p className="text-xs text-[#705544]">Authorized Event Staff Portal ({staffName})</p>
           </div>
         </div>
 
         {/* Input & Scan Form */}
         <div className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">
+            <label className="block text-xs font-bold text-[#1c140e] mb-1.5 uppercase tracking-wider">
               Scan Barcode / Enter QR Token or Ticket Number
             </label>
             <div className="flex gap-2">
@@ -78,12 +78,12 @@ export function CheckInScannerModal({ isOpen, onClose, staffName = 'Executive Vo
                 value={tokenInput}
                 onChange={(e) => setTokenInput(e.target.value)}
                 placeholder="e.g. TKT-SKR-2027-0101 or scan token"
-                className="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-white/15 text-white text-sm focus:border-amber-400"
+                className="flex-1 px-3 py-2 rounded-xl bg-white border border-amber-900/20 text-[#1c140e] text-sm focus:outline-none focus:border-amber-600 font-mono"
               />
               <button
                 onClick={() => handleScan()}
                 disabled={isScanning || !tokenInput.trim()}
-                className="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs flex items-center gap-1.5 disabled:opacity-40"
+                className="btn-magnetic px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-bold text-xs flex items-center gap-1.5 disabled:opacity-40 shadow-xs"
               >
                 <Search className="w-4 h-4" />
                 <span>{isScanning ? 'Verifying...' : 'Check-In'}</span>
@@ -92,15 +92,15 @@ export function CheckInScannerModal({ isOpen, onClose, staffName = 'Executive Vo
           </div>
 
           {/* Quick Demo Pre-Filled Buttons */}
-          <div className="p-3 rounded-xl bg-white/5 border border-white/5 space-y-2">
-            <span className="text-[11px] font-semibold text-slate-400">Quick Test Scenarios:</span>
+          <div className="p-3 rounded-2xl bg-amber-50/70 border border-amber-900/10 space-y-2">
+            <span className="text-[11px] font-bold text-[#705544] uppercase tracking-wider">Quick Test Scenarios:</span>
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => {
                   setTokenInput('TKT-SKR-2027-0101');
                   handleScan('TKT-SKR-2027-0101');
                 }}
-                className="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-xs font-medium hover:bg-emerald-500/30"
+                className="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold hover:bg-emerald-200"
               >
                 Scan Ticket #1 (Venkat Rao)
               </button>

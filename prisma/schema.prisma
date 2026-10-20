@@ -728,3 +728,17 @@ model SystemSetting {
   description String?
   updatedAt   DateTime @updatedAt
 }
+
+model InstagramPost {
+  id            String   @id // Instagram Post ID or Shortcode
+  caption       String?
+  mediaType     String   @default("IMAGE") // IMAGE, VIDEO, CAROUSEL_ALBUM
+  mediaUrl      String
+  thumbnailUrl  String?
+  permalink     String   // https://www.instagram.com/p/...
+  timestamp     DateTime
+  likeCount     Int      @default(0)
+  commentsCount Int      @default(0)
+  rawJson       String?
+  syncedAt      DateTime @default(now())
+}

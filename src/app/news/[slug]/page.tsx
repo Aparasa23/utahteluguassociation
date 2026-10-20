@@ -9,29 +9,29 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
       <div>
         <Link
           href="/news"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-amber-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#6e5949] hover:text-amber-800 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to All Announcements</span>
         </Link>
       </div>
 
-      <div className="space-y-4 border-b border-white/10 pb-6">
-        <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-          Official Press Release
-        </span>
-        <h1 className="text-2xl sm:text-4xl font-extrabold text-white font-display capitalize">
+      <div className="space-y-4 border-b border-amber-900/15 pb-6">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-600/10 text-amber-900 border border-amber-600/20 text-xs font-bold uppercase tracking-wider">
+          <span>Official Press Release</span>
+        </div>
+        <h1 className="text-2xl sm:text-4xl font-black text-[#1c140e] font-display capitalize tracking-tight">
           {params.slug.replace(/-/g, ' ')}
         </h1>
-        <div className="flex items-center gap-3 text-xs text-slate-400">
-          <Calendar className="w-3.5 h-3.5 text-amber-400" />
+        <div className="flex items-center gap-3 text-xs text-[#6e5949]">
+          <Calendar className="w-3.5 h-3.5 text-amber-700" />
           <span>{formatUtahDate(new Date(), 'long')}</span>
           <span>•</span>
-          <span>Utah Telugu Association Executive Office</span>
+          <span className="font-semibold text-amber-900">Utah Telugu Association Executive Office</span>
         </div>
       </div>
 
-      <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+      <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-900/15 bg-white/95 shadow-sm space-y-4 text-xs sm:text-sm text-[#5a483a] leading-relaxed">
         <p>
           The Utah Telugu Association (UTA) is pleased to announce this official update to our member families, cultural partners, and community sponsors across the Wasatch Front.
         </p>
@@ -39,7 +39,7 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
           As our non-profit association continues to expand across Salt Lake, Utah, Davis, and Summit counties, our commitment remains steadfast: preserving classical and folk Telugu traditions, fostering youth education, and delivering world-class cultural celebrations.
         </p>
         <p>
-          All inquiries regarding this announcement should be directed to the General Secretary at <strong className="text-amber-400">secretary@utahtelugu.org</strong>.
+          All inquiries regarding this announcement should be directed to the General Secretary at <strong className="text-amber-900 font-bold">secretary@utahtelugu.org</strong>.
         </p>
       </div>
     </div>

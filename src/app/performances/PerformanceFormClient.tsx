@@ -90,14 +90,14 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 text-xs text-slate-300">
+    <form onSubmit={handleSubmit} className="space-y-6 text-xs text-[#e7d5b8]">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block font-semibold mb-1">Select Festival Event *</label>
+          <label className="block font-bold text-white mb-1">Select Festival Event *</label>
           <select
             value={eventId}
             onChange={(e) => setEventId(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           >
             {events.map((e) => (
               <option key={e.id} value={e.id}>
@@ -108,23 +108,23 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Performance Title / Song *</label>
+          <label className="block font-bold text-white mb-1">Performance Title / Song *</label>
           <input
             type="text"
             required
             placeholder="e.g. Kuchipudi Thillana Medley"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white placeholder:text-[#6f8a96] focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Category</label>
+          <label className="block font-bold text-white mb-1">Category</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           >
             <option value="CLASSICAL_DANCE">Classical Kuchipudi / Bharatanatyam</option>
             <option value="FOLK_DANCE">Telugu Folk (Janapada Geethalu)</option>
@@ -135,49 +135,49 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Duration (Minutes, max 10) *</label>
+          <label className="block font-bold text-white mb-1">Duration (Minutes, max 10) *</label>
           <input
             type="number"
             min={1}
             max={10}
             value={durationMinutes}
             onChange={(e) => setDurationMinutes(parseInt(e.target.value) || 5)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Coordinator Name *</label>
+          <label className="block font-bold text-white mb-1">Coordinator Name *</label>
           <input
             type="text"
             required
             placeholder="Dance Guru / Group Lead"
             value={coordinatorName}
             onChange={(e) => setCoordinatorName(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white placeholder:text-[#6f8a96] focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Coordinator Email *</label>
+          <label className="block font-bold text-white mb-1">Coordinator Email *</label>
           <input
             type="email"
             required
             placeholder="coordinator@gmail.com"
             value={coordinatorEmail}
             onChange={(e) => setCoordinatorEmail(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white placeholder:text-[#6f8a96] focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           />
         </div>
 
         <div className="sm:col-span-2">
-          <label className="block font-semibold mb-1">Audio Track Drive/Cloud URL (Optional)</label>
+          <label className="block font-bold text-white mb-1">Audio Track Drive/Cloud URL (Optional)</label>
           <input
             type="url"
             placeholder="https://drive.google.com/... (Shareable MP3/WAV)"
             value={audioFileUrl}
             onChange={(e) => setAudioFileUrl(e.target.value)}
-            className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-white/10 text-white"
+            className="w-full px-3 py-2 rounded-xl bg-[#071a20] border border-[#f4bb59]/30 text-white placeholder:text-[#6f8a96] focus:outline-none focus:border-[#f4bb59] focus:ring-1 focus:ring-[#f4bb59]"
           />
         </div>
       </div>
@@ -189,7 +189,7 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
           <button
             type="button"
             onClick={addParticipant}
-            className="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30 font-semibold flex items-center gap-1"
+            className="px-2.5 py-1 rounded-lg bg-[#f4bb59]/15 text-[#f4bb59] border border-[#f4bb59]/30 font-bold flex items-center gap-1 hover:bg-[#f4bb59]/25 transition-colors"
           >
             <Plus className="w-3 h-3" />
             <span>Add Performer</span>
@@ -204,12 +204,12 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
                 placeholder="Performer Name"
                 value={p.fullName}
                 onChange={(e) => updateParticipant(idx, 'fullName', e.target.value)}
-                className="flex-1 px-3 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white"
+                className="flex-1 px-3 py-1.5 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-xs focus:outline-none focus:border-[#f4bb59]"
               />
               <select
                 value={p.ageGroup}
                 onChange={(e) => updateParticipant(idx, 'ageGroup', e.target.value)}
-                className="w-32 px-3 py-1.5 rounded-lg bg-slate-900 border border-white/10 text-white"
+                className="w-32 px-3 py-1.5 rounded-lg bg-[#071a20] border border-[#f4bb59]/30 text-white text-xs focus:outline-none focus:border-[#f4bb59]"
               >
                 <option value="KIDS">Kids (Under 12)</option>
                 <option value="TEENS">Teens (13–18)</option>
@@ -218,7 +218,7 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
               <button
                 type="button"
                 onClick={() => removeParticipant(idx)}
-                className="p-1.5 text-slate-400 hover:text-rose-400"
+                className="p-1.5 text-[#a5c2cb] hover:text-rose-400 rounded-lg hover:bg-rose-950/40"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -231,11 +231,11 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
         <div
           className={`p-3 rounded-xl border flex items-center gap-2 ${
             isSuccess
-              ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
+              ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-300'
+              : 'bg-rose-950/40 border-rose-500/30 text-rose-300'
           }`}
         >
-          {isSuccess ? <CheckCircle2 className="w-4 h-4 shrink-0" /> : <AlertCircle className="w-4 h-4 shrink-0" />}
+          {isSuccess ? <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-400" /> : <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />}
           <span>{statusMessage}</span>
         </div>
       )}
@@ -243,7 +243,7 @@ export function PerformanceFormClient({ events }: { events: EventItem[] }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold shadow-md disabled:opacity-50"
+        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#f4bb59] to-[#d8972b] hover:brightness-110 text-[#071a20] font-extrabold shadow-xl disabled:opacity-50 transition-all"
       >
         {isSubmitting ? 'Submitting Application...' : 'Submit Performance for Review'}
       </button>

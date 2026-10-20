@@ -28,23 +28,23 @@ export default async function MemberPassPage() {
       <div className="flex items-center justify-between">
         <Link
           href="/dashboard"
-          className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white"
+          className="inline-flex items-center gap-1.5 text-xs text-[#705544] hover:text-[#1c140e] font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Dashboard</span>
         </Link>
 
-        <span className="text-xs text-amber-400 font-semibold flex items-center gap-1">
+        <span className="text-xs text-amber-800 font-semibold flex items-center gap-1 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
           <ShieldCheck className="w-3.5 h-3.5" />
           <span>Gate Verified Pass</span>
         </span>
       </div>
 
       <div className="text-center space-y-1">
-        <h1 className="text-2xl font-bold text-white font-display">
+        <h1 className="text-2xl font-bold text-[#1c140e] font-display">
           Your Digital Membership Pass
         </h1>
-        <p className="text-xs text-slate-400">
+        <p className="text-xs text-[#705544]">
           Present this dynamic card at check-in tables for all UTA festival events.
         </p>
       </div>
@@ -64,8 +64,8 @@ export default async function MemberPassPage() {
         }))}
       />
 
-      <div className="p-4 rounded-xl bg-white/5 border border-white/5 text-center text-xs text-slate-400 space-y-1">
-        <p className="font-semibold text-white">Need Offline Access?</p>
+      <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-900/10 text-center text-xs text-[#5a483a] space-y-1">
+        <p className="font-semibold text-[#1c140e]">Need Offline Access?</p>
         <p>
           Save this screen to your mobile wallet or bookmark this URL. The verification QR code works offline during on-site venue scanning.
         </p>

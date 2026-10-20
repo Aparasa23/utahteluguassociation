@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { Ticket, Sparkles } from 'lucide-react';
 import { EventRegistrationModal } from '@/components/events/EventRegistrationModal';
 
+import Link from 'next/link';
+
 interface Props {
   eventSlug: string;
   eventTitle: string;
@@ -16,6 +18,18 @@ export function EventRegistrationClientWrapper({
   ticketTypes,
 }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
+
+  if (eventSlug.includes('sankranthi')) {
+    return (
+      <Link
+        href="/events/sankranthi-2027/register"
+        className="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-rose-500 hover:from-amber-300 hover:to-rose-400 text-slate-950 font-black text-sm shadow-xl shadow-amber-500/25 flex items-center justify-center gap-2 transition-all transform hover:scale-[1.02]"
+      >
+        <Sparkles className="w-4 h-4 text-black" />
+        <span>Register / Get Official Passes Now</span>
+      </Link>
+    );
+  }
 
   return (
     <>

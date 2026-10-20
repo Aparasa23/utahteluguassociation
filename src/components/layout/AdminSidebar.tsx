@@ -71,18 +71,18 @@ export function AdminSidebar() {
   ];
 
   return (
-    <aside className="w-64 glass-panel bg-[#050813]/90 border-r border-white/10 p-4 space-y-5 shrink-0 hidden md:block max-h-screen overflow-y-auto scrollbar-thin">
-      <div className="px-3 py-2 border-b border-white/10">
-        <span className="text-[11px] font-bold text-rose-400 tracking-wider uppercase flex items-center gap-1.5">
+    <aside className="w-64 glass-panel bg-white/90 border-r border-amber-900/10 p-4 space-y-5 shrink-0 hidden md:block max-h-screen overflow-y-auto scrollbar-thin shadow-sm">
+      <div className="px-3 py-2 border-b border-amber-900/10">
+        <span className="text-[11px] font-bold text-rose-800 tracking-wider uppercase flex items-center gap-1.5">
           <ShieldAlert className="w-3.5 h-3.5" />
           <span>Executive Control Panel</span>
         </span>
-        <p className="text-xs text-slate-400">UTA Officers & Directors</p>
+        <p className="text-xs text-[#705544]">UTA Officers & Directors</p>
       </div>
 
       {sections.map((section, sIdx) => (
         <div key={sIdx} className="space-y-1">
-          <span className="px-3 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+          <span className="px-3 text-[10px] font-bold uppercase tracking-wider text-[#8c7664]">
             {section.group}
           </span>
           {section.links.map((link) => {
@@ -95,11 +95,11 @@ export function AdminSidebar() {
                 href={link.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
                   isActive
-                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    ? 'bg-rose-100/90 text-rose-900 border border-rose-300 shadow-xs'
+                    : 'text-[#5a483a] hover:text-[#1c140e] hover:bg-amber-50/60'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-rose-400' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-rose-700' : 'text-[#8c7664]'}`} />
                 <span>{link.label}</span>
               </Link>
             );

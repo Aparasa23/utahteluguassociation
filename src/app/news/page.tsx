@@ -44,16 +44,16 @@ export default async function NewsPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-          Communications & Dispatches
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-600/10 text-amber-900 border border-amber-600/20 text-xs font-bold uppercase tracking-wider">
+          <span>Communications & Dispatches</span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-black text-[#1c140e] font-display tracking-tight">
           News & Association Updates
         </h1>
-        <p className="text-sm sm:text-base text-slate-300 font-telugu text-amber-200">
+        <p className="text-base sm:text-lg text-rose-800 font-telugu font-semibold">
           తాజా వార్తలు & కార్యనిర్వాహక ప్రకటనలు
         </p>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-[#5a483a] max-w-xl mx-auto font-normal">
           Stay informed on upcoming festival registrations, executive committee decisions, and community spotlights.
         </p>
       </div>
@@ -64,13 +64,13 @@ export default async function NewsPage() {
           {announcements.map((a) => (
             <div
               key={a.id}
-              className="p-5 rounded-2xl glass-panel-gold border border-amber-400/40 flex items-start gap-3.5"
+              className="p-5 rounded-3xl glass-panel bg-amber-50/80 border border-amber-900/20 shadow-sm flex items-start gap-3.5"
             >
-              <Bell className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+              <Bell className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
               <div className="space-y-1">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-400">Official Notice</span>
-                <h3 className="font-bold text-white text-base">{a.title}</h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{a.content}</p>
+                <span className="text-[10px] font-bold uppercase tracking-widest text-amber-900">Official Notice</span>
+                <h3 className="font-bold text-[#1c140e] text-base">{a.title}</h3>
+                <p className="text-xs text-[#5a483a] leading-relaxed">{a.content}</p>
               </div>
             </div>
           ))}
@@ -79,29 +79,29 @@ export default async function NewsPage() {
 
       {/* Articles Feed */}
       <div className="space-y-6 pt-4">
-        <h2 className="text-xl font-bold text-white font-display">Recent Dispatches</h2>
+        <h2 className="text-xl font-bold text-[#1c140e] font-display">Recent Dispatches</h2>
         <div className="space-y-4">
           {newsArticles.map((article) => (
             <div
               key={article.slug}
-              className="glass-panel p-6 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-amber-400/40 transition-colors"
+              className="glass-panel p-6 rounded-3xl border border-amber-900/15 bg-white/95 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:border-amber-700/40 transition-colors"
             >
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-xs text-slate-400">
-                  <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                <div className="flex items-center gap-2 text-xs text-[#6e5949]">
+                  <Calendar className="w-3.5 h-3.5 text-amber-700" />
                   <span>{formatUtahDate(article.date, 'short')}</span>
                   <span>•</span>
-                  <span>{article.author}</span>
+                  <span className="font-semibold text-amber-900">{article.author}</span>
                 </div>
-                <h3 className="text-base font-bold text-white hover:text-amber-400 transition-colors">
+                <h3 className="text-base font-bold text-[#1c140e] hover:text-amber-800 transition-colors">
                   <Link href={`/news/${article.slug}`}>{article.title}</Link>
                 </h3>
-                <p className="text-xs text-slate-300 leading-relaxed">{article.summary}</p>
+                <p className="text-xs text-[#5a483a] leading-relaxed">{article.summary}</p>
               </div>
 
               <Link
                 href={`/news/${article.slug}`}
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white/5 hover:bg-amber-500 hover:text-slate-950 text-white font-bold text-xs transition-colors shrink-0"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl btn-magnetic text-white font-bold text-xs transition-colors shrink-0 shadow-sm"
               >
                 <span>Read Dispatch</span>
                 <ArrowRight className="w-3.5 h-3.5" />

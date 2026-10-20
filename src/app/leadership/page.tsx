@@ -65,23 +65,23 @@ export default function LeadershipPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
       <div className="text-center space-y-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
-          Governance & Service
-        </span>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-white font-display">
+        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#f4bb59]/10 text-[#f4bb59] border border-[#f4bb59]/30 text-xs font-bold uppercase tracking-wider">
+          <span>Governance & Service</span>
+        </div>
+        <h1 className="text-3xl sm:text-5xl font-black text-white font-display tracking-tight">
           Executive Committee & Leadership
         </h1>
-        <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto">
+        <p className="text-xs sm:text-sm text-[#e7d5b8] max-w-xl mx-auto font-normal">
           Dedicated volunteers elected by UTA active member families to govern, organize cultural programs, and steward association operations.
         </p>
       </div>
 
       {/* Executive Committee Grid */}
       <div className="space-y-6">
-        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
-          <ShieldCheck className="w-5 h-5 text-amber-400" />
+        <div className="flex items-center gap-2 border-b border-[#f4bb59]/20 pb-3">
+          <ShieldCheck className="w-5 h-5 text-[#f4bb59]" />
           <h2 className="text-xl font-bold text-white font-display">Executive Committee (2026–2028)</h2>
         </div>
 
@@ -89,23 +89,23 @@ export default function LeadershipPage() {
           {executiveCommittee.map((officer, idx) => (
             <div
               key={idx}
-              className="glass-panel p-6 rounded-2xl border border-white/10 hover:border-amber-400/40 transition-colors flex flex-col justify-between space-y-4"
+              className="glass-panel p-6 rounded-3xl border border-[#f4bb59]/25 bg-[#09222c]/90 shadow-xl hover:border-[#f4bb59]/50 transition-all flex flex-col justify-between space-y-4"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 font-bold uppercase">
+                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#f4bb59]/15 text-[#f4bb59] font-bold uppercase border border-[#f4bb59]/30">
                     {officer.term}
                   </span>
-                  <span className="text-[11px] text-amber-300 font-telugu">{officer.teluguTitle}</span>
+                  <span className="text-xs text-[#ffcb75] font-telugu font-semibold">{officer.teluguTitle}</span>
                 </div>
-                <h3 className="text-lg font-bold text-white">{officer.name}</h3>
-                <p className="text-xs font-semibold text-amber-400">{officer.title}</p>
-                <p className="text-xs text-slate-400 leading-relaxed pt-1">{officer.bio}</p>
+                <h3 className="text-lg font-bold text-white font-display">{officer.name}</h3>
+                <p className="text-xs font-bold text-[#f4bb59]">{officer.title}</p>
+                <p className="text-xs text-[#a5c2cb] leading-relaxed pt-1">{officer.bio}</p>
               </div>
 
-              <div className="pt-3 border-t border-white/5 flex items-center gap-2 text-xs text-slate-300">
-                <Mail className="w-3.5 h-3.5 text-amber-400" />
-                <a href={`mailto:${officer.email}`} className="hover:underline truncate">
+              <div className="pt-3 border-t border-[#f4bb59]/15 flex items-center gap-2 text-xs text-[#e7d5b8]">
+                <Mail className="w-3.5 h-3.5 text-[#f4bb59]" />
+                <a href={`mailto:${officer.email}`} className="text-[#f4bb59] hover:underline truncate font-semibold">
                   {officer.email}
                 </a>
               </div>
@@ -116,17 +116,17 @@ export default function LeadershipPage() {
 
       {/* Board of Trustees */}
       <div className="space-y-6 pt-6">
-        <div className="flex items-center gap-2 border-b border-white/10 pb-3">
-          <Award className="w-5 h-5 text-sky-400" />
+        <div className="flex items-center gap-2 border-b border-[#f4bb59]/20 pb-3">
+          <Award className="w-5 h-5 text-[#f4bb59]" />
           <h2 className="text-xl font-bold text-white font-display">Board of Trustees</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {boardOfTrustees.map((t, idx) => (
-            <div key={idx} className="glass-panel p-5 rounded-xl border border-white/10">
-              <h3 className="font-bold text-white text-base">{t.name}</h3>
-              <p className="text-xs text-sky-400 font-semibold">{t.role}</p>
-              <p className="text-[11px] text-slate-400 mt-1">{t.years}</p>
+            <div key={idx} className="glass-panel p-5 rounded-2xl border border-[#f4bb59]/25 bg-[#09222c]/90 shadow-xl space-y-1">
+              <h3 className="font-bold text-white text-base font-display">{t.name}</h3>
+              <p className="text-xs text-[#f4bb59] font-bold">{t.role}</p>
+              <p className="text-[11px] text-[#a5c2cb] mt-1">{t.years}</p>
             </div>
           ))}
         </div>

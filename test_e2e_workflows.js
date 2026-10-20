@@ -327,6 +327,36 @@ async function runTests() {
     }
   });
 
+  // 15. Festivals Catalog Archive
+  await test('Festivals Catalog Archive (/culture/festivals) Status 200', async () => {
+    const res = await fetch(`${baseUrl}/culture/festivals`);
+    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    const html = await res.text();
+    if (!html.includes('Telugu Festivals') || !html.includes('మరుగున పడిన')) {
+      throw new Error('Expected Telugu Festival Encyclopedia branding');
+    }
+  });
+
+  // 16. Forgotten Festival Detail Page: Eruvaka Punnami
+  await test('Forgotten Festival Blog: Eruvaka Punnami (/culture/festivals/eruvaka-punnami) Status 200', async () => {
+    const res = await fetch(`${baseUrl}/culture/festivals/eruvaka-punnami`);
+    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    const html = await res.text();
+    if (!html.includes('ఏరువాక పున్నమి') || !html.includes('Srinatha') || !html.includes('Haravilasa')) {
+      throw new Error('Expected Eruvaka Punnami Telugu title and Srinatha historical citation');
+    }
+  });
+
+  // 17. Regional Jathara Festival: Kotappakonda Prabhalu
+  await test('Regional Jathara Blog: Kotappakonda Prabhalu (/culture/festivals/kotappakonda-prabhalu) Status 200', async () => {
+    const res = await fetch(`${baseUrl}/culture/festivals/kotappakonda-prabhalu`);
+    if (res.status !== 200) throw new Error(`Status ${res.status}`);
+    const html = await res.text();
+    if (!html.includes('కోటప్పకొండ ప్రభల') || !html.includes('Palnadu')) {
+      throw new Error('Expected Kotappakonda Prabhalu Telugu title and Palnadu regional context');
+    }
+  });
+
   console.log('\n=====================================================');
   console.log(`📊 FINAL RESULTS: ${passed} PASSED, ${failed} FAILED`);
   console.log('=====================================================\n');

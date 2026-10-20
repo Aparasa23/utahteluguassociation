@@ -1,55 +1,248 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================================= */
+/* 10 WORLD-CLASS THEMES FOR UTA SANKRANTHI 2027             */
+/* Dynamically selectable via data-theme attribute on <html> */
+/* ========================================================= */
+
+/* Default Root Fonts & Tokens */
 :root {
   --font-inter: 'Inter', sans-serif;
   --font-outfit: 'Outfit', sans-serif;
   --font-telugu: 'Noto Sans Telugu', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-cinzel: 'Cinzel', serif;
+
+  /* 5. SANKRANTHI SUN (VOTED PRIMARY DEFAULT: Marigold & Harvest Sunburst) */
+  --bg-primary: #0e0d0b;
+  --bg-secondary: #181511;
+  --bg-card: linear-gradient(150deg, rgba(35, 29, 20, 0.88), rgba(16, 14, 11, 0.92));
+  --border-card: rgba(245, 158, 11, 0.3);
   
-  --bg-primary: #020409;
-  --bg-card: rgba(8, 12, 24, 0.76);
-  --border-card: rgba(255, 255, 255, 0.07);
-  --accent-gold: #d97706;
+  --text-primary: #fffbeb;
+  --text-secondary: #fde68a;
+  --text-muted: #a39276;
+  
+  --accent-gold: #f59e0b;
+  --accent-gold-light: #fbbf24;
+  --accent-crimson: #f97316;
+  --accent-emerald: #22c55e;
+  --theme-glow: rgba(245, 158, 11, 0.22);
+}
+
+/* 1. KAKATIYA GOLD (Royal Obsidian Noir & 24K Gold) */
+[data-theme="kakatiya-gold"] {
+  --bg-primary: #070a0e;
+  --bg-secondary: #0d1218;
+  --bg-card: linear-gradient(150deg, rgba(20, 26, 35, 0.88), rgba(9, 13, 18, 0.92));
+  --border-card: rgba(229, 184, 105, 0.25);
+  
+  --text-primary: #fbf8f1;
+  --text-secondary: #dfd7c6;
+  --text-muted: #8c8270;
+  
+  --accent-gold: #e5b869;
+  --accent-gold-light: #f3cf8a;
+  --accent-crimson: #e05353;
+  --accent-emerald: #34d399;
+  --theme-glow: rgba(229, 184, 105, 0.2);
+}
+
+/* 2. LEPAKSHI CRIMSON (Silk Brocade & Rose Gold) */
+[data-theme="lepakshi-crimson"] {
+  --bg-primary: #18060d;
+  --bg-secondary: #240a14;
+  --bg-card: linear-gradient(150deg, rgba(48, 14, 28, 0.88), rgba(24, 6, 13, 0.92));
+  --border-card: rgba(247, 163, 153, 0.25);
+  
+  --text-primary: #fff0f3;
+  --text-secondary: #fcd5ce;
+  --text-muted: #b08992;
+  
+  --accent-gold: #f7a399;
+  --accent-gold-light: #ffc2d1;
+  --accent-crimson: #e63946;
+  --accent-emerald: #48cae4;
+  --theme-glow: rgba(247, 163, 153, 0.2);
+}
+
+/* 3. AMARAVATI IVORY (Sandstone & Antique Brass - Light Luxury) */
+[data-theme="amaravati-ivory"] {
+  --bg-primary: #f7f3ea;
+  --bg-secondary: #ece4d4;
+  --bg-card: linear-gradient(150deg, rgba(255, 255, 255, 0.95), rgba(246, 240, 230, 0.92));
+  --border-card: rgba(180, 83, 9, 0.22);
+  
+  --text-primary: #1c140e;
+  --text-secondary: #4a3728;
+  --text-muted: #786454;
+  
+  --accent-gold: #b45309;
+  --accent-gold-light: #d97706;
   --accent-crimson: #be123c;
   --accent-emerald: #059669;
+  --theme-glow: rgba(180, 83, 9, 0.15);
+}
+
+/* 4. GODAVARI AZURE (Midnight Indigo & River Pearl Aqua) */
+[data-theme="godavari-azure"] {
+  --bg-primary: #060e1d;
+  --bg-secondary: #0b172a;
+  --bg-card: linear-gradient(150deg, rgba(14, 30, 56, 0.88), rgba(6, 14, 29, 0.92));
+  --border-card: rgba(56, 189, 248, 0.25);
+  
+  --text-primary: #f0f9ff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  
+  --accent-gold: #38bdf8;
+  --accent-gold-light: #7dd3fc;
+  --accent-crimson: #f43f5e;
+  --accent-emerald: #10b981;
+  --theme-glow: rgba(56, 189, 248, 0.2);
+}
+
+/* 5. SANKRANTHI SUN (Marigold & Harvest Sunburst - ★ Voted Primary Winner) */
+[data-theme="sankranthi-sun"] {
+  --bg-primary: #0e0d0b;
+  --bg-secondary: #181511;
+  --bg-card: linear-gradient(150deg, rgba(35, 29, 20, 0.88), rgba(16, 14, 11, 0.92));
+  --border-card: rgba(245, 158, 11, 0.3);
+  
+  --text-primary: #fffbeb;
+  --text-secondary: #fde68a;
+  --text-muted: #a39276;
+  
+  --accent-gold: #f59e0b;
+  --accent-gold-light: #fbbf24;
+  --accent-crimson: #f97316;
+  --accent-emerald: #22c55e;
+  --theme-glow: rgba(245, 158, 11, 0.22);
+}
+
+/* 6. TIRUMALA EMERALD (Sacred Jade & Temple Bell Brass) */
+[data-theme="tirumala-emerald"] {
+  --bg-primary: #03120e;
+  --bg-secondary: #08221a;
+  --bg-card: linear-gradient(150deg, rgba(12, 42, 33, 0.88), rgba(4, 19, 15, 0.92));
+  --border-card: rgba(52, 211, 153, 0.25);
+  
+  --text-primary: #ecfdf5;
+  --text-secondary: #a7f3d0;
+  --text-muted: #6ee7b7;
+  
+  --accent-gold: #34d399;
+  --accent-gold-light: #6ee7b7;
+  --accent-crimson: #f87171;
+  --accent-emerald: #10b981;
+  --theme-glow: rgba(52, 211, 153, 0.2);
+}
+
+/* 7. HAMPI BRONZE (Sunbaked Bronze & Terracotta Laterite) */
+[data-theme="hampi-terracotta"] {
+  --bg-primary: #120d09;
+  --bg-secondary: #1f150e;
+  --bg-card: linear-gradient(150deg, rgba(42, 28, 18, 0.88), rgba(18, 13, 9, 0.92));
+  --border-card: rgba(224, 138, 70, 0.28);
+  
+  --text-primary: #fef7ee;
+  --text-secondary: #fed7aa;
+  --text-muted: #a88a6d;
+  
+  --accent-gold: #e08a46;
+  --accent-gold-light: #fb923c;
+  --accent-crimson: #c2410c;
+  --accent-emerald: #14b8a6;
+  --theme-glow: rgba(224, 138, 70, 0.2);
+}
+
+/* 8. ACTIVE THEORY CYBER (OLED Pitch Black & Laser Amber) */
+[data-theme="active-theory-cyber"] {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-card: linear-gradient(150deg, rgba(22, 22, 22, 0.9), rgba(8, 8, 8, 0.95));
+  --border-card: rgba(255, 170, 0, 0.35);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #e4e4e7;
+  --text-muted: #71717a;
+  
+  --accent-gold: #ffaa00;
+  --accent-gold-light: #ffc233;
+  --accent-crimson: #ff4400;
+  --accent-emerald: #00f0ff;
+  --theme-glow: rgba(255, 170, 0, 0.25);
+}
+
+/* 9. KALAMKARI INDIGO (Artisanal Handloom Indigo & Madder) */
+[data-theme="kalamkari-indigo"] {
+  --bg-primary: #0a111a;
+  --bg-secondary: #121d2b;
+  --bg-card: linear-gradient(150deg, rgba(23, 36, 52, 0.88), rgba(10, 17, 26, 0.92));
+  --border-card: rgba(217, 119, 6, 0.28);
+  
+  --text-primary: #faf6f0;
+  --text-secondary: #e2d9cc;
+  --text-muted: #8b8070;
+  
+  --accent-gold: #d97706;
+  --accent-gold-light: #f59e0b;
+  --accent-crimson: #b91c1c;
+  --accent-emerald: #0d9488;
+  --theme-glow: rgba(217, 119, 6, 0.2);
+}
+
+/* 10. CELESTIAL TWILIGHT (Cosmic Amethyst & Starlight Platinum) */
+[data-theme="celestial-twilight"] {
+  --bg-primary: #090514;
+  --bg-secondary: #130a24;
+  --bg-card: linear-gradient(150deg, rgba(30, 16, 52, 0.88), rgba(10, 6, 21, 0.92));
+  --border-card: rgba(167, 139, 250, 0.3);
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #ddd6fe;
+  --text-muted: #9485b5;
+  
+  --accent-gold: #a78bfa;
+  --accent-gold-light: #c4b5fd;
+  --accent-crimson: #f43f5e;
+  --accent-emerald: #38bdf8;
+  --theme-glow: rgba(167, 139, 250, 0.22);
 }
 
 body {
   background-color: var(--bg-primary);
-  color: #f1f5f9;
+  color: var(--text-primary);
   font-family: var(--font-inter);
-  overflow-x: hidden;
+  overflow-x: clip;
   position: relative;
   min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* ========================================================= */
-/* ACTIVE THEORY STYLE: CINEMATIC FILM GRAIN NOISE OVERLAY  */
+/* LUXURY SILK TEXTURE & FILM GRAIN (WARM & REFINED)        */
 /* ========================================================= */
 .film-grain-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   pointer-events: none;
   z-index: 999;
-  opacity: 0.032;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
 }
 
-/* ========================================================= */
-/* SACRED TELUGU POCHAMPALLY & GADWAL MICRO-GEOMETRY         */
-/* ========================================================= */
+/* Traditional Pochampally / Gadwal Silk Weave Watermark */
 .bg-telugu-weave {
   background-image: 
-    radial-gradient(circle at 50% 50%, rgba(217, 119, 6, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 0% 0%, rgba(190, 18, 60, 0.04) 1px, transparent 1px);
-  background-size: 36px 36px, 18px 18px;
-  background-position: 0 0, 9px 9px;
+    radial-gradient(circle at 50% 50%, rgba(244, 187, 89, 0.08) 1.2px, transparent 1.2px),
+    radial-gradient(circle at 0% 0%, rgba(227, 78, 91, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px, 16px 16px;
+  background-position: 0 0, 8px 8px;
 }
 
 /* Custom Scrollbar */
@@ -58,41 +251,53 @@ body {
   height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #040714;
+  background: var(--bg-secondary);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--border-card);
   border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b;
+  background: var(--accent-gold);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ========================================================= */
-/* LUSION & ACTIVE THEORY GLASSMORPHISM & TACTILE CARDS      */
+/* WORLD-CLASS FROSTED SILK GLASS PANELS & TACTILE CARDS    */
 /* ========================================================= */
 .glass-panel {
-  background: rgba(9, 14, 29, 0.65);
+  background: var(--bg-card);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-panel:hover {
-  border-color: rgba(245, 158, 11, 0.3);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: var(--accent-gold);
+  box-shadow: 0 22px 55px -10px rgba(0, 0, 0, 0.8), 0 0 25px var(--theme-glow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .glass-panel-interactive {
   position: relative;
   overflow: hidden;
-  background: rgba(9, 14, 29, 0.55);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-card);
+  box-shadow: 0 14px 35px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
@@ -102,16 +307,16 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.5), rgba(225, 29, 72, 0.5), transparent);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-gold), var(--accent-crimson), transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
 .glass-panel-interactive:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(245, 158, 11, 0.35);
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(245, 158, 11, 0.15);
+  transform: translateY(-4px) scale(1.008);
+  border-color: var(--accent-gold);
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.8), 0 0 30px var(--theme-glow);
 }
 
 .glass-panel-interactive:hover::before {
@@ -119,38 +324,32 @@ body {
 }
 
 .glass-panel-gold {
-  background: rgba(245, 158, 11, 0.04);
+  background: var(--bg-card);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.06);
+  border: 1px solid var(--accent-gold);
+  box-shadow: 0 10px 30px var(--theme-glow);
+  color: var(--text-primary);
 }
 
 .glass-panel-crimson {
-  background: rgba(225, 29, 72, 0.04);
+  background: linear-gradient(150deg, rgba(65, 20, 28, 0.85), rgba(20, 16, 22, 0.9));
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(225, 29, 72, 0.25);
-  box-shadow: 0 10px 30px rgba(225, 29, 72, 0.06);
+  border: 1px solid rgba(227, 78, 91, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: #fff5dc;
 }
 
 /* ========================================================= */
-/* KINETIC TYPOGRAPHY & GLOW ACCENTS                         */
+/* REGAL METALLIC TYPOGRAPHY & GOLD ACCENTS                  */
 /* ========================================================= */
-.text-glow-gold {
-  text-shadow: 0 0 25px rgba(245, 158, 11, 0.5), 0 0 50px rgba(245, 158, 11, 0.2);
-}
-
-.text-glow-crimson {
-  text-shadow: 0 0 25px rgba(225, 29, 72, 0.5), 0 0 50px rgba(225, 29, 72, 0.2);
-}
-
 .text-gradient-gold {
-  background: linear-gradient(135deg, #fef3c7 0%, #f59e0b 50%, #d97706 100%);
+  background: linear-gradient(135deg, #fff3d9 0%, #ffd18a 35%, #f4bb59 70%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .text-gradient-festive {
-  background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 30%, #f43f5e 70%, #ec4899 100%);
+  background: linear-gradient(135deg, #ffd18a 0%, #f4bb59 40%, #fb7185 80%, #f43f5e 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -159,17 +358,31 @@ body {
 .btn-magnetic {
   position: relative;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.3), 0 8px 24px rgba(245, 158, 11, 0.25);
+  background: linear-gradient(135deg, #f4bb59 0%, #d97706 100%);
+  color: #071a20;
+  font-weight: 700;
+  box-shadow: 0 4px 16px rgba(244, 187, 89, 0.28);
 }
 
 .btn-magnetic:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.6), 0 12px 35px rgba(245, 158, 11, 0.45), 0 0 30px rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, #ffd18a 0%, #f4bb59 100%);
+  box-shadow: 0 8px 25px rgba(244, 187, 89, 0.45), 0 0 20px rgba(244, 187, 89, 0.3);
+}
+
+/* Universal Form Input Styling for Deep Midnight Aesthetic */
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  background-color: rgba(9, 34, 44, 0.9);
+  color: #fff5dc;
+  border-color: rgba(244, 187, 89, 0.25);
+}
+input::placeholder, textarea::placeholder {
+  color: #a89b88;
 }
 
 /* High Contrast & Accessible Focus States */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 2px solid #f59e0b;
+  outline: 2px solid #f4bb59;
   outline-offset: 3px;
 }
 

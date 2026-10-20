@@ -47,7 +47,7 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
 
       {/* Hero Event Banner */}
       <div className="relative rounded-3xl overflow-hidden border border-white/10 glass-panel shadow-2xl">
-        <div className="relative h-72 sm:h-96 w-full bg-slate-900">
+        <div className="relative h-72 sm:h-96 w-full bg-amber-950/20">
           <img
             src={
               event.coverImageUrl ||
@@ -72,40 +72,40 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Description, Schedule & Organizers */}
         <div className="lg:col-span-7 space-y-8">
-          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-white/10 space-y-4">
-            <h2 className="text-xl font-bold text-white font-display">About This Celebration</h2>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm space-y-4">
+            <h2 className="text-xl font-bold text-[#1c140e] font-display">About This Celebration</h2>
+            <p className="text-xs sm:text-sm text-[#4a382c] leading-relaxed whitespace-pre-line">
               {event.description}
             </p>
           </div>
 
           {/* Logistics Summary */}
-          <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-4">
-            <h3 className="text-base font-bold text-white">Event Timing & Location</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-300">
-              <div className="p-3 rounded-xl bg-white/5 space-y-1">
-                <span className="text-slate-400 uppercase text-[10px] block">Start Time</span>
-                <span className="font-bold text-white">{formatUtahDate(event.startDateTime, 'long')}</span>
+          <div className="glass-panel p-6 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm space-y-4">
+            <h3 className="text-base font-bold text-[#1c140e]">Event Timing & Location</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-[#5a483a]">
+              <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-900/10 space-y-1">
+                <span className="text-[#8c7664] uppercase text-[10px] block font-semibold">Start Time</span>
+                <span className="font-bold text-[#1c140e]">{formatUtahDate(event.startDateTime, 'long')}</span>
               </div>
-              <div className="p-3 rounded-xl bg-white/5 space-y-1">
-                <span className="text-slate-400 uppercase text-[10px] block">End Time</span>
-                <span className="font-bold text-white">{formatUtahDate(event.endDateTime, 'time')}</span>
+              <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-900/10 space-y-1">
+                <span className="text-[#8c7664] uppercase text-[10px] block font-semibold">End Time</span>
+                <span className="font-bold text-[#1c140e]">{formatUtahDate(event.endDateTime, 'time')}</span>
               </div>
             </div>
 
             {event.venue && (
-              <div className="p-4 rounded-xl bg-white/5 space-y-2 text-xs">
-                <div className="flex items-center gap-2 font-bold text-white">
-                  <MapPin className="w-4 h-4 text-amber-400" />
+              <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-900/10 space-y-2 text-xs">
+                <div className="flex items-center gap-2 font-bold text-[#1c140e]">
+                  <MapPin className="w-4 h-4 text-amber-700" />
                   <span>{event.venue.name}</span>
                 </div>
-                <p className="text-slate-400">{event.venue.address}, {event.venue.city}, {event.venue.state} {event.venue.zipCode}</p>
+                <p className="text-[#5a483a]">{event.venue.address}, {event.venue.city}, {event.venue.state} {event.venue.zipCode}</p>
                 {event.venue.mapUrl && (
                   <a
                     href={event.venue.mapUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1 text-amber-400 hover:underline pt-1 text-xs"
+                    className="inline-flex items-center gap-1 text-amber-800 font-semibold hover:underline pt-1 text-xs"
                   >
                     <span>Open in Google Maps</span>
                     <ExternalLink className="w-3 h-3" />
@@ -117,14 +117,14 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
 
           {/* Event Organizers */}
           {event.organizers.length > 0 && (
-            <div className="glass-panel p-6 rounded-2xl border border-white/10 space-y-3">
-              <h3 className="text-base font-bold text-white">Event Coordinators</h3>
+            <div className="glass-panel p-6 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm space-y-3">
+              <h3 className="text-base font-bold text-[#1c140e]">Event Coordinators</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {event.organizers.map((org) => (
-                  <div key={org.id} className="p-3 rounded-xl bg-white/5 text-xs space-y-0.5">
-                    <p className="font-bold text-white">{org.name}</p>
-                    <p className="text-amber-400">{org.roleTitle}</p>
-                    {org.email && <p className="text-slate-400">{org.email}</p>}
+                  <div key={org.id} className="p-3 rounded-xl bg-amber-50/70 border border-amber-900/10 text-xs space-y-0.5">
+                    <p className="font-bold text-[#1c140e]">{org.name}</p>
+                    <p className="text-amber-800 font-semibold">{org.roleTitle}</p>
+                    {org.email && <p className="text-[#705544]">{org.email}</p>}
                   </div>
                 ))}
               </div>
@@ -134,15 +134,15 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
 
         {/* Right Column: Ticketing & Registration Box */}
         <div className="lg:col-span-5 space-y-6 sticky top-28">
-          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-amber-400/30 space-y-6 shadow-2xl">
-            <div className="border-b border-white/10 pb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
+          <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-amber-900/20 bg-white/95 shadow-lg space-y-6">
+            <div className="border-b border-amber-900/10 pb-4">
+              <span className="text-xs font-bold uppercase tracking-wider text-amber-800 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
                 Official Admission Passes
               </span>
-              <h3 className="text-xl font-bold text-white font-display mt-0.5">
+              <h3 className="text-xl font-bold text-[#1c140e] font-display mt-2">
                 Reserve Your Tickets
               </h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-[#705544] mt-1">
                 Active UTA member families enjoy 100% complimentary admission.
               </p>
             </div>
@@ -150,14 +150,14 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
             {/* Ticket Tier Breakdown */}
             <div className="space-y-3">
               {event.ticketTypes.map((type) => (
-                <div key={type.id} className="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between">
+                <div key={type.id} className="p-3 rounded-xl bg-amber-50/70 border border-amber-900/10 flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-bold text-white block">{type.name}</span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-xs font-bold text-[#1c140e] block">{type.name}</span>
+                    <span className="text-[11px] text-[#705544]">
                       {type.remainingQuantity} remaining
                     </span>
                   </div>
-                  <span className="text-sm font-extrabold text-amber-400">
+                  <span className="text-sm font-extrabold text-amber-900">
                     {type.price === 0 ? 'FREE (Member)' : formatCurrency(type.price)}
                   </span>
                 </div>
@@ -171,7 +171,7 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
               ticketTypes={event.ticketTypes}
             />
 
-            <div className="pt-2 text-[11px] text-slate-400 text-center leading-relaxed">
+            <div className="pt-2 text-[11px] text-[#8c7664] text-center leading-relaxed">
               Admission includes traditional festival feast, stage seating, and kids activities. Non-transferable.
             </div>
           </div>

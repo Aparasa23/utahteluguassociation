@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 import TeluguIntensiveBackground from '@/components/layout/TeluguIntensiveBackground';
+import ThemeSwitcher from '@/components/layout/ThemeSwitcher';
 
 export const metadata: Metadata = {
   title: 'Utah Telugu Association (UTA) — Digital Universe',
@@ -25,7 +26,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#040714',
+  themeColor: '#071a20',
 };
 
 export default function RootLayout({
@@ -34,13 +35,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen flex flex-col bg-[#040714] text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950 relative">
+    <html lang="en" className="dark" data-theme="sankranthi-sun">
+      <body className="min-h-screen flex flex-col font-sans selection:bg-[var(--accent-gold)] selection:text-[var(--bg-primary)] relative">
         {/* Active Theory Style Film Grain Noise Overlay */}
         <div className="film-grain-overlay" aria-hidden="true" />
 
-        {/* Intensive Telugu Heritage Background (Ashta-Dala Padmam Muggulu, Sacred Embers & Obsidian Vignette) */}
+        {/* Intensive Telugu Heritage Background (Ashta-Dala Padmam Muggulu, Sacred Embers & Sandalwood Silk) */}
         <TeluguIntensiveBackground />
+
+        {/* 10 Theme Switcher & Voting Drawer */}
+        <ThemeSwitcher />
 
         <Navbar />
         <main className="flex-1 relative z-10">{children}</main>

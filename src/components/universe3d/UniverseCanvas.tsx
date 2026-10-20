@@ -363,34 +363,13 @@ export function UniverseCanvas() {
     <div className="relative w-full rounded-3xl overflow-hidden border border-amber-500/20 bg-[#020409]/60 backdrop-blur-xl shadow-[0_25px_70px_rgba(0,0,0,0.85)]">
       {/* Top Controls Bar */}
       <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-3 pointer-events-auto">
-        {/* Left: Universe Title & 2D/3D Mode Switch */}
+        {/* Left: Universe Title (Default 3D Living Universe) */}
         <div className="flex items-center gap-2">
-          <div className="glass-panel px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-white/10 text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span className="font-bold text-white tracking-wide">LIVING UNIVERSE</span>
-            <span className="text-slate-400 text-[11px]">|</span>
-            <span className="text-amber-400 font-telugu text-[11px]">ఉటా తెలుగు లోకం</span>
-          </div>
-
-          <div className="flex items-center bg-slate-900/80 p-0.5 rounded-full border border-white/10 text-xs">
-            <button
-              onClick={() => setViewMode('3D')}
-              className={`px-3 py-1 rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
-                viewMode === '3D' ? 'bg-amber-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>3D Spatial</span>
-            </button>
-            <button
-              onClick={() => setViewMode('2D')}
-              className={`px-3 py-1 rounded-full font-semibold transition-colors flex items-center gap-1.5 ${
-                viewMode === '2D' ? 'bg-amber-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <LayoutGrid className="w-3.5 h-3.5" />
-              <span>2D Accessible</span>
-            </button>
+          <div className="glass-panel px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-amber-600/25 bg-amber-500/10 text-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+            <span className="font-bold text-[#1c140e] tracking-wide">3D LIVING UNIVERSE</span>
+            <span className="text-[#786454] text-[11px]">|</span>
+            <span className="text-amber-800 font-telugu text-[11px] font-bold">ఉటా తెలుగు లోకం</span>
           </div>
         </div>
 

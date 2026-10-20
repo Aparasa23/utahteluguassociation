@@ -26,7 +26,7 @@ export default function AlbumDetailPage({ params }: { params: { album: string } 
       <div>
         <Link
           href="/gallery"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-amber-400 transition-colors"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#705544] hover:text-[#1c140e] transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to All Gallery Albums</span>
@@ -34,22 +34,24 @@ export default function AlbumDetailPage({ params }: { params: { album: string } 
       </div>
 
       <div className="space-y-2">
-        <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">Album Archive</span>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-display capitalize">
+        <span className="text-xs font-bold text-amber-800 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300 uppercase tracking-wider">
+          Album Archive
+        </span>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1c140e] font-display capitalize mt-2">
           {params.album.replace(/-/g, ' ')}
         </h1>
-        <p className="text-xs text-slate-400">Captured live during Utah Telugu Association community events.</p>
+        <p className="text-xs text-[#705544]">Captured live during Utah Telugu Association community events.</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {photos.map((p, idx) => (
-          <div key={idx} className="glass-panel rounded-2xl overflow-hidden border border-white/10 group space-y-2">
-            <div className="h-60 overflow-hidden bg-slate-900">
+          <div key={idx} className="glass-panel rounded-2xl overflow-hidden border border-amber-900/15 bg-white/95 shadow-sm group space-y-2">
+            <div className="h-60 overflow-hidden bg-amber-50">
               <img src={p.url} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             </div>
-            <div className="p-3">
-              <h3 className="font-bold text-white text-xs">{p.title}</h3>
-              <p className="text-[11px] text-slate-400 mt-0.5">{p.caption}</p>
+            <div className="p-4">
+              <h3 className="font-bold text-[#1c140e] text-sm">{p.title}</h3>
+              <p className="text-xs text-[#5a483a] mt-1">{p.caption}</p>
             </div>
           </div>
         ))}

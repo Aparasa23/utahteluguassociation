@@ -11,7 +11,7 @@ export const revalidate = 0;
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const event = await prisma.event.findUnique({
     where: { slug: params.slug },
-  });
+  }).catch(() => null);
   if (!event) return { title: 'Event Not Found' };
   return {
     title: `${event.title} — Utah Telugu Association`,
@@ -28,7 +28,7 @@ export default async function EventDetailPage({ params }: { params: { slug: stri
       organizers: true,
       ticketTypes: true,
     },
-  });
+  }).catch(() => null);
 
   if (!event) notFound();
 

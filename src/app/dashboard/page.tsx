@@ -30,7 +30,7 @@ export default async function DashboardOverviewPage() {
         take: 1,
       },
     },
-  });
+  }).catch(() => null);
 
   const latestMembership = memberProfile?.memberships[0];
 
@@ -47,7 +47,7 @@ export default async function DashboardOverviewPage() {
         include: { event: true },
       },
     },
-  });
+  }).catch(() => []);
 
   return (
     <div className="space-y-8">

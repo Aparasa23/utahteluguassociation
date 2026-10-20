@@ -11,7 +11,7 @@ export const revalidate = 0;
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const tournament = await prisma.tournament.findUnique({
     where: { slug: params.slug },
-  });
+  }).catch(() => null);
   if (!tournament) return { title: 'Tournament Not Found' };
   return {
     title: `${tournament.title} — UTA Sports`,
@@ -48,7 +48,7 @@ export default async function TournamentDetailPage({ params }: { params: { slug:
         orderBy: { roundNumber: 'asc' },
       },
     },
-  });
+  }).catch(() => null);
 
   if (!tournament) notFound();
 

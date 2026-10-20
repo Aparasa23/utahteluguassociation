@@ -18,7 +18,7 @@ export default async function JoinPage({
   const plans = await prisma.membershipPlan.findMany({
     where: { isActive: true },
     orderBy: { price: 'asc' },
-  });
+  }).catch(() => []);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8">

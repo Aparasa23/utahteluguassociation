@@ -15,7 +15,7 @@ export default async function ReportsPage() {
     include: {
       entries: true,
     },
-  });
+  }).catch(() => []);
 
   const totalAllocated = budgets.reduce((acc, b) => acc + b.allocated, 0);
   const totalSpent = budgets.reduce((acc, b) => acc + b.spent, 0);

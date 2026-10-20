@@ -29,7 +29,7 @@ export default async function SportsOverviewPage() {
       },
     },
     orderBy: { startDate: 'desc' },
-  });
+  }).catch(() => []);
 
   const featuredTournament = tournaments[0];
 

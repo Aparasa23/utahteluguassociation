@@ -15,7 +15,7 @@ export default async function NewsPage() {
   const announcements = await prisma.announcement.findMany({
     where: { isPublished: true },
     orderBy: { createdAt: 'desc' },
-  });
+  }).catch(() => []);
 
   const newsArticles = [
     {

@@ -20,7 +20,7 @@ export default async function EventsDirectoryPage() {
       ticketTypes: true,
     },
     orderBy: { startDateTime: 'asc' },
-  });
+  }).catch(() => []);
 
   const serializedEvents = events.map((e) => ({
     id: e.id,

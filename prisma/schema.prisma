@@ -1,0 +1,730 @@
+// UTA Digital Universe - Prisma Schema
+// Provider configured for SQLite for instant out-of-the-box local development,
+// fully compatible with PostgreSQL in production by switching provider to "postgresql".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// 1. IDENTITY & ACCESS CONTROL (RBAC)
+// ==========================================
+
+model User {
+  id             String         @id @default(uuid())
+  email          String         @unique
+  name           String
+  phone          String?
+  avatarUrl      String?
+  hashedPassword String?
+  emailVerified  DateTime?
+  isActive       Boolean        @default(true)
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  identities     UserIdentity[]
+  userRoles      UserRole[]
+  memberProfile  MemberProfile?
+  auditLogs      AuditLog[]
+  notifications  Notification[]
+  proposals      GovernanceProposal[]
+  approvals      GovernanceApproval[]
+  createdEvents  Event[]        @relation("EventCreator")
+  volunteerRecord Volunteer?
+}
+
+model UserIdentity {
+  id             String   @id @default(uuid())
+  userId         String
+  provider       String   // email, google, etc.
+  providerUserId String
+  createdAt      DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerUserId])
+}
+
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique // SUPER_ADMIN, PRESIDENT, SECRETARY, TREASURER, EC_MEMBER, BOARD_MEMBER, EVENT_ORGANIZER, TOURNAMENT_DIRECTOR, VOLUNTEER_COORDINATOR, SPONSOR_MANAGER, CHECKIN_STAFF, MEMBER, GUEST
+  label       String
+  description String?
+  userRoles   UserRole[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  resource    String           // members, events, tournaments, finances, etc.
+  action      String           // read, write, delete, approve, export, checkin
+  roles       RolePermission[]
+
+  @@unique([resource, action])
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String
+  roleId    String
+  assignedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+}
+
+// ==========================================
+// 2. MEMBERSHIP & FAMILY
+// ==========================================
+
+model MemberProfile {
+  id               String       @id @default(uuid())
+  userId           String       @unique
+  membershipNumber String       @unique
+  membershipStatus String       @default("PENDING") // PENDING, ACTIVE, EXPIRED, SUSPENDED, CANCELLED
+  addressLine1     String?
+  addressLine2     String?
+  city             String?
+  state            String?      @default("UT")
+  zipCode          String?
+  emergencyContact String?
+  emergencyPhone   String?
+  notes            String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  user             User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  family           Family?      @relation(fields: [familyId], references: [id])
+  familyId         String?
+  memberships      Membership[]
+  statusHistory    MembershipStatusHistory[]
+}
+
+model Family {
+  id           String          @id @default(uuid())
+  familyName   String
+  familySize   Int             @default(1)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  members      MemberProfile[]
+  familyMembers FamilyMember[]
+}
+
+model FamilyMember {
+  id           String    @id @default(uuid())
+  familyId     String
+  fullName     String
+  relationship String    // SPOUSE, CHILD, PARENT, OTHER
+  age          Int?
+  dateOfBirth  DateTime?
+  gender       String?
+  isEligible   Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+
+  family       Family    @relation(fields: [familyId], references: [id], onDelete: Cascade)
+}
+
+model MembershipPlan {
+  id               String       @id @default(uuid())
+  code             String       @unique // INDIVIDUAL_ANNUAL, FAMILY_ANNUAL, LIFE_MEMBERSHIP, STUDENT_ANNUAL
+  name             String
+  description      String
+  price            Float
+  durationMonths   Int          @default(12)
+  maxFamilyMembers Int          @default(1)
+  isActive         Boolean      @default(true)
+  isPublic         Boolean      @default(true)
+  benefitsSummary  String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  memberships      Membership[]
+  benefits         MembershipBenefit[]
+}
+
+model MembershipBenefit {
+  id             String         @id @default(uuid())
+  planId         String
+  title          String
+  description    String?
+  plan           MembershipPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+}
+
+model Membership {
+  id                   String                  @id @default(uuid())
+  memberProfileId      String
+  planId               String
+  startDate            DateTime
+  endDate              DateTime
+  status               String                  @default("PENDING") // PENDING, ACTIVE, EXPIRED, CANCELLED
+  qrVerificationToken  String                  @unique @default(uuid())
+  autoRenew            Boolean                 @default(false)
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
+
+  memberProfile        MemberProfile           @relation(fields: [memberProfileId], references: [id], onDelete: Cascade)
+  plan                 MembershipPlan          @relation(fields: [planId], references: [id])
+  transactions         MembershipTransaction[]
+  statusHistory        MembershipStatusHistory[]
+}
+
+model MembershipTransaction {
+  id            String     @id @default(uuid())
+  membershipId  String
+  amount        Float
+  currency      String     @default("USD")
+  provider      String     @default("ZEFFY") // ZEFFY, STRIPE, MANUAL_CHECK, CASH
+  transactionId String?
+  paymentStatus String     @default("COMPLETED") // PENDING, COMPLETED, FAILED, REFUNDED
+  receiptUrl    String?
+  notes         String?
+  createdAt     DateTime   @default(now())
+
+  membership    Membership @relation(fields: [membershipId], references: [id], onDelete: Cascade)
+}
+
+model MembershipStatusHistory {
+  id              String        @id @default(uuid())
+  memberProfileId String
+  membershipId    String?
+  previousStatus  String
+  newStatus       String
+  reason          String?
+  changedByUserId String?
+  createdAt       DateTime      @default(now())
+
+  memberProfile   MemberProfile @relation(fields: [memberProfileId], references: [id], onDelete: Cascade)
+  membership      Membership?   @relation(fields: [membershipId], references: [id])
+}
+
+// ==========================================
+// 3. EVENTS, TICKETING & CHECK-IN
+// ==========================================
+
+model Venue {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  city      String
+  state     String   @default("UT")
+  zipCode   String
+  capacity  Int?
+  mapUrl    String?
+  events    Event[]
+}
+
+model EventCategory {
+  id          String  @id @default(uuid())
+  name        String  @unique // CULTURAL, SPORTS, COMMUNITY, WORKSHOP, FESTIVAL, PICNIC
+  label       String
+  description String?
+  events      Event[]
+}
+
+model Event {
+  id                   String              @id @default(uuid())
+  slug                 String              @unique
+  title                String
+  description          String
+  categoryId           String
+  venueId              String?
+  creatorUserId        String?
+  coverImageUrl        String?
+  startDateTime        DateTime
+  endDateTime          DateTime
+  timezone             String              @default("America/Denver")
+  registrationOpenDate DateTime
+  registrationCloseDate DateTime
+  totalCapacity        Int
+  isPublished          Boolean             @default(true)
+  isFeatured           Boolean             @default(false)
+  membersOnly          Boolean             @default(false)
+  refundPolicy         String?
+  zeffyCampaignUrl     String?
+  createdAt            DateTime            @default(now())
+  updatedAt            DateTime            @updatedAt
+
+  category             EventCategory       @relation(fields: [categoryId], references: [id])
+  venue                Venue?              @relation(fields: [venueId], references: [id])
+  creator              User?               @relation("EventCreator", fields: [creatorUserId], references: [id])
+  ticketTypes          EventTicketType[]
+  registrations        EventRegistration[]
+  organizers           EventOrganizer[]
+  volunteerShifts      VolunteerShift[]
+  sponsorships         Sponsorship[]
+  performances         Performance[]
+  waitlist             EventWaitlist[]
+}
+
+model EventOrganizer {
+  id        String   @id @default(uuid())
+  eventId   String
+  name      String
+  roleTitle String
+  email     String?
+  phone     String?
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model EventTicketType {
+  id               String              @id @default(uuid())
+  eventId          String
+  name             String              // Member Free, Non-Member Adult, Non-Member Child, Family Bundle, VIP
+  description      String?
+  price            Float               @default(0.0)
+  totalAvailable   Int
+  remainingQuantity Int
+  isMembersOnly    Boolean             @default(false)
+  isFamilyBundle   Boolean             @default(false)
+  maxTicketsPerOrder Int               @default(6)
+  event            Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  tickets          EventTicket[]
+}
+
+model EventRegistration {
+  id             String                 @id @default(uuid())
+  registrationNumber String             @unique
+  eventId        String
+  userId         String?
+  contactName    String
+  contactEmail   String
+  contactPhone   String?
+  totalAmount    Float                  @default(0.0)
+  paymentStatus  String                 @default("FREE") // FREE, PENDING, PAID, REFUNDED
+  paymentProvider String?               // ZEFFY, STRIPE, CASH
+  paymentRef     String?
+  status         String                 @default("CONFIRMED") // CONFIRMED, CANCELLED
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+
+  event          Event                  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  attendees      RegistrationAttendee[]
+  tickets        EventTicket[]
+}
+
+model RegistrationAttendee {
+  id             String            @id @default(uuid())
+  registrationId String
+  fullName       String
+  attendeeType   String            // ADULT, CHILD, MEMBER, GUEST
+  age            Int?
+  registration   EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+}
+
+model EventTicket {
+  id             String            @id @default(uuid())
+  ticketNumber   String            @unique
+  ticketTypeId   String
+  registrationId String
+  attendeeName   String
+  qrToken        String            @unique @default(uuid())
+  isCheckedIn    Boolean           @default(false)
+  checkInCount   Int               @default(0)
+  createdAt      DateTime          @default(now())
+
+  ticketType     EventTicketType   @relation(fields: [ticketTypeId], references: [id])
+  registration   EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  checkIns       CheckIn[]
+}
+
+model CheckIn {
+  id             String      @id @default(uuid())
+  ticketId       String
+  scannedAt      DateTime    @default(now())
+  scannedByStaff String?     // Staff user ID or name
+  deviceInfo     String?
+  isDuplicate    Boolean     @default(false)
+
+  ticket         EventTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+}
+
+model EventWaitlist {
+  id          String   @id @default(uuid())
+  eventId     String
+  name        String
+  email       String
+  phone       String?
+  ticketCount Int      @default(1)
+  status      String   @default("WAITING") // WAITING, OFFERED, CLAIMED, EXPIRED
+  createdAt   DateTime @default(now())
+
+  event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// 4. SPORTS & TOURNAMENTS
+// ==========================================
+
+model Sport {
+  id          String       @id @default(uuid())
+  name        String       @unique // CRICKET, VOLLEYBALL, PICKLEBALL, TENNIKOIT
+  label       String
+  iconName    String?
+  scoringType String       // CRICKET_OVERS, SETS_POINTS, GAMES_POINTS
+  tournaments Tournament[]
+}
+
+model Tournament {
+  id           String               @id @default(uuid())
+  sportId      String
+  slug         String               @unique
+  title        String
+  description  String
+  format       String               // SINGLE_ELIMINATION, DOUBLE_ELIMINATION, ROUND_ROBIN, GROUP_STAGE_PLAYOFFS
+  status       String               @default("REGISTRATION_OPEN") // UPCOMING, REGISTRATION_OPEN, ONGOING, COMPLETED
+  startDate    DateTime
+  endDate      DateTime
+  venueName    String
+  bannerUrl    String?
+  rulesText    String?
+  createdAt    DateTime             @default(now())
+
+  sport        Sport                @relation(fields: [sportId], references: [id])
+  divisions    TournamentDivision[]
+  teams        Team[]
+  rounds       TournamentRound[]
+  standings    TournamentStanding[]
+}
+
+model TournamentDivision {
+  id           String               @id @default(uuid())
+  tournamentId String
+  name         String               // Men's Open, Women's, Co-Ed, Masters 40+, Youth
+  maxTeams     Int                  @default(16)
+  teamFee      Float                @default(0.0)
+
+  tournament   Tournament           @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  teams        Team[]
+  rounds       TournamentRound[]
+}
+
+model Team {
+  id           String               @id @default(uuid())
+  tournamentId String
+  divisionId   String?
+  teamName     String
+  captainName  String
+  captainEmail String
+  captainPhone String
+  status       String               @default("APPROVED") // PENDING, APPROVED, WAITLIST, WITHDRAWN
+  seedNumber   Int?
+  createdAt    DateTime             @default(now())
+
+  tournament   Tournament           @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  division     TournamentDivision?  @relation(fields: [divisionId], references: [id])
+  members      TeamMember[]
+  matchesAsT1  TournamentMatch[]    @relation("Team1")
+  matchesAsT2  TournamentMatch[]    @relation("Team2")
+  standings    TournamentStanding[]
+}
+
+model TeamMember {
+  id         String   @id @default(uuid())
+  teamId     String
+  fullName   String
+  email      String?
+  isCaptain  Boolean  @default(false)
+  jerseyNum  Int?
+  waiverAgreed Boolean @default(true)
+
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model TournamentRound {
+  id           String            @id @default(uuid())
+  tournamentId String
+  divisionId   String?
+  roundNumber  Int               // 1 = Quarters, 2 = Semis, 3 = Finals, etc.
+  roundName    String            // "Round of 16", "Quarter-Finals", "Semi-Finals", "Championship"
+
+  tournament   Tournament        @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  division     TournamentDivision? @relation(fields: [divisionId], references: [id])
+  matches      TournamentMatch[]
+}
+
+model TournamentMatch {
+  id           String           @id @default(uuid())
+  roundId      String
+  matchNumber  Int
+  team1Id      String?
+  team2Id      String?
+  scheduledTime DateTime?
+  courtOrPitch String?
+  status       String           @default("SCHEDULED") // SCHEDULED, LIVE, COMPLETED, POSTPONED, WALKOVER
+  scoreTeam1   String?          // e.g. "142/6 (20 ov)" or "21, 21"
+  scoreTeam2   String?          // e.g. "138/9 (20 ov)" or "18, 15"
+  winnerTeamId String?
+  umpireName   String?
+  notes        String?
+  updatedAt    DateTime         @updatedAt
+
+  round        TournamentRound  @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  team1        Team?            @relation("Team1", fields: [team1Id], references: [id])
+  team2        Team?            @relation("Team2", fields: [team2Id], references: [id])
+}
+
+model TournamentStanding {
+  id           String     @id @default(uuid())
+  tournamentId String
+  teamId       String
+  played       Int        @default(0)
+  won          Int        @default(0)
+  lost         Int        @default(0)
+  tied         Int        @default(0)
+  points       Int        @default(0)
+  netRunRate   Float?     @default(0.0) // For cricket
+
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+  team         Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// 5. CULTURAL PERFORMANCES & RUN-OF-SHOW
+// ==========================================
+
+model Performance {
+  id              String      @id @default(uuid())
+  eventId         String
+  title           String
+  category        String      // CLASSICAL_DANCE, FOLK_DANCE, SINGING, DRAMA, INSTRUMENTAL, FASHION
+  performanceType String      // SOLO, GROUP
+  coordinatorName String
+  coordinatorEmail String
+  coordinatorPhone String
+  durationMinutes Int         @default(5)
+  audioFileUrl    String?
+  description     String?
+  status          String      @default("PENDING") // PENDING, APPROVED, WAITLIST, REJECTED
+  stageOrder      Int?
+  scheduledTime   String?
+  backstageCheckedIn Boolean  @default(false)
+  createdAt       DateTime    @default(now())
+
+  event           Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  participants    Performer[]
+}
+
+model Performer {
+  id            String      @id @default(uuid())
+  performanceId String
+  fullName      String
+  ageGroup      String      // KIDS, TEENS, ADULTS
+  performance   Performance @relation(fields: [performanceId], references: [id], onDelete: Cascade)
+}
+
+// ==========================================
+// 6. SPONSORSHIPS, DONATIONS & FINANCES
+// ==========================================
+
+model SponsorTier {
+  id          String        @id @default(uuid())
+  code        String        @unique // TITLE, PLATINUM, GOLD, SILVER, BRONZE, SUPPORTER
+  name        String
+  minAmount   Float
+  rank        Int           @default(1)
+  perks       String?
+  sponsors    Sponsor[]
+}
+
+model Sponsor {
+  id            String        @id @default(uuid())
+  tierId        String
+  name          String
+  contactPerson String
+  email         String
+  phone         String?
+  websiteUrl    String?
+  logoUrl       String?
+  isActive      Boolean       @default(true)
+  sponsorshipPeriod String    @default("2026-2027")
+  createdAt     DateTime      @default(now())
+
+  tier          SponsorTier   @relation(fields: [tierId], references: [id])
+  sponsorships  Sponsorship[]
+}
+
+model Sponsorship {
+  id              String   @id @default(uuid())
+  sponsorId       String
+  eventId         String?
+  agreedAmount    Float
+  paidAmount      Float    @default(0.0)
+  paymentStatus   String   @default("PAID") // PENDING, PARTIAL, PAID
+  notes           String?
+  createdAt       DateTime @default(now())
+
+  sponsor         Sponsor  @relation(fields: [sponsorId], references: [id], onDelete: Cascade)
+  event           Event?   @relation(fields: [eventId], references: [id])
+}
+
+model Donation {
+  id              String   @id @default(uuid())
+  donorName       String
+  donorEmail      String
+  amount          Float
+  cause           String   @default("COMMUNITY_GENERAL") // GENERAL, CULTURAL_HALL, YOUTH_SCHOLARSHIP, FOOD_DRIVE
+  paymentStatus   String   @default("COMPLETED")
+  transactionId   String?
+  isAnonymous     Boolean  @default(false)
+  receiptUrl      String?
+  createdAt       DateTime @default(now())
+}
+
+model Budget {
+  id          String           @id @default(uuid())
+  fiscalYear  String           // "2026-2027"
+  category    String           // CULTURAL_EVENTS, SPORTS, YOUTH, OPERATIONS, TECHNOLOGY
+  allocated   Float
+  spent       Float            @default(0.0)
+  entries     FinancialEntry[]
+}
+
+model FinancialEntry {
+  id              String   @id @default(uuid())
+  budgetId        String?
+  entryType       String   // REVENUE, EXPENSE
+  category        String   // MEMBERSHIP, SPONSORSHIP, TICKET_SALE, DONATION, VENUE_RENTAL, SOUND_LIGHT, CATERING, AWARDS
+  amount          Float
+  description     String
+  paymentRef      String?
+  reconciled      Boolean  @default(true)
+  transactedAt    DateTime @default(now())
+
+  budget          Budget?  @relation(fields: [budgetId], references: [id])
+}
+
+// ==========================================
+// 7. VOLUNTEERING, GOVERNANCE & OPERATIONS
+// ==========================================
+
+model Volunteer {
+  id          String                @id @default(uuid())
+  userId      String?               @unique
+  fullName    String
+  email       String                @unique
+  phone       String?
+  interests   String?               // Registration, Food Service, Stage, Sports, Setup/Teardown
+  hoursLogged Float                 @default(0.0)
+  createdAt   DateTime              @default(now())
+
+  user        User?                 @relation(fields: [userId], references: [id])
+  assignments VolunteerAssignment[]
+}
+
+model VolunteerShift {
+  id          String                @id @default(uuid())
+  eventId     String
+  shiftName   String
+  startTime   DateTime
+  endTime     DateTime
+  capacity    Int                   @default(5)
+  event       Event                 @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  assignments VolunteerAssignment[]
+}
+
+model VolunteerAssignment {
+  id          String         @id @default(uuid())
+  shiftId     String
+  volunteerId String
+  status      String         @default("CONFIRMED") // CONFIRMED, COMPLETED, NO_SHOW
+  checkedIn   Boolean        @default(false)
+
+  shift       VolunteerShift @relation(fields: [shiftId], references: [id], onDelete: Cascade)
+  volunteer   Volunteer      @relation(fields: [volunteerId], references: [id], onDelete: Cascade)
+}
+
+model GovernanceProposal {
+  id          String               @id @default(uuid())
+  title       String
+  description String
+  proposerId  String
+  category    String               // BYLAW, BUDGET, APPOINTMENT, EVENT_APPROVAL
+  status      String               @default("PENDING_REVIEW") // PENDING_REVIEW, APPROVED, REJECTED, ARCHIVED
+  votingDeadline DateTime
+  createdAt   DateTime             @default(now())
+
+  proposer    User                 @relation(fields: [proposerId], references: [id])
+  approvals   GovernanceApproval[]
+}
+
+model GovernanceApproval {
+  id          String             @id @default(uuid())
+  proposalId  String
+  officerId   String
+  decision    String             // APPROVE, REJECT, ABSTAIN
+  comment     String?
+  decidedAt   DateTime           @default(now())
+
+  proposal    GovernanceProposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+  officer     User               @relation(fields: [officerId], references: [id])
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  title       String
+  content     String
+  isUrgent    Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // INFO, SUCCESS, WARNING, ALERT
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MediaAsset {
+  id          String   @id @default(uuid())
+  title       String
+  category    String   // FESTIVAL, SPORTS, COMMUNITY, HISTORICAL
+  albumSlug   String   // sankranthi-2026, cricket-trophy-2026, ugadi-2026
+  url         String
+  caption     String?
+  tags        String?
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  actorEmail String
+  action     String   // MEMBERSHIP_ADJUST, TICKET_OVERRIDE, SCORE_CORRECTION, GOVERNANCE_VOTE, REFUND_ISSUED
+  targetType String   // Member, Ticket, Match, FinancialEntry
+  targetId   String?
+  details    String?  // JSON stringified details
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user       User?    @relation(fields: [userId], references: [id])
+}
+
+model SystemSetting {
+  key         String   @id
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}

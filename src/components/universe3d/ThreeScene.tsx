@@ -323,13 +323,12 @@ export default function ThreeScene({
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
       className="w-full h-full"
     >
-      <color attach="background" args={['#040714']} />
-
-      {/* Cinematic Lighting */}
-      <ambientLight intensity={0.45} />
-      <directionalLight position={[10, 15, 10]} intensity={1.2} color="#fff1db" />
-      <pointLight position={[-10, -5, -10]} intensity={0.8} color="#e11d48" />
-      <pointLight position={[0, 0, 0]} intensity={1.5} color="#f59e0b" distance={8} />
+      {/* Seamless blend with Telugu intensive background */}
+      {/* Cinematic Moody Temple Lighting */}
+      <ambientLight intensity={0.28} />
+      <directionalLight position={[8, 14, 8]} intensity={0.75} color="#fef3c7" />
+      <pointLight position={[-8, -4, -8]} intensity={0.45} color="#881337" />
+      <pointLight position={[0, 0, 0]} intensity={1.1} color="#d97706" distance={9} />
 
       {/* Camera Parallax Controller */}
       <CameraRig />

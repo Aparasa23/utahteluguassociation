@@ -360,7 +360,7 @@ export function UniverseCanvas() {
   }, [viewMode, seasonalTheme, activeDestination, isRotating, currentDest]);
 
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-[#060a17] shadow-2xl">
+    <div className="relative w-full rounded-3xl overflow-hidden border border-amber-500/20 bg-[#020409]/60 backdrop-blur-xl shadow-[0_25px_70px_rgba(0,0,0,0.85)]">
       {/* Top Controls Bar */}
       <div className="absolute top-4 left-4 right-4 z-20 flex flex-wrap items-center justify-between gap-3 pointer-events-auto">
         {/* Left: Universe Title & 2D/3D Mode Switch */}

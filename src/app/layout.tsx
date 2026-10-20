@@ -3,7 +3,7 @@ import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
-import CursorSpotlight from '@/components/layout/CursorSpotlight';
+import TeluguIntensiveBackground from '@/components/layout/TeluguIntensiveBackground';
 
 export const metadata: Metadata = {
   title: 'Utah Telugu Association (UTA) — Digital Universe',
@@ -39,15 +39,8 @@ export default function RootLayout({
         {/* Active Theory Style Film Grain Noise Overlay */}
         <div className="film-grain-overlay" aria-hidden="true" />
 
-        {/* Lusion Style Multi-Layered Cosmic Aurora Ambient Background */}
-        <div className="lusion-ambient-background bg-muggulu-geometry" aria-hidden="true">
-          <div className="aurora-orb-1" />
-          <div className="aurora-orb-2" />
-          <div className="aurora-orb-3" />
-        </div>
-
-        {/* Interactive Luminescent Cursor Light Aura */}
-        <CursorSpotlight />
+        {/* Intensive Telugu Heritage Background (Ashta-Dala Padmam Muggulu, Sacred Embers & Obsidian Vignette) */}
+        <TeluguIntensiveBackground />
 
         <Navbar />
         <main className="flex-1 relative z-10">{children}</main>

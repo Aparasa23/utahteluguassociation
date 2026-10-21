@@ -7,49 +7,14 @@ import { formatCurrency } from '@/lib/utils';
 export const revalidate = 0;
 
 export default async function MembershipOverviewPage() {
-  const plans = (await prisma.membershipPlan.findMany({
-    where: { isActive: true },
-    include: { benefits: true },
-    orderBy: { price: 'asc' },
-  }).catch(() => [
-    {
-      id: 'family-annual-2027',
-      code: 'FAMILY_ANNUAL',
-      name: 'Family Annual Membership',
-      price: 50,
-      description: 'Annual membership for primary member, spouse, and dependent children.',
-      durationMonths: 12,
-      maxFamilyMembers: 6,
-      isActive: true,
-      isPublic: true,
-      benefitsSummary: 'Complimentary festival feasts, QR member pass, and voting eligibility.',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      benefits: [
-        { id: 'b1', planId: 'family-annual-2027', title: 'Free entry to Sankranthi & Ugadi festival feasts', description: null },
-        { id: 'b2', planId: 'family-annual-2027', title: 'Digital Cryptographic QR Membership Pass', description: null },
-        { id: 'b3', planId: 'family-annual-2027', title: 'Voting rights in annual executive governance', description: null },
-      ],
-    },
-    {
-      id: 'individual-annual-2027',
-      code: 'INDIVIDUAL_ANNUAL',
-      name: 'Individual Membership',
-      price: 30,
-      description: 'Single adult membership with festival admissions.',
-      durationMonths: 12,
-      maxFamilyMembers: 1,
-      isActive: true,
-      isPublic: true,
-      benefitsSummary: 'Festival cultural access and digital pass.',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      benefits: [
-        { id: 'b4', planId: 'individual-annual-2027', title: 'Free entry to festival cultural programs', description: null },
-        { id: 'b5', planId: 'individual-annual-2027', title: 'Digital membership pass', description: null },
-      ],
-    },
-  ])) as any[];
+  // Membership costs are published ONLY from approved current records.
+  const plans = process.env.UTA_MEMBERSHIP_CATALOG_APPROVED === 'true'
+    ? await prisma.membershipPlan.findMany({
+        where: { isActive: true, isPublic: true },
+        include: { benefits: true },
+        orderBy: { price: 'asc' },
+      }).catch(() => [])
+    : [];
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12 text-[var(--text-primary)]">
@@ -81,11 +46,11 @@ export default async function MembershipOverviewPage() {
             </div>
             <div>
               <h3 className="font-bold text-white text-sm font-serif">Join UTA / New Family</h3>
-              <p className="text-[11px] text-[var(--text-secondary)]/80">Immediate digital pass</p>
+              <p className="text-[11px] text-[var(--text-secondary)]/80">Enrollment not yet available</p>
             </div>
           </div>
           <span className="text-xs font-bold text-[#ffd18a] flex items-center gap-1 mt-2 group-hover:translate-x-1 transition-transform">
-            <span>Enroll Now</span>
+            <span>View enrollment information</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </Link>
@@ -136,6 +101,7 @@ export default async function MembershipOverviewPage() {
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {plans.length===0&&<div className="col-span-full rounded-2xl border border-amber-400/30 bg-slate-900/80 p-8 text-center"><h3 className="text-xl font-serif text-white">Membership enrollment is being prepared</h3><p className="text-slate-300 mt-3 text-sm">Official membership plans, fees and availability will appear here after UTA approval. No payment can be processed through this preview.</p></div>}
           {plans.map((p) => {
             const isFamily = p.code === 'FAMILY_ANNUAL';
 

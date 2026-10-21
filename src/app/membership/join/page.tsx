@@ -1,41 +1,17 @@
-import React from 'react';
-import { prisma } from '@/lib/prisma';
-import { FamilyForm } from '@/components/membership/FamilyForm';
-import { Sparkles, Users } from 'lucide-react';
-
-export const revalidate = 0;
-
-export const metadata = {
-  title: 'Join UTA — Family Membership Enrollment',
-  description: 'Enroll your family in the Utah Telugu Association. Fast, paperless registration with instant digital pass issuance.',
-};
-
-export default async function JoinPage({
-  searchParams,
-}: {
-  searchParams: { plan?: string };
-}) {
-  const plans = await prisma.membershipPlan.findMany({
-    where: { isActive: true },
-    orderBy: { price: 'asc' },
-  }).catch(() => []);
-
-  return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-8">
-      <div className="text-center space-y-3">
-        <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#f4bb59]/10 text-[#f4bb59] border border-[#f4bb59]/30 text-xs font-bold uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-[#f4bb59]" />
-          <span>OFFICIAL UTA ENROLLMENT 2026–2027</span>
-        </div>
-        <h1 className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
-          Join the Utah Telugu Association
-        </h1>
-        <p className="text-xs sm:text-sm text-[#e7d5b8] max-w-xl mx-auto font-normal">
-          Complete the form below to enroll your family. Digital membership passes with tamper-proof QR codes are generated instantly upon confirmation.
-        </p>
-      </div>
-
-      <FamilyForm plans={plans} selectedPlanCode={searchParams.plan || 'FAMILY_ANNUAL'} />
-    </div>
-  );
+import Link from 'next/link';
+import {Users,ShieldCheck,ArrowRight} from 'lucide-react';
+export const metadata={title:'Membership Enrollment — Utah Telugu Association',description:'UTA membership enrollment information and enrollment availability.'};
+export default function JoinPage(){
+ return <main className="max-w-4xl mx-auto px-5 py-20 text-white">
+  <span className="text-xs uppercase tracking-[.25em] text-amber-300">Utah Telugu Association</span>
+  <h1 className="text-4xl sm:text-6xl font-serif mt-5">Find your place in our community.</h1>
+  <p className="text-lg leading-relaxed text-slate-200 mt-6 max-w-2xl">Membership gives Telugu families a way to connect, volunteer and participate in community celebrations throughout Utah.</p>
+  <section className="rounded-3xl border border-amber-400/25 bg-[#182d33] mt-12 p-6 sm:p-10">
+  <ShieldCheck size={32} className="text-amber-300" aria-hidden="true"/>
+  <h2 className="text-2xl font-serif mt-4">Online enrollment is being prepared</h2>
+  <p className="text-slate-200 mt-4 leading-relaxed">We are finalizing verified membership plans and a secure checkout process. The online application cannot accept personal details or payments yet. You will not be charged or enrolled by visiting this page.</p>
+  <div className="flex flex-wrap gap-4 mt-8"><Link href="/membership" className="inline-flex items-center gap-2 rounded-full bg-amber-300 text-[#182d33] px-6 py-3 font-semibold">Explore membership <ArrowRight size={17}/></Link><Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3">Contact the UTA team</Link></div>
+  </section>
+  <p className="mt-8 text-sm text-slate-300 flex items-center gap-2"><Users size={18}/> Official fees and membership categories will appear after UTA approval.</p>
+ </main>
 }

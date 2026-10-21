@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getSession } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 import { AdminSidebar } from '@/components/layout/AdminSidebar';
 import { ShieldCheck, LogOut, ArrowLeft } from 'lucide-react';
 
@@ -34,7 +35,11 @@ export default async function AdminLayout({
   }
 
   // Enforce administrative role verification
-  const userRoles = session.user.roles || [];
+  const currentUser = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isActive: true, userRoles: { select: { role: { select: { name: true } } } } }
+  }).catch(() => null);
+  const userRoles = currentUser?.isActive ? currentUser.userRoles.map(ur => ur.role.name) : [];
   const hasAdminRole = userRoles.some((r) => ADMIN_ROLES.includes(r));
 
   if (!hasAdminRole) {

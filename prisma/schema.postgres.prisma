@@ -828,13 +828,13 @@ model PaymentProviderEvent {
 }
 
 model LoginChallenge {
-  id         String @id @default(uuid())
-  email      String
-  codeHash   String
-  expiresAt  DateTime
-  usedAt     DateTime?
-  attempts   Int @default(0)
-  createdAt  DateTime @default(now())
-  @@index([email,createdAt])
-  @@index([expiresAt,usedAt])
+ id        String @id @default(uuid())
+ email     String
+ codeHash  String
+ expiresAt DateTime
+ usedAt    DateTime?
+ attempts  Int @default(0)
+ createdAt DateTime @default(now())
+ @@index([email,createdAt])
+ @@index([expiresAt,usedAt])
 }

@@ -94,7 +94,7 @@ export function verifySessionToken(token: string): TokenPayload | null {
     );
 
     const now = Math.floor(Date.now() / 1000);
-    if (payload.exp < now) {
+    if (!payload.userId || !payload.email || !Number.isInteger(payload.iat) || payload.iat > now + 60 || !Number.isInteger(payload.exp) || payload.exp <= now) {
       return null; // Expired
     }
 
@@ -159,10 +159,16 @@ export async function requirePermission(
   action: AppAction
 ): Promise<AuthSession> {
   const session = await requireAuth();
-  if (!hasPermission(session.user.roles, resource, action)) {
-    throw new Error('FORBIDDEN');
-  }
-  return session;
+  // Claims in a previously signed session can become stale after role
+  // revocation. For every privileged action resolve CURRENT database roles.
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { isActive: true, userRoles: { select: { role: { select: { name: true } } } } },
+  });
+  if (!user?.isActive) throw new Error('FORBIDDEN');
+  const liveRoles = user.userRoles.map((assignment) => assignment.role.name as AppRole);
+  if (!hasPermission(liveRoles, resource, action)) throw new Error('FORBIDDEN');
+  return { ...session, user: { ...session.user, roles: liveRoles } };
 }
 
 /**

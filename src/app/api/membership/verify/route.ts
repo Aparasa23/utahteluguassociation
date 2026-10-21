@@ -67,29 +67,19 @@ export async function POST(req: Request) {
     const isExpired = latestMembership
       ? new Date(latestMembership.endDate) < new Date()
       : true;
-    const isActive = profile.membershipStatus === 'ACTIVE' && !isExpired;
+    const isActive = profile.membershipStatus === 'ACTIVE' && latestMembership?.status === 'ACTIVE' && !isExpired;
 
     // Check if the authenticated user is looking at their own profile
     const isSelf = session?.user?.id === profile.user.id;
 
-    // Safe public response: mask full names, never expose child/family lists to unauthenticated public
+    // Public confirmation is intentionally minimal. Do not reveal private
+    // names, profile IDs, membership IDs, status history, plan or expiry.
+    // Access to household/member details requires authentication and authorization.
     if (!isStaffOrAdmin && !isSelf) {
-      // Abbreviate name: "Venkat Rao" -> "V. R***"
-      const nameParts = (profile.user.name || '').split(' ');
-      const maskedName =
-        nameParts.length > 1
-          ? `${nameParts[0][0]}. ${nameParts[nameParts.length - 1][0]}***`
-          : `${(profile.user.name || '')[0]}***`;
-
-      return NextResponse.json({
-        isValid: isActive,
-        status: isActive ? 'ACTIVE' : isExpired ? 'EXPIRED' : profile.membershipStatus,
-        planName: latestMembership?.plan?.name || 'Annual Membership',
-        membershipNumber: profile.membershipNumber,
-        memberInitials: maskedName,
-        expirationDate: latestMembership?.endDate,
-        requiresStaffAuthForRoster: true,
-      });
+      return NextResponse.json(
+        { isValid: isActive, message: isActive ? 'Membership validated.' : 'No currently active membership validated.' },
+        { headers: { 'Cache-Control': 'no-store' } }
+      );
     }
 
     // Authorized staff or self-verification response

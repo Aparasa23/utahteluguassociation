@@ -5,8 +5,7 @@ import { PaymentGateway } from '@/lib/zeffy';
 
 export async function POST(
   req: Request,
-  {
- params }: { params: { slug: string } }
+  { params }: { params: { slug: string } }
 ) {
   // Never issue passes or mark paid admission confirmed without validated,
   // durable payment, membership eligibility and transactional capacity checks.

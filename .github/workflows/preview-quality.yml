@@ -19,6 +19,9 @@ jobs:
       - run: npx prisma validate
         env:
           DATABASE_URL: file:./dev.db
+      - run: npx prisma validate --schema prisma/schema.postgres.prisma
+        env:
+          DATABASE_URL: postgresql://preview:preview@localhost:5432/uta_preview
       - run: npx tsc --noEmit
         env:
           DATABASE_URL: file:./dev.db

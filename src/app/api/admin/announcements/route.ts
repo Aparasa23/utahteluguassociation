@@ -2,10 +2,17 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getSession } from '@/lib/auth';
 import { hasPermission } from '@/lib/rbac';
-import crypto from 'node:crypto';
+
 
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
+
+function sameOrigin(request:Request){
+ const origin=request.headers.get('origin');
+ if(!origin)return false;
+ try{return new URL(origin).host===new URL(request.url).host}catch{return false}
+}
+
 
 async function authorized(action:'read'|'create'|'update'|'delete'){
  const session=await getSession();
@@ -31,6 +38,7 @@ export async function GET(){
  }catch{ return NextResponse.json({error:'Unable to load announcements'},{status:503})}
 }
 export async function POST(request:Request){
+ if(!sameOrigin(request))return NextResponse.json({error:'Invalid request origin'},{status:403});
  try{
   const auth=await authorized('create');
   if(auth.error)return auth.error;
@@ -56,6 +64,7 @@ export async function POST(request:Request){
  }catch{ return NextResponse.json({error:'Unable to save announcement'},{status:503})}
 }
 export async function PATCH(request:Request){
+ if(!sameOrigin(request))return NextResponse.json({error:'Invalid request origin'},{status:403});
  try{
   const auth=await authorized('update');
   if(auth.error)return auth.error;

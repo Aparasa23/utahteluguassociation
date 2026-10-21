@@ -1,0 +1,16 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const file=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
+const registration=file('src/app/api/events/sankranthi-2027/register/route.ts');
+const member=file('src/app/api/membership/join/route.ts');
+const checkin=file('src/app/api/checkin/scan/route.ts');
+const contact=file('src/app/contact/page.tsx');
+const gallery=file('src/app/gallery/page.tsx');
+assert.match(registration,/REGISTRATION_NOT_OPEN/,'Sankranthi booking must be closed until approved');
+assert.match(member,/MEMBERSHIP_NOT_OPEN/,'Unsafe membership activation must remain blocked');
+assert.match(checkin,/requirePermission/,'Admission requires authorized staff');
+assert.match(checkin,/updateMany/,'Admission needs an atomic first-claim write');
+assert.match(contact,/fetch\('\/api\/contact'/,'Contact form must call actual delivery endpoint');
+assert.match(gallery,/UTA_MEDIA_ARCHIVE_APPROVED/,'Only approved media may be displayed');
+assert.doesNotMatch(gallery,/UTA_INSTAGRAM_MEDIA/,'Stock Instagram fixtures may not become a real gallery');
+process.stdout.write('UTA release guard checks passed. These do not replace browser or integration tests.\n');

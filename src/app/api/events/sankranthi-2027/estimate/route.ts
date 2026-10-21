@@ -53,10 +53,10 @@ export async function POST(req:Request){
   if(session){
    const profile=await prisma.memberProfile.findUnique({
     where:{userId:session.user.id},
-    include:{memberships:{orderBy:{endDate:'desc'},take:1}}
+    include:{user:{select:{isActive:true}},memberships:{orderBy:{endDate:'desc'},take:1}}
    });
    const membership=profile?.memberships[0];
-   memberEligible=Boolean(profile?.membershipStatus==='ACTIVE'&&membership?.status==='ACTIVE'&&membership.endDate>new Date());
+   memberEligible=Boolean(profile?.user.isActive&&profile.membershipStatus==='ACTIVE'&&membership?.status==='ACTIVE'&&membership.startDate<=new Date()&&membership.endDate>new Date());
   }
   const lines=[] as Array<{eventSlug:string;eventTitle:string;ticketTypeId:string;ticketName:string;quantity:number;unitAmountCents:number;lineAmountCents:number;capacitySnapshot:number}>;
   let totalAmountCents=0;

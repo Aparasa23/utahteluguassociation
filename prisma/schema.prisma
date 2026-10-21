@@ -742,3 +742,16 @@ model InstagramPost {
   rawJson       String?
   syncedAt      DateTime @default(now())
 }
+
+// One-time, server-persisted email login challenge. Requires migration.
+model LoginChallenge {
+ id        String @id @default(uuid())
+ email     String
+ codeHash  String
+ expiresAt DateTime
+ usedAt    DateTime?
+ attempts  Int @default(0)
+ createdAt DateTime @default(now())
+ @@index([email,createdAt])
+ @@index([expiresAt,usedAt])
+}

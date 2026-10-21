@@ -31,6 +31,41 @@ function Petals(){const petals=useRef<THREE.InstancedMesh>(null);
  const object=useMemo(()=>new THREE.Object3D(),[]);
  useFrame(({clock})=>{const mesh=petals.current;if(!mesh)return;originals.forEach((p,i)=>{object.position.set(p.x+Math.sin(clock.elapsedTime*.43+i)*.33,((p.y-clock.elapsedTime*p.v)%6+6)%6-1.5,p.z);object.rotation.set(clock.elapsedTime*.3+i,clock.elapsedTime*.15+i*.5,.3);object.scale.set(.07,.025,.11);object.updateMatrix();mesh.setMatrixAt(i,object.matrix)});mesh.instanceMatrix.needsUpdate=true});
  return <instancedMesh ref={petals} args={[undefined,undefined,originals.length]} frustumCulled={false}><planeGeometry args={[1,1]}/><meshStandardMaterial color="#e9a848" side={THREE.DoubleSide} transparent opacity={.87}/></instancedMesh>}
+
+// The mandapa is built from individual architectural forms rather than
+// flat background gradients. All shapes are procedural: no licensed assets.
+function TurnedColumn({x,z}:{x:number;z:number}){
+ return <group position={[x,0,z]}>
+ <mesh position={[0,-.88,0]}><cylinderGeometry args={[.55,.66,.25,12]}/><meshStandardMaterial color="#a57959" roughness={.92}/></mesh>
+ <mesh position={[0,-.54,0]}><cylinderGeometry args={[.43,.53,.49,12]}/><meshStandardMaterial color="#d2a177" roughness={.84}/></mesh>
+ <mesh position={[0,.95,0]}><cylinderGeometry args={[.29,.35,2.5,16]}/><meshStandardMaterial color="#d7ac82" roughness={.82}/></mesh>
+ {[.0,.34,1.85,2.14].map((y,i)=><mesh key={y} position={[0,y,0]}><cylinderGeometry args={[.46-(i%2)*.06,.5-(i%2)*.06,.17,16]}/><meshStandardMaterial color={i%2?'#d2a177':'#b98661'} roughness={.88}/></mesh>)}
+ <mesh position={[0,2.37,0]}><cylinderGeometry args={[.58,.39,.35,12]}/><meshStandardMaterial color="#b98765" roughness={.9}/></mesh>
+ </group>
+}
+function FestivalMandapa(){return <group position={[0,0,-3.7]}>
+ <Stone position={[0,-.5,0]} size={[14,1,5.3]} color="#a98164"/>
+ <Stone position={[0,.01,-1.1]} size={[12,.75,2.3]} color="#674e49"/>
+ {[-5.1,-2.55,0,2.55,5.1].map(x=><TurnedColumn key={x} x={x} z={.95}/>)}
+ <Stone position={[0,2.71,.88]} size={[12.6,.44,1.7]} color="#bc8a62"/>
+ <Stone position={[0,3.08,.85]} size={[13,.2,2]} color="#e5b98a"/>
+ <mesh rotation={[0,0,Math.PI/2]} position={[0,3.25,.85]}><cylinderGeometry args={[.18,.18,13.6,12]}/><meshStandardMaterial color="#704d37" roughness={.76}/></mesh>
+ {Array.from({length:12},(_,i)=>{const x=-5.8+i*1.05;return <group key={i} position={[x,3.42,.85]}>
+  <mesh rotation={[0,0,Math.PI/4]}><boxGeometry args={[.35,.35,.45]}/><meshStandardMaterial color={i%2?'#c68f55':'#9b6144'} roughness={.88}/></mesh>
+  <mesh position={[0,.4,0]}><sphereGeometry args={[.13,8,8]}/><meshStandardMaterial color="#eac798" roughness={.85}/></mesh>
+ </group>})}
+ <mesh position={[0,4.25,-.2]} rotation={[0,0,Math.PI/2]}><cylinderGeometry args={[.23,.23,10,12]}/><meshStandardMaterial color="#a4734e" roughness={.8}/></mesh>
+ {[-3.5,-1.75,0,1.75,3.5].map((x,i)=><mesh key={i} position={[x,4.7,-.2]}><sphereGeometry args={[.48-i%2*.08,16,10]}/><meshStandardMaterial color={i===2?'#eac18f':'#be8e67'} roughness={.91}/></mesh>)}
+ <mesh position={[0,.3,-1.55]}><planeGeometry args={[7.6,2.7]}/><meshStandardMaterial color="#473035" roughness={.95} side={THREE.DoubleSide}/></mesh>
+ {[0,1,2,3,4,5,6].map(i=><mesh key={i} rotation={[0,0,Math.PI*.25]} position={[-3.3+i*1.1,.45,-1.5]}><torusGeometry args={[.48,.055,8,4]}/><meshStandardMaterial color="#d6ac77" roughness={.72}/></mesh>)}
+ </group>}
+function SilkBanners(){return <group>
+ {[-4.2,4.2].map((x,i)=><group key={i}>
+  <mesh position={[x,1.27,-1.1]} rotation={[0,0,i===0?.12:-.12]}><planeGeometry args={[.48,2.5]}/><meshStandardMaterial color={i===0?'#a9433e':'#d79939'} side={THREE.DoubleSide} roughness={1}/></mesh>
+  <mesh position={[x,1.1,-1.06]}><planeGeometry args={[.07,2.3]}/><meshStandardMaterial color="#efc273" side={THREE.DoubleSide}/></mesh>
+ </group>)}
+ </group>}
+
 function Courtyard(){return <group>
  <Stone position={[0,-1.3,-.25]} size={[30,.38,23]} color="#916d5b"/>
  {Array.from({length:10},(_,i)=><Stone key={i} position={[0,-1.09,-6+i*1.2]} size={[15,.045,.035]} color="#dfbb90"/>)}
@@ -43,7 +78,7 @@ function Courtyard(){return <group>
  <Stone position={[0,-.69,-.5]} size={[6.7,.25,4]} color="#e2b989"/>
  <Stone position={[0,-.91,1.2]} size={[8.2,.2,2.1]} color="#bd906e"/>
  <Stone position={[0,-1.04,2.15]} size={[9.8,.14,1]} color="#9c7561"/>
- <Garlands/><Rangoli/>
+ <FestivalMandapa/><SilkBanners/><Garlands/><Rangoli/>
  {[-5.7,5.7].map((x,i)=><group key={i} position={[x,-1.03,1]}><mesh><cylinderGeometry args={[.28,.38,1.5,12]}/><meshStandardMaterial color="#bf853b" metalness={.65} roughness={.28}/></mesh><mesh position={[0,.84,0]}><sphereGeometry args={[.23,12,12]}/><meshStandardMaterial color="#ffe1a1" emissive="#f9a444" emissiveIntensity={1.5}/></mesh><pointLight position={[0,1,0]} intensity={2.5} distance={4} color="#ffc46f"/></group>)}
  <Petals/>
  </group>}
@@ -55,9 +90,9 @@ export default function UTACinematicScene(){
  return <Canvas shadows={false} dpr={[1,1.5]} camera={{position:[0,2.1,13],fov:49}} gl={{antialias:true,alpha:true,powerPreference:'high-performance'}} fallback={<div aria-hidden="true"/>}>
  <color attach="background" args={['#756277']}/>
  <fog attach="fog" args={['#ac8791',14,30]}/>
- <ambientLight intensity={1.9} color="#ffe3c7"/>
- <hemisphereLight args={['#ffe7ba','#624357',2]}/>
- <directionalLight position={[8,12,9]} intensity={3.7} color="#ffd29d"/>
+ <ambientLight intensity={1.05} color="#ffe3c7"/>
+ <hemisphereLight args={['#ffe7ba','#624357',1.3]}/>
+ <directionalLight position={[8,12,9]} intensity={4.3} color="#ffd29d"/>
  <directionalLight position={[-6,3,-7]} intensity={1.4} color="#ee9a72"/>
  <Courtyard/><CameraRig progress={progress}/>
  </Canvas>

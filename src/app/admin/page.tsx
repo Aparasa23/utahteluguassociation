@@ -87,7 +87,7 @@ export default async function AdminOverviewPage() {
         <div className="glass-panel p-5 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm space-y-1">
           <span className="text-xs text-[#705544] uppercase font-semibold">Active Memberships</span>
           <p className="text-2xl sm:text-3xl font-extrabold text-[#1c140e] font-display">
-            {memberCount > 0 ? memberCount : 285}
+            {memberCount}
           </p>
           <Link href="/admin/members" className="text-[11px] text-amber-800 hover:underline flex items-center gap-1 pt-1 font-semibold">
             <span>Manage Roster</span>
@@ -101,14 +101,14 @@ export default async function AdminOverviewPage() {
             {checkedInCount} / {ticketCount}
           </p>
           <span className="text-[11px] text-[#8c7664]">
-            {ticketCount > 0 ? `${Math.round((checkedInCount / ticketCount) * 100)}% Checked In` : 'Gates Open'}
+            {ticketCount > 0 ? `${Math.round((checkedInCount / ticketCount) * 100)}% Checked In` : 'No scanned tickets'}
           </span>
         </div>
 
         <div className="glass-panel p-5 rounded-2xl border border-amber-900/15 bg-white/95 shadow-sm space-y-1">
           <span className="text-xs text-[#705544] uppercase font-semibold">Operating Budget</span>
           <p className="text-2xl sm:text-3xl font-extrabold text-sky-800 font-display">
-            {formatCurrency(totalAllocated || 35000)}
+            {formatCurrency(totalAllocated)}
           </p>
           <Link href="/admin/finances" className="text-[11px] text-sky-800 hover:underline flex items-center gap-1 pt-1 font-semibold">
             <span>Budget vs Actuals</span>

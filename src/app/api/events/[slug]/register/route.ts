@@ -5,7 +5,16 @@ import { PaymentGateway } from '@/lib/zeffy';
 
 export async function POST(
   req: Request,
-  { params }: { params: { slug: string } }
+  {
+  // Never issue passes or mark paid admission confirmed without validated,
+  // durable payment, membership eligibility and transactional capacity checks.
+  if (process.env.EVENT_REGISTRATION_ENABLED !== 'true') {
+    return NextResponse.json(
+      { error: 'Online registration is not open yet. Please check the official event information for updates.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } }
+    );
+  }
+ params }: { params: { slug: string } }
 ) {
   try {
     const { slug } = params;

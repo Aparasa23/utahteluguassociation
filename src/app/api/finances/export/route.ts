@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
-import { hasPermission } from '@/lib/rbac';
+import { getSession, requirePermission } from '@/lib/auth';
 
 export async function GET() {
   try {
@@ -15,8 +14,8 @@ export async function GET() {
     }
 
     // 2. Enforce explicit server-side authorization check (least privilege)
-    const canExport = hasPermission(session.user.roles, 'finances', 'export');
-    if (!canExport) {
+    const authorized = await requirePermission('finances', 'export').catch(() => null);
+    if (!authorized || authorized.user.id !== session.user.id) {
       return NextResponse.json(
         { error: 'Forbidden: You do not possess authorized financial export privileges.' },
         { status: 403 }
@@ -45,13 +44,17 @@ export async function GET() {
       e.entryType,
       e.category,
       e.amount.toFixed(2),
-      `"${e.description.replace(/"/g, '""')}"`,
+      e.description,
       e.paymentRef || 'N/A',
       e.reconciled ? 'YES' : 'PENDING',
       e.transactedAt ? new Date(e.transactedAt).toISOString().split('T')[0] : 'N/A',
     ]);
 
-    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const safeCell=(value:string)=>{
+      const normalized=value.replace(/^[\\s]*[=+@-]/, (match)=>"'"+match);
+      return '"'+normalized.replace(/"/g,'""')+'"';
+    };
+    const csvContent = [headers.map(safeCell).join(','), ...rows.map((r) => r.map(value=>safeCell(String(value))).join(','))].join('\n');
 
     // 4. Log audit record
     try {
@@ -70,7 +73,7 @@ export async function GET() {
         },
       });
     } catch {
-      // Non-blocking audit fallback
+      throw new Error('Audit logging failed. Financial export was not delivered.');
     }
 
     return new NextResponse(csvContent, {

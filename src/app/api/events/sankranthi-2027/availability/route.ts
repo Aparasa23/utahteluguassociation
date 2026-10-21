@@ -8,6 +8,9 @@ export const runtime='nodejs';
 // reservation; inventory can change at any time, and online booking is closed.
 const SLUGS=['sankranthi-2027-rangoli','sankranthi-2027-pickleball','sankranthi-2027-volleyball','sankranthi-sambaralu-2027'];
 export async function GET(){
+ if(process.env.UTA_EVENT_CATALOG_APPROVED!=='true'){
+  return NextResponse.json({acceptingRegistrations:false,reason:'Official event dates and prices are awaiting UTA approval.',events:[]},{headers:{'Cache-Control':'no-store'}});
+ }
  try{
   const rows=await prisma.event.findMany({
    where:{slug:{in:SLUGS},isPublished:true},

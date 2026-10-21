@@ -3,6 +3,15 @@ import { prisma } from '@/lib/prisma';
 import { generateSecureToken } from '@/lib/qr';
 
 export async function POST(req: Request) {
+  // Never issue passes or mark paid admission confirmed without validated,
+  // durable payment, membership eligibility and transactional capacity checks.
+  if (process.env.EVENT_REGISTRATION_ENABLED !== 'true') {
+    return NextResponse.json(
+      { error: 'Online registration is not open yet. Please check the official event information for updates.' },
+      { status: 503, headers: { 'Cache-Control': 'no-store' } }
+    );
+  }
+
   try {
     const body = await req.json();
     const {

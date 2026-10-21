@@ -1,0 +1,15 @@
+'use client';
+import React,{useRef} from 'react';
+import {Canvas,useFrame} from '@react-three/fiber';
+import * as THREE from 'three';
+function FloatLamp({x,z,delay}:{x:number,z:number,delay:number}){const ref=useRef<THREE.Mesh>(null);useFrame(({clock})=>{if(ref.current){ref.current.position.y=2+Math.sin(clock.elapsedTime*.55+delay)*.3;ref.current.rotation.y=clock.elapsedTime*.16+delay}});return <mesh ref={ref} position={[x,2,z]}><sphereGeometry args={[.12,10,10]}/><meshStandardMaterial color="#ffd27d" emissive="#ff972a" emissiveIntensity={2.5}/><pointLight color="#ffb45d" intensity={1.5} distance={3}/></mesh>}
+function Courtyard(){const group=useRef<THREE.Group>(null);useFrame(({clock,pointer,camera})=>{if(group.current)group.current.rotation.y=Math.sin(clock.elapsedTime*.1)*.025+pointer.x*.025;camera.position.x=THREE.MathUtils.lerp(camera.position.x,pointer.x*.25,.03);camera.lookAt(0,0,0)});return <group ref={group} position={[2,-1,-1]}>
+ <mesh rotation={[-Math.PI/2,0,0]} position={[0,-1.2,0]}><planeGeometry args={[26,26]}/><meshStandardMaterial color="#2b2432" roughness={.85}/></mesh>
+ <mesh position={[0,-.9,0]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[1.1,2.6,48]}/><meshStandardMaterial side={THREE.DoubleSide} color="#e6a957" emissive="#b15b26" emissiveIntensity={.2}/></mesh>
+ {Array.from({length:12},(_,i)=>{const a=i*Math.PI/6;return <mesh key={i} position={[Math.cos(a)*1.8,-.85,Math.sin(a)*1.8]}><sphereGeometry args={[.16,12,12]}/><meshStandardMaterial color={i%2===0?'#edb33b':'#b8473f'} emissive="#6a3218" emissiveIntensity={.2}/></mesh>})}
+ {[-1,1].map(side=><group key={side} position={[side*4,0,-1]}><mesh position={[0,1,0]}><cylinderGeometry args={[.26,.35,5,12]}/><meshStandardMaterial color="#bc8c64" roughness={.7}/></mesh><mesh position={[0,3.55,0]}><boxGeometry args={[1.2,.55,1.2]}/><meshStandardMaterial color="#d4a275" roughness={.7}/></mesh><mesh position={[0,3.1,0]}><boxGeometry args={[.9,.24,.9]}/><meshStandardMaterial color="#d8a66b"/></mesh></group>)}
+ <mesh position={[0,3.8,-1]}><boxGeometry args={[10,.5,1]}/><meshStandardMaterial color="#a77958" roughness={.65}/></mesh>
+ {Array.from({length:22},(_,i)=><mesh key={'flower'+i} position={[-4.8+i*.46,3.49,-.58]}><sphereGeometry args={[.17,8,8]}/><meshStandardMaterial color={i%3?'#e69e25':'#cb5136'} emissive="#bd582b" emissiveIntensity={.3}/></mesh>)}
+ {Array.from({length:15},(_,i)=><FloatLamp key={'lamp'+i} x={-6+i*.83} z={-2-(i%3)} delay={i*1.3}/>)}
+ </group>}
+export default function UTACinematicScene(){return <Canvas dpr={[1,1.5]} camera={{position:[0,2,11],fov:52}} gl={{antialias:true,alpha:true,powerPreference:'low-power'}} fallback={<div aria-hidden="true"/>}><ambientLight intensity={1.1} color="#ffe0c2"/><directionalLight position={[4,7,4]} intensity={2.5} color="#ffce92"/><pointLight position={[-3,1,2]} intensity={18} color="#ffb365" distance={14}/><fog attach="fog" args={['#4d3c57',10,28]}/><Courtyard/></Canvas>}

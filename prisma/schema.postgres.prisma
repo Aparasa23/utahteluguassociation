@@ -741,3 +741,100 @@ model InstagramPost {
   rawJson       String?
   syncedAt      DateTime @default(now())
 }
+
+
+// ==========================================
+// PENDING PRODUCTION REGISTRATION ENGINE
+// No runtime route writes these records yet.
+// Apply ONLY through reviewed PostgreSQL migrations.
+// ==========================================
+
+model RegistrationOrder {
+  id             String @id @default(uuid())
+  idempotencyKey String @unique
+  externalRef    String @unique
+  userId         String?
+  email          String
+  householdCount Int
+  currency       String @default("USD")
+  amountCents    Int
+  status         String @default("DRAFT") // DRAFT, HELD, PAYMENT_PENDING, PAID, CONFIRMED, EXPIRED, CANCELLED, REFUNDED
+  holdExpiresAt  DateTime?
+  confirmedAt    DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  lines          RegistrationOrderLine[]
+  settlements    PaymentSettlement[]
+  @@index([status,holdExpiresAt])
+  @@index([userId,createdAt])
+}
+
+model RegistrationOrderLine {
+  id                String @id @default(uuid())
+  registrationOrderId String
+  eventId           String
+  ticketTypeId      String
+  quantity          Int
+  unitPriceCents    Int
+  extendedPriceCents Int
+  status            String @default("PENDING")
+  createdAt         DateTime @default(now())
+  order             RegistrationOrder @relation(fields:[registrationOrderId],references:[id],onDelete:Restrict)
+  @@unique([registrationOrderId,ticketTypeId])
+  @@index([eventId,ticketTypeId])
+}
+
+model TicketInventoryHold {
+  id              String @id @default(uuid())
+  registrationOrderId String
+  ticketTypeId    String
+  quantity        Int
+  status          String @default("HELD") // HELD, CLAIMED, RELEASED, EXPIRED
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@unique([registrationOrderId,ticketTypeId])
+  @@index([ticketTypeId,status,expiresAt])
+}
+
+model PaymentSettlement {
+  id              String @id @default(uuid())
+  registrationOrderId String
+  provider        String
+  providerPaymentId String
+  amountCents     Int
+  currency        String @default("USD")
+  state           String // VERIFIED_PAID, REFUNDED, REVERSED
+  verifiedAt      DateTime
+  evidenceHash    String
+  createdAt       DateTime @default(now())
+  order           RegistrationOrder @relation(fields:[registrationOrderId],references:[id],onDelete:Restrict)
+  @@unique([provider,providerPaymentId])
+  @@index([registrationOrderId,state])
+}
+
+model PaymentProviderEvent {
+  id             String @id @default(uuid())
+  provider       String
+  eventId        String
+  eventType      String
+  payloadHash    String
+  signatureValid Boolean
+  receivedAt     DateTime @default(now())
+  processedAt    DateTime?
+  errorMessage   String?
+  @@unique([provider,eventId])
+  @@index([processedAt,receivedAt])
+}
+
+model LoginChallenge {
+  id         String @id @default(uuid())
+  email      String
+  codeHash   String
+  expiresAt  DateTime
+  usedAt     DateTime?
+  attempts   Int @default(0)
+  createdAt  DateTime @default(now())
+  @@index([email,createdAt])
+  @@index([expiresAt,usedAt])
+}

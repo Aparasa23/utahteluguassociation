@@ -29,10 +29,13 @@ interface TokenPayload {
 }
 
 const SESSION_COOKIE_NAME = 'uta_session';
-const SECRET_KEY =
-  process.env.NEXTAUTH_SECRET ||
-  process.env.SESSION_SECRET ||
-  'uta_digital_universe_super_secret_jwt_key_2027';
+function getSecret(): string {
+  const secret = process.env.NEXTAUTH_SECRET || process.env.SESSION_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error('A strong session secret is required');
+  }
+  return secret;
+}
 
 /**
  * Sign a payload using HMAC-SHA256
@@ -55,7 +58,7 @@ export function createSessionToken(
 
   const payloadB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
   const signature = crypto
-    .createHmac('sha256', SECRET_KEY)
+    .createHmac('sha256', getSecret())
     .update(payloadB64)
     .digest('base64url');
 
@@ -72,7 +75,7 @@ export function verifySessionToken(token: string): TokenPayload | null {
 
     const [payloadB64, signature] = parts;
     const expectedSig = crypto
-      .createHmac('sha256', SECRET_KEY)
+      .createHmac('sha256', getSecret())
       .update(payloadB64)
       .digest('base64url');
 

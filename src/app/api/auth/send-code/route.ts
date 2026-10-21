@@ -1,67 +1,23 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
-
-// In-memory code store for ephemeral verification (backed by HMAC challenge in cookie)
-const CODE_CHALLENGE_COOKIE = 'uta_auth_challenge';
-const SECRET_KEY =
-  process.env.NEXTAUTH_SECRET ||
-  process.env.SESSION_SECRET ||
-  'uta_digital_universe_super_secret_jwt_key_2027';
-
-export async function POST(req: Request) {
-  try {
-    const { email } = await req.json().catch(() => ({}));
-
-    if (!email || typeof email !== 'string' || !email.includes('@')) {
-      return NextResponse.json(
-        { error: 'Please enter a valid email address.' },
-        { status: 400 }
-      );
-    }
-
-    const normalizedEmail = email.trim().toLowerCase();
-
-    // Generate secure 6-digit code
-    // For demo/development convenience, '123456' is accepted, but real HMAC is generated
-    const secureCode = crypto.randomInt(100000, 999999).toString();
-    const expiresAt = Math.floor(Date.now() / 1000) + 10 * 60; // 10 minutes
-
-    // Create tamper-proof challenge payload
-    const challengePayload = JSON.stringify({
-      email: normalizedEmail,
-      code: secureCode,
-      exp: expiresAt,
-    });
-
-    const payloadB64 = Buffer.from(challengePayload).toString('base64url');
-    const signature = crypto
-      .createHmac('sha256', SECRET_KEY)
-      .update(payloadB64)
-      .digest('base64url');
-
-    const challengeToken = `${payloadB64}.${signature}`;
-
-    const res = NextResponse.json({
-      success: true,
-      message: 'A 6-digit verification code has been dispatched to your email.',
-      // In development/test mode, provide preview code for instant pairing
-      devCode: process.env.NODE_ENV !== 'production' ? secureCode : undefined,
-    });
-
-    res.cookies.set(CODE_CHALLENGE_COOKIE, challengeToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 10 * 60,
-    });
-
-    return res;
-  } catch (error: any) {
-    console.error('Error sending auth code:', error);
-    return NextResponse.json(
-      { error: 'Internal error processing authentication code request.' },
-      { status: 500 }
-    );
-  }
+import crypto from 'node:crypto';
+export const runtime = 'nodejs';
+const COOKIE='uta_auth_challenge';
+export async function POST(req:Request){
+ try {
+ const body=await req.json();const email=typeof body.email==='string'?body.email.trim().toLowerCase():'';
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||email.length>254)return NextResponse.json({error:'Valid email required'},{status:400});
+ const secret=process.env.NEXTAUTH_SECRET||process.env.SESSION_SECRET;
+ const apiKey=process.env.RESEND_API_KEY;const from=process.env.AUTH_FROM_EMAIL;
+ if(!secret||secret.length<32||!apiKey||!from)return NextResponse.json({error:'Email sign-in is not configured yet.'},{status:503});
+ const code=crypto.randomInt(100000,1000000).toString();
+ const exp=Date.now()+10*60*1000;
+ const codeHash=crypto.createHmac('sha256',secret).update(email+':'+code+':'+exp).digest('hex');
+ const payload=Buffer.from(JSON.stringify({email,codeHash,exp})).toString('base64url');
+ const sig=crypto.createHmac('sha256',secret).update(payload).digest('base64url');
+ const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+apiKey,'Content-Type':'application/json'},body:JSON.stringify({from,to:[email],subject:'UTA verification code',text:'Your Utah Telugu Association sign-in code is '+code+'. It expires in 10 minutes. If you did not request this code, ignore this email.'}),cache:'no-store'});
+ if(!sent.ok){console.error('Email provider rejected verification request',sent.status);return NextResponse.json({error:'Unable to send verification code'},{status:502})}
+ const res=NextResponse.json({success:true,message:'A verification code has been sent.'});
+ res.cookies.set(COOKIE,payload+'.'+sig,{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',maxAge:600,path:'/'});
+ return res;
+ }catch{return NextResponse.json({error:'Unable to process request'},{status:500})}
 }

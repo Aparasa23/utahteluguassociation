@@ -29,6 +29,7 @@ import {
   Palette,
   FileText,
   Music,
+  Lock,
 } from 'lucide-react';
 
 export function Navbar() {
@@ -211,66 +212,65 @@ export function Navbar() {
               </div>
             </Link>
 
-            {/* SYSTEMATICALLY ORGANIZED DESKTOP NAVIGATION TABS */}
+            {/* 10. INFORMATION ARCHITECTURE: HOME, ABOUT, EVENTS, COMMUNITY, SPORTS, MEMBERSHIP, GET INVOLVED */}
             <nav className="hidden xl:flex items-center gap-1 text-[13px] font-semibold shrink-0 text-white/85">
-              {/* 1. CULTURE & HERITAGE DROPDOWN */}
+              {/* 1. HOME */}
+              <Link
+                href="/"
+                className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
+                  pathname === '/'
+                    ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
+                    : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
+                }`}
+              >
+                <span>Home</span>
+              </Link>
+
+              {/* 2. ABOUT */}
               <div
                 className="relative"
-                onMouseEnter={() => setActiveDropdown('culture')}
+                onMouseEnter={() => setActiveDropdown('about')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button
+                <Link
+                  href="/about"
                   className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
-                    pathname.startsWith('/culture') || pathname === '/temple-calendar' || pathname === '/community' || pathname === '/history'
+                    pathname.startsWith('/about') || pathname === '/leadership' || pathname === '/history'
                       ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
                       : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
                   }`}
                 >
-                  <BookOpen className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span>{t.culture}</span>
+                  <span>About</span>
                   <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
-                </button>
+                </Link>
 
-                {activeDropdown === 'culture' && (
+                {activeDropdown === 'about' && (
                   <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
                     <Link
-                      href="/culture"
+                      href="/about"
                       className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
                     >
-                      <BookOpen className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
                       <div>
-                        <span className="block">Telugu Cultural Blogs</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">23+ Scholarly festival accounts</span>
+                        <span className="block">Mission, Vision &amp; Governance</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">501(c)(3) Foundation &amp; heritage</span>
                       </div>
                     </Link>
-
                     <Link
-                      href="/temple-calendar"
-                      className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
-                    >
-                      <Sun className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                      <div>
-                        <span className="block">Temple Calendar &amp; Panchangam</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Utah Mountain Time daily tithi &amp; temples</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/community"
+                      href="/leadership"
                       className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
                       <div>
-                        <span className="block">Telugu Badi Language School</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Youth language &amp; culture classes</span>
+                        <span className="block">Executive Leadership</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Board trustees &amp; coordinators</span>
                       </div>
                     </Link>
-
                     <Link
                       href="/history"
                       className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
                     >
-                      <Award className="w-3.5 h-3.5 text-rose-400" />
+                      <Award className="w-3.5 h-3.5 text-amber-300" />
                       <div>
                         <span className="block">UTA History &amp; 25-Year Heritage</span>
                         <span className="text-[10px] text-[var(--text-secondary)] font-normal">Pioneering Telugu families in Utah</span>
@@ -280,116 +280,156 @@ export function Navbar() {
                 )}
               </div>
 
-              {/* 2. REGISTRATION FORMS DROPDOWN */}
-              <div
-                className="relative"
-                onMouseEnter={() => setActiveDropdown('registrations')}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <button
-                  className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
-                    pathname.startsWith('/registrations') || pathname.startsWith('/events/sankranthi-2027/register') || pathname === '/performances'
-                      ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
-                      : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
-                  }`}
-                >
-                  <FileText className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span>{t.registrations}</span>
-                  <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
-                </button>
-
-                {activeDropdown === 'registrations' && (
-                  <div className="absolute top-full left-0 w-80 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
-                    <Link
-                      href="/events/sankranthi-2027/register"
-                      className="block px-3 py-2.5 text-xs font-black text-amber-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:brightness-105 rounded-xl border border-amber-400 shadow-sm flex items-center justify-between mb-1"
-                    >
-                      <div className="flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-950" />
-                        <span>Sankranthi 2027 Passes &amp; Contests</span>
-                      </div>
-                      <span className="text-[9px] bg-slate-900 text-amber-300 px-1.5 py-0.2 rounded font-bold uppercase tracking-wider">
-                        FLAGSHIP
-                      </span>
-                    </Link>
-
-                    <Link
-                      href="/performances"
-                      className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
-                    >
-                      <Music className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                      <div>
-                        <span className="block">Stage Performance Registration</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Dance, singing &amp; audio track audit</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/membership/join"
-                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
-                    >
-                      <Users className="w-3.5 h-3.5 text-emerald-400" />
-                      <div>
-                        <span className="block">Annual Family Membership</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">$50/Year family enrollment &amp; pass</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/volunteer"
-                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
-                    >
-                      <HeartHandshake className="w-3.5 h-3.5 text-purple-400" />
-                      <div>
-                        <span className="block">Community Volunteer Signup</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Event shifts &amp; youth service hours</span>
-                      </div>
-                    </Link>
-
-                    <div className="border-t border-white/10 mt-1 pt-1">
-                      <Link
-                        href="/registrations"
-                        className="block px-3 py-1.5 text-[11px] font-bold text-[var(--accent-gold)] hover:underline flex items-center justify-between"
-                      >
-                        <span>View All Registration Forms Hub</span>
-                        <ChevronRight className="w-3 h-3" />
-                      </Link>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 3. EVENTS & LIVE SCORES DROPDOWN */}
+              {/* 3. EVENTS */}
               <div
                 className="relative"
                 onMouseEnter={() => setActiveDropdown('events')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button
+                <Link
+                  href="/events"
                   className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
-                    pathname.startsWith('/events') || pathname.startsWith('/schedule')
+                    pathname.startsWith('/events') || pathname.startsWith('/schedule') || pathname === '/temple-calendar'
                       ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
                       : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
                   }`}
                 >
-                  <Calendar className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span>{t.events}</span>
+                  <span>Events</span>
                   <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
-                </button>
+                </Link>
 
                 {activeDropdown === 'events' && (
-                  <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
+                  <div className="absolute top-full left-0 w-80 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
                     <Link
-                      href="/events/sankranthi-2027"
+                      href="/events"
                       className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <Calendar className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
                       <div>
-                        <span className="block">Sankranthi 2027 Weekend</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Jan 15–23, 2027 full festival guide</span>
+                        <span className="block">All Association Events</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Upcoming festivals &amp; calendar</span>
                       </div>
                     </Link>
+                    <Link
+                      href="/events/sankranthi-2027"
+                      className="block px-3 py-2 text-xs font-bold text-amber-950 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500 hover:brightness-105 rounded-xl border border-amber-400 shadow-sm flex items-center justify-between mb-1"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-950" />
+                        <span>Sankranthi 2027 Celebrations</span>
+                      </div>
+                      <span className="text-[9px] bg-slate-900 text-amber-300 px-1.5 py-0.2 rounded font-bold uppercase tracking-wider">
+                        FEATURED
+                      </span>
+                    </Link>
+                    <Link
+                      href="/temple-calendar"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <Sun className="w-3.5 h-3.5 text-amber-300" />
+                      <div>
+                        <span className="block">Temple Calendar &amp; Panchangam</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Utah Mountain Time daily tithi &amp; temples</span>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/schedule"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <Clock className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <div>
+                        <span className="block">Stage Run-of-Show</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Performer timelines &amp; green room</span>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+              </div>
 
+              {/* 4. COMMUNITY */}
+              <div
+                className="relative"
+                onMouseEnter={() => setActiveDropdown('community')}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link
+                  href="/community"
+                  className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
+                    pathname.startsWith('/community') || pathname.startsWith('/culture') || pathname.startsWith('/gallery')
+                      ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
+                      : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
+                  }`}
+                >
+                  <span>Community</span>
+                  <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
+                </Link>
+
+                {activeDropdown === 'community' && (
+                  <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
+                    <Link
+                      href="/community"
+                      className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
+                    >
+                      <Users className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <div>
+                        <span className="block">Telugu Badi &amp; Education</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Youth language &amp; culture classes</span>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/culture"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-amber-300" />
+                      <div>
+                        <span className="block">Telugu Cultural Blogs</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">23+ Scholarly festival guides</span>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/gallery"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <Instagram className="w-3.5 h-3.5 text-pink-400" />
+                      <div>
+                        <span className="block">Photo &amp; Video Memories</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Festival highlights &amp; galleries</span>
+                      </div>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* 5. SPORTS */}
+              <div
+                className="relative"
+                onMouseEnter={() => setActiveDropdown('sports')}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link
+                  href="/sports"
+                  className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
+                    pathname.startsWith('/sports') || pathname === '/events/live-scores'
+                      ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
+                      : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
+                  }`}
+                >
+                  <span>Sports</span>
+                  <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
+                </Link>
+
+                {activeDropdown === 'sports' && (
+                  <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
+                    <Link
+                      href="/sports"
+                      className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
+                    >
+                      <Trophy className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <div>
+                        <span className="block">Sports Leagues &amp; Tournaments</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Volleyball, Pickleball &amp; Cricket</span>
+                      </div>
+                    </Link>
                     <Link
                       href="/events/live-scores"
                       className="block px-3 py-2 text-xs font-bold text-emerald-300 hover:bg-emerald-500/10 rounded-xl flex items-center justify-between"
@@ -397,109 +437,130 @@ export function Navbar() {
                       <div className="flex items-center gap-2">
                         <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
                         <div>
-                          <span className="block text-emerald-300">Live Match Scores &amp; Wins</span>
-                          <span className="text-[10px] text-emerald-200/70 font-normal">Pickleball, Volleyball &amp; Rangoli</span>
+                          <span className="block text-emerald-300">Live Match Scores</span>
+                          <span className="text-[10px] text-emerald-200/70 font-normal">Real-time court standings</span>
                         </div>
                       </div>
                       <span className="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded font-mono font-bold uppercase">
                         LIVE
                       </span>
                     </Link>
+                  </div>
+                )}
+              </div>
 
+              {/* 6. MEMBERSHIP */}
+              <div
+                className="relative"
+                onMouseEnter={() => setActiveDropdown('membership')}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                <Link
+                  href="/membership"
+                  className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
+                    pathname.startsWith('/membership')
+                      ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
+                      : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
+                  }`}
+                >
+                  <span>Membership</span>
+                  <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
+                </Link>
+
+                {activeDropdown === 'membership' && (
+                  <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
                     <Link
-                      href="/schedule"
-                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                      href="/membership"
+                      className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
                     >
-                      <Clock className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
                       <div>
-                        <span className="block">Stage Run-of-Show &amp; Calls</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Timeline &amp; T-30m Green Room alerts</span>
+                        <span className="block">Membership Benefits</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Free festival entry &amp; dining passes</span>
                       </div>
                     </Link>
-
                     <Link
-                      href="/events"
+                      href="/membership/join"
                       className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
                     >
-                      <Calendar className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                      <span>All Association Events</span>
+                      <Users className="w-3.5 h-3.5 text-emerald-400" />
+                      <div>
+                        <span className="block">Join or Renew</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Family, Individual &amp; Life plans</span>
+                      </div>
+                    </Link>
+                    <Link
+                      href="/membership/verify"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 text-sky-400" />
+                      <div>
+                        <span className="block">Verify Membership</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Check active status &amp; digital ID</span>
+                      </div>
                     </Link>
                   </div>
                 )}
               </div>
 
-              {/* 4. ABOUT & COMMUNITY DROPDOWN */}
+              {/* 7. GET INVOLVED */}
               <div
                 className="relative"
-                onMouseEnter={() => setActiveDropdown('community')}
+                onMouseEnter={() => setActiveDropdown('get_involved')}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button
+                <Link
+                  href="/volunteer"
                   className={`px-3 py-2 rounded-xl transition-all duration-200 flex items-center gap-1 whitespace-nowrap ${
-                    pathname.startsWith('/about') || pathname.startsWith('/gallery') || pathname === '/leadership' || pathname === '/contact' || pathname === '/sponsors'
+                    pathname === '/volunteer' || pathname === '/become-a-sponsor' || pathname === '/donate' || pathname === '/contact'
                       ? 'text-[var(--accent-gold)] bg-[var(--accent-gold)]/20 font-bold border border-[var(--accent-gold)]/30'
                       : 'hover:text-[var(--accent-gold)] hover:bg-white/10'
                   }`}
                 >
-                  <Users className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                  <span>{t.community}</span>
+                  <span>Get Involved</span>
                   <ChevronDown className="w-3 h-3 text-[var(--accent-gold)]/70" />
-                </button>
+                </Link>
 
-                {activeDropdown === 'community' && (
-                  <div className="absolute top-full left-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
+                {activeDropdown === 'get_involved' && (
+                  <div className="absolute top-full right-0 w-72 rounded-2xl shadow-2xl p-2 animate-in fade-in slide-in-from-top-2 z-50 glass-panel bg-[var(--bg-card)] text-[var(--text-primary)] border border-[var(--border-card)]">
                     <Link
-                      href="/about"
+                      href="/volunteer"
                       className="block px-3 py-2 text-xs font-bold text-white hover:bg-white/10 rounded-xl flex items-center gap-2"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
+                      <HeartHandshake className="w-3.5 h-3.5 text-purple-400" />
                       <div>
-                        <span className="block">About UTA &amp; Mission</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">501(c)(3) Foundation &amp; Telugu heritage</span>
+                        <span className="block">Volunteer with UTA</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Community service &amp; event committees</span>
                       </div>
                     </Link>
-
                     <Link
-                      href="/leadership"
-                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
-                    >
-                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                      <div>
-                        <span className="block">Executive Committee</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Board trustees &amp; organizers</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/gallery"
-                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
-                    >
-                      <Instagram className="w-3.5 h-3.5 text-pink-400" />
-                      <div>
-                        <span className="block">Photo &amp; Video Gallery</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Festival memories &amp; performances</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      href="/sponsors"
+                      href="/become-a-sponsor"
                       className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
                     >
                       <Award className="w-3.5 h-3.5 text-amber-400" />
                       <div>
-                        <span className="block">Community Patrons &amp; Partners</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Local business sponsors &amp; supporters</span>
+                        <span className="block">Become a Sponsor</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Corporate &amp; community partner packages</span>
                       </div>
                     </Link>
-
+                    <Link
+                      href="/donate"
+                      className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
+                    >
+                      <Heart className="w-3.5 h-3.5 text-rose-400" />
+                      <div>
+                        <span className="block">Tax-Deductible Donation</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Support 501(c)(3) cultural mission</span>
+                      </div>
+                    </Link>
                     <Link
                       href="/contact"
                       className="block px-3 py-2 text-xs font-semibold rounded-xl text-white/90 hover:text-[var(--accent-gold)] hover:bg-white/10 flex items-center gap-2"
                     >
                       <MapPin className="w-3.5 h-3.5 text-emerald-400" />
                       <div>
-                        <span className="block">Contact Coordinators</span>
-                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Utah Telugu Association team</span>
+                        <span className="block">Contact Us</span>
+                        <span className="text-[10px] text-[var(--text-secondary)] font-normal">Reach UTA coordinators</span>
                       </div>
                     </Link>
                   </div>
@@ -507,14 +568,14 @@ export function Navbar() {
               </div>
             </nav>
 
-            {/* RIGHT UTILITIES: REGISTRATION PASSES CTA & MEMBER PASS */}
+            {/* RIGHT UTILITIES: REGISTRATION PASSES CTA, SIGN IN / MY ACCOUNT, ADMIN */}
             <div className="hidden xl:flex items-center gap-2.5 shrink-0">
               <Link
                 href="/registrations"
                 className="px-4 py-2 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-md shrink-0 whitespace-nowrap bg-gradient-to-r from-amber-500 via-amber-600 to-amber-700 hover:brightness-110 text-white border border-amber-400/50"
               >
                 <Sparkles className="w-3.5 h-3.5 text-amber-200" />
-                <span>{t.registerNow}</span>
+                <span>Register / Passes</span>
               </Link>
 
               <Link
@@ -527,6 +588,19 @@ export function Navbar() {
               >
                 <Users className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
                 <span>My Account</span>
+              </Link>
+
+              <Link
+                href="/admin"
+                title="Administration Operations Portal"
+                className={`px-2.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1 transition-all shadow-sm whitespace-nowrap border ${
+                  pathname.startsWith('/admin')
+                    ? 'bg-rose-500/20 text-rose-300 border-rose-400/40'
+                    : 'text-white/60 hover:text-white hover:bg-white/10 border-white/10'
+                }`}
+              >
+                <Lock className="w-3 h-3 text-amber-400" />
+                <span>Admin</span>
               </Link>
             </div>
 

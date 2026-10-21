@@ -9,10 +9,20 @@ export default function ContactPage() {
   const [subject, setSubject] = useState('MEMBERSHIP');
   const [message, setMessage] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [sending,setSending]=useState(false);
+  const [error,setError]=useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if(sending)return;
+    setSending(true);setError('');
+    try{
+      const response=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,subject,message})});
+      const data=await response.json();
+      if(!response.ok)throw Error(data.error||'Unable to send your inquiry.');
+      setSubmitted(true);
+    }catch(e){setError(e instanceof Error?e.message:'Unable to send your inquiry.')}
+    finally{setSending(false)}
   };
 
   return (
@@ -69,9 +79,9 @@ export default function ContactPage() {
               <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-300 flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-white font-display">Message Dispatched!</h3>
+              <h3 className="text-xl font-bold text-white font-display">Message Sent</h3>
               <p className="text-xs text-[#a5c2cb] max-w-md mx-auto">
-                Thank you, {name}. Your inquiry has been routed to the appropriate association committee lead.
+                Thank you, {name}. Your inquiry has been delivered to the UTA contact inbox.
               </p>
             </div>
           ) : (
@@ -130,12 +140,14 @@ export default function ContactPage() {
                 />
               </div>
 
+              {error&&<p role="alert" className="rounded-lg bg-red-950/60 border border-red-400/30 text-red-100 px-4 py-3 text-sm">{error}</p>}
               <button
+                disabled={sending}
                 type="submit"
                 className="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#f4bb59] to-[#d8972b] text-[#071a20] font-extrabold text-xs shadow-lg transition-all flex items-center justify-center gap-1.5 hover:brightness-110"
               >
                 <Send className="w-4 h-4 text-[#071a20]" />
-                <span>Send Inquiry</span>
+                <span>{sending?'Sending…':'Send Inquiry'}</span>
               </button>
             </form>
           )}

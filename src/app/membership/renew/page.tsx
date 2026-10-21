@@ -6,7 +6,7 @@ import { RefreshCw, Search, CheckCircle2, AlertCircle, ArrowRight, Calendar } fr
 import { formatCurrency, formatUtahDate } from '@/lib/utils';
 
 export default function RenewMembershipPage() {
-  const [identifier, setIdentifier] = useState('UTA-2026-F0892');
+  const [identifier, setIdentifier] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [memberRecord, setMemberRecord] = useState<any>(null);
   const [searchError, setSearchError] = useState('');
@@ -40,7 +40,8 @@ export default function RenewMembershipPage() {
   };
 
   const handleRenew = () => {
-    setRenewalSuccess(true);
+    setSearchError('Renewal is not currently available online. No payment has been taken and no membership dates have changed.');
+    setRenewalSuccess(false);
   };
 
   return (

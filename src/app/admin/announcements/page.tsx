@@ -1,44 +1,28 @@
-import React from 'react';
-import { prisma } from '@/lib/prisma';
-import { Megaphone, Plus, Bell } from 'lucide-react';
-import { formatUtahDate } from '@/lib/utils';
-
-export const revalidate = 0;
-
-export default async function AdminAnnouncementsPage() {
-  const announcements = await prisma.announcement.findMany({
-    orderBy: { createdAt: 'desc' },
-  });
-
-  return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white font-display">
-            Announcements & Dispatches
-          </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Publish public banners and critical member updates.
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-3">
-        {announcements.map((a) => (
-          <div key={a.id} className="glass-panel p-5 rounded-2xl border border-white/10 space-y-2">
-            <div className="flex items-center justify-between">
-              <h3 className="font-bold text-white text-base">{a.title}</h3>
-              <span className="text-[10px] px-2 py-0.5 rounded-full uppercase bg-emerald-500/20 text-emerald-300 font-bold">
-                {a.isPublished ? 'Published' : 'Draft'}
-              </span>
-            </div>
-            <p className="text-xs text-slate-300 leading-relaxed">{a.content}</p>
-            <span className="text-[10px] text-slate-500 font-mono block">
-              Posted: {formatUtahDate(a.createdAt, 'short')}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+'use client';
+import React,{useEffect,useState} from 'react';
+import Link from 'next/link';
+type Notice={id:string;title:string;content:string;isPublished:boolean;isUrgent:boolean;createdAt:string;expiresAt:string|null};
+export default function AdminAnnouncementsPage(){
+ const [items,setItems]=useState<Notice[]>([]);
+ const [editing,setEditing]=useState<string|null>(null);
+ const [title,setTitle]=useState(''),[content,setContent]=useState('');
+ const [isUrgent,setUrgent]=useState(false),[isPublished,setPublished]=useState(false);
+ const [expiresAt,setExpiresAt]=useState(''),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState('');
+ async function reload(){try{const r=await fetch('/api/admin/announcements',{cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error||'Unable to load');setItems(d.announcements||[])}catch(e){setError(e instanceof Error?e.message:'Unable to load')}}
+ useEffect(()=>{void reload()},[]);
+ function reset(){setEditing(null);setTitle('');setContent('');setUrgent(false);setPublished(false);setExpiresAt('')}
+ function edit(a:Notice){setEditing(a.id);setTitle(a.title);setContent(a.content);setUrgent(a.isUrgent);setPublished(a.isPublished);setExpiresAt(a.expiresAt?.slice(0,10)||'');scrollTo({top:0,behavior:'smooth'})}
+ async function send(method:'POST'|'PATCH',body:object){setBusy(true);setError('');setMessage('');try{const r=await fetch('/api/admin/announcements',{method,headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});const d=await r.json();if(!r.ok)throw Error(d.error||'Unable to save');setMessage('Changes saved successfully.');reset();await reload()}catch(e){setError(e instanceof Error?e.message:'Unable to save')}finally{setBusy(false)}}
+ function save(e:React.FormEvent){e.preventDefault();void send(editing?'PATCH':'POST',{...(editing?{id:editing}:{}),title,content,isUrgent,isPublished,expiresAt:expiresAt?new Date(expiresAt+'T23:59:59').toISOString():null})}
+ return <section className="space-y-8 text-[#231914]"><header><Link href="/admin" className="text-sm text-amber-800">← Dashboard</Link><h1 className="text-3xl font-semibold mt-3">Official announcements</h1><p className="text-sm text-[#735b48] mt-2">Publish verified notices. Urgent active notices display first, followed by newest published notices.</p></header>
+ {error&&<p role="alert" className="p-4 rounded-xl bg-red-100 text-red-800">{error}</p>}{message&&<p role="status" className="p-4 rounded-xl bg-green-100 text-green-800">{message}</p>}
+ <form onSubmit={save} className="p-6 sm:p-8 bg-white rounded-2xl border border-amber-900/20 space-y-5">
+ <h2 className="text-xl font-semibold">{editing?'Edit announcement':'Create announcement'}</h2>
+ <label className="block text-sm font-semibold">Title<input className="block w-full mt-2 rounded-xl border border-amber-900/20 bg-white p-3" required minLength={5} maxLength={160} value={title} onChange={e=>setTitle(e.target.value)}/></label>
+ <label className="block text-sm font-semibold">Announcement<textarea className="block w-full mt-2 rounded-xl border border-amber-900/20 bg-white p-3" required minLength={10} maxLength={8000} rows={5} value={content} onChange={e=>setContent(e.target.value)}/></label>
+ <label className="block text-sm font-semibold">Expires on (optional)<input className="block mt-2 rounded-xl border border-amber-900/20 bg-white p-3" type="date" value={expiresAt} onChange={e=>setExpiresAt(e.target.value)}/></label>
+ <div className="flex flex-wrap gap-5"><label className="flex gap-2 text-sm items-center"><input type="checkbox" checked={isUrgent} onChange={e=>setUrgent(e.target.checked)}/> Important notice</label><label className="flex gap-2 text-sm items-center"><input type="checkbox" checked={isPublished} onChange={e=>setPublished(e.target.checked)}/> Published</label></div>
+ <p className="text-xs text-[#79614f]">Unpublished items remain private drafts. Publish only after UTA approval.</p>
+ <div className="flex gap-3"><button type="submit" disabled={busy} className="rounded-full px-6 py-3 bg-[#82442c] text-white font-semibold disabled:opacity-50">{busy?'Saving…':editing?'Update notice':'Create notice'}</button>{editing&&<button type="button" onClick={reset} className="rounded-full border border-[#9e836b] px-5">Cancel</button>}</div></form>
+ <div className="space-y-4"><h2 className="text-xl font-semibold">Existing announcements</h2>{items.length===0?<p className="text-sm text-[#765d4b]">No announcements found, or the database is not configured.</p>:items.map(a=><article key={a.id} className="rounded-2xl border border-amber-900/15 bg-white p-5"><div className="flex justify-between items-start gap-4"><div><p className="text-xs text-[#89684d]">{new Date(a.createdAt).toLocaleDateString('en-US',{timeZone:'America/Denver'})} · {a.isPublished?'Published':'Draft'} {a.isUrgent?'· Important':''}</p><h3 className="font-semibold mt-2">{a.title}</h3></div><div className="flex flex-wrap gap-2"><button type="button" onClick={()=>edit(a)} className="border px-4 py-2 rounded-full text-sm">Edit</button><button type="button" disabled={busy} onClick={()=>void send('PATCH',{id:a.id,isPublished:!a.isPublished})} className="border px-4 py-2 rounded-full text-sm">{a.isPublished?'Unpublish':'Publish'}</button></div></div><p className="mt-3 text-sm whitespace-pre-wrap text-[#705746]">{a.content}</p></article>)}</div></section>
 }

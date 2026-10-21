@@ -1,45 +1,11 @@
 // Utah Telugu Association (UTA) Default In-Memory Resilient Data Store
-// Provides instant zero-latency data for server rendering, static prerendering,
-// and graceful fallback whenever an external database is not connected.
+// Automatically synchronized with src/lib/canonicalContent.ts as the authoritative source.
 
-export const DEFAULT_VENUES = [
-  {
-    id: 'venue-mid-valley',
-    name: 'Mid-Valley Performing Arts Center',
-    address: '2525 Taylorsville Blvd',
-    city: 'Taylorsville',
-    state: 'UT',
-    zipCode: '84129',
-    capacity: 1200,
-    mapUrl: 'https://maps.google.com/?q=2525+Taylorsville+Blvd+Taylorsville+UT',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-  },
-  {
-    id: 'venue-jordan-river',
-    name: 'Jordan River Parkway Sports Complex',
-    address: '10800 S River Front Pkwy',
-    city: 'South Jordan',
-    state: 'UT',
-    zipCode: '84095',
-    capacity: 400,
-    mapUrl: 'https://maps.google.com/?q=10800+S+River+Front+Pkwy+South+Jordan+UT',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-  },
-  {
-    id: 'venue-south-jordan',
-    name: 'South Jordan Community Center Auditorium',
-    address: '10778 S Redwood Rd',
-    city: 'South Jordan',
-    state: 'UT',
-    zipCode: '84095',
-    capacity: 850,
-    mapUrl: 'https://maps.google.com/?q=10778+S+Redwood+Rd+South+Jordan+UT',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-  },
-];
+import {
+  CANONICAL_EVENTS,
+  CANONICAL_MEMBERSHIP_PLANS,
+  CANONICAL_VENUES,
+} from './canonicalContent';
 
 export const DEFAULT_CATEGORIES = [
   {
@@ -67,6 +33,12 @@ export const DEFAULT_CATEGORIES = [
     updatedAt: new Date('2026-01-01'),
   },
 ];
+
+export const DEFAULT_VENUES = Object.values(CANONICAL_VENUES).map((v) => ({
+  ...v,
+  createdAt: new Date('2026-01-01'),
+  updatedAt: new Date('2026-01-01'),
+}));
 
 export const DEFAULT_SPORTS = [
   {
@@ -104,13 +76,15 @@ export const DEFAULT_TOURNAMENTS = [
     slug: 'uta-cricket-trophy-2027',
     sportId: 'sport-cricket',
     title: 'UTA Wasatch Cricket Cup 2027',
-    description: 'Premier T10 leather ball championship between Utah Telugu community clubs across Salt Lake & Utah Valley.',
+    description:
+      'Premier T10 leather ball championship between Utah Telugu community clubs across Salt Lake & Utah Valley.',
     format: 'GROUP_STAGE_PLAYOFFS',
     status: 'ONGOING',
     startDate: new Date('2027-04-10T09:00:00-06:00'),
     endDate: new Date('2027-04-25T18:00:00-06:00'),
-    venueName: 'Jordan River Parkway Sports Complex',
-    rulesText: '10 overs per side. Max 2 overs per bowler. Powerplay 3 overs. ICC T20 standard rules apply.',
+    venueName: CANONICAL_VENUES.jordan_river.name,
+    rulesText:
+      '10 overs per side. Max 2 overs per bowler. Powerplay 3 overs. ICC T20 standard rules apply.',
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
     sport: DEFAULT_SPORTS[0],
@@ -151,19 +125,6 @@ export const DEFAULT_TOURNAMENTS = [
           { id: 'm6', fullName: 'Deepak Rao', isCaptain: false, jerseyNum: 12 },
           { id: 'm7', fullName: 'Sandeep V', isCaptain: false, jerseyNum: 24 },
           { id: 'm8', fullName: 'Srikanth M', isCaptain: false, jerseyNum: 33 },
-        ],
-      },
-      {
-        id: 'team-titans',
-        tournamentId: 'tourn-wasatch-cricket-2027',
-        teamName: 'Sandy Telugu Titans',
-        captainName: 'Suresh Parasa',
-        captainEmail: 'suresh.parasa@gmail.com',
-        captainPhone: '(801) 555-7333',
-        seedNumber: 3,
-        members: [
-          { id: 'm9', fullName: 'Suresh Parasa', isCaptain: true, jerseyNum: 1 },
-          { id: 'm10', fullName: 'Praneeth K', isCaptain: false, jerseyNum: 11 },
         ],
       },
     ],
@@ -219,13 +180,13 @@ export const DEFAULT_TOURNAMENTS = [
     id: 'tourn-volleyball-2027',
     slug: 'uta-volleyball-smash-2027',
     sportId: 'sport-volleyball',
-    title: 'UTA Wasatch Volleyball Smash 2027',
+    title: 'Walkers Indoor Volleyball Championship 2027',
     description: 'Annual indoor 6v6 volleyball championship with high-octane community matches.',
     format: 'SINGLE_ELIMINATION',
     status: 'UPCOMING',
-    startDate: new Date('2027-05-08T09:00:00-06:00'),
-    endDate: new Date('2027-05-09T18:00:00-06:00'),
-    venueName: 'South Jordan Community Center Auditorium',
+    startDate: new Date('2027-01-17T08:00:00-07:00'),
+    endDate: new Date('2027-01-17T20:00:00-07:00'),
+    venueName: CANONICAL_VENUES.mountain_sports.name,
     rulesText: 'Standard USA Volleyball rules. Best of 3 sets to 25. Deciding 3rd set to 15.',
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
@@ -239,14 +200,14 @@ export const DEFAULT_TOURNAMENTS = [
     id: 'tourn-pickleball-2027',
     slug: 'uta-pickleball-open-2027',
     sportId: 'sport-pickleball',
-    title: 'UTA Wasatch Pickleball Open 2027',
-    description: 'Men, Women, and Mixed Doubles community pickleball showdown at Dimple Dell.',
+    title: 'Desi Pickleball League (DPL) Wasatch Championship 2027',
+    description: 'Men, Women, and Mixed Doubles community pickleball showdown at Salt Lake Tennis & Health Club.',
     format: 'ROUND_ROBIN',
     status: 'UPCOMING',
-    startDate: new Date('2027-06-12T08:00:00-06:00'),
-    endDate: new Date('2027-06-13T17:00:00-06:00'),
-    venueName: 'Dimple Dell Recreation Center',
-    rulesText: 'USA Pickleball guidelines. Games to 11 win by 2.',
+    startDate: new Date('2027-01-16T08:00:00-07:00'),
+    endDate: new Date('2027-01-16T18:00:00-07:00'),
+    venueName: CANONICAL_VENUES.salt_lake_tennis.name,
+    rulesText: 'USA Pickleball guidelines. Pool games to 11 win by 2.',
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
     sport: DEFAULT_SPORTS[2],
@@ -257,169 +218,72 @@ export const DEFAULT_TOURNAMENTS = [
   },
 ];
 
-export const DEFAULT_EVENTS = [
-  {
-    id: 'event-sankranthi-2027',
-    slug: 'sankranthi-sambaralu-2027',
-    title: 'UTA Grand Sankranthi Sambaralu 2027',
-    description: 'Join Utah Telugu Association for our flagship celebration of harvest and heritage! Experience vibrant Kite flying (Gaalipatam), colorful Rangoli (Muggulu) competitions, traditional Bhogi Pallu ceremonies for kids, authentic festival feast (Bhojanam), and 4 hours of spellbinding classical and folk dance performances by our local talent.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=80',
-    startDateTime: new Date('2027-01-16T10:00:00-07:00'),
-    endDateTime: new Date('2027-01-16T21:00:00-07:00'),
-    timezone: 'America/Denver',
-    registrationOpenDate: new Date('2026-10-01T00:00:00-07:00'),
-    registrationCloseDate: new Date('2027-01-15T23:59:59-07:00'),
-    totalCapacity: 950,
-    isPublished: true,
-    isFeatured: true,
-    membersOnly: false,
-    refundPolicy: 'Cancellations before Jan 10, 2027 are eligible for full refund minus processing fee.',
-    zeffyCampaignUrl: 'https://www.zeffy.com/ticketing/uta-sankranthi-2027',
-    categoryId: 'cat-cultural',
-    venueId: 'venue-mid-valley',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    category: DEFAULT_CATEGORIES[0],
-    venue: DEFAULT_VENUES[0],
-    ticketTypes: [
-      { id: 'tt1', name: 'Member Family Pass (Up to 6)', price: 0, capacity: 500 },
-      { id: 'tt2', name: 'Non-Member Family Pass', price: 40, capacity: 300 },
-      { id: 'tt3', name: 'Individual Adult', price: 15, capacity: 150 },
-    ],
-  },
-  {
-    id: 'event-ugadi-2027',
-    slug: 'ugadi-vedukalu-2027',
-    title: 'UTA Ugadi Vedukalu & Panchanga Sravanam 2027',
-    description: 'Welcome the Telugu New Year with authentic Ugadi Pachadi, traditional Vedic Panchanga Sravanam by learned priests, Kavi Sammelanam, youth cultural competitions, and a banquet lunch.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=80',
-    startDateTime: new Date('2027-04-03T10:30:00-06:00'),
-    endDateTime: new Date('2027-04-03T16:00:00-06:00'),
-    timezone: 'America/Denver',
-    registrationOpenDate: new Date('2027-02-01T00:00:00-07:00'),
-    registrationCloseDate: new Date('2027-04-02T23:59:59-06:00'),
-    totalCapacity: 600,
-    isPublished: true,
-    isFeatured: true,
-    membersOnly: false,
-    refundPolicy: 'Standard UTA refund policy applies.',
-    zeffyCampaignUrl: 'https://www.zeffy.com/ticketing/uta-ugadi-2027',
-    categoryId: 'cat-cultural',
-    venueId: 'venue-south-jordan',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    category: DEFAULT_CATEGORIES[0],
-    venue: DEFAULT_VENUES[2],
-    ticketTypes: [
-      { id: 'tt4', name: 'Family Admission', price: 35, capacity: 400 },
-      { id: 'tt5', name: 'Member Complimentary Pass', price: 0, capacity: 200 },
-    ],
-  },
-  {
-    id: 'event-picnic-2027',
-    slug: 'uta-summer-picnic-2027',
-    title: 'UTA Annual Wasatch Summer Picnic & Sports Meet',
-    description: 'Outdoor barbecue, live Dosa counters, lemon-and-spoon races, Tug of War, Telugu Anthakshari, and volleyball scrimmages at Sugar House Park.',
-    coverImageUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80',
-    startDateTime: new Date('2027-06-26T11:00:00-06:00'),
-    endDateTime: new Date('2027-06-26T17:00:00-06:00'),
-    timezone: 'America/Denver',
-    registrationOpenDate: new Date('2027-05-01T00:00:00-06:00'),
-    registrationCloseDate: new Date('2027-06-25T23:59:59-06:00'),
-    totalCapacity: 800,
-    isPublished: true,
-    isFeatured: true,
-    membersOnly: false,
-    refundPolicy: 'Full refund up to 48 hours before the event.',
-    zeffyCampaignUrl: 'https://www.zeffy.com/ticketing/uta-summer-picnic-2027',
-    categoryId: 'cat-community',
-    venueId: 'venue-jordan-river',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    category: DEFAULT_CATEGORIES[2],
-    venue: DEFAULT_VENUES[1],
-    ticketTypes: [
-      { id: 'tt6', name: 'General Entry with Lunch', price: 10, capacity: 800 },
-    ],
-  },
-];
+export const DEFAULT_EVENTS = CANONICAL_EVENTS.map((e) => {
+  const cat =
+    e.category === 'CULTURAL'
+      ? DEFAULT_CATEGORIES[0]
+      : e.category === 'SPORTS'
+      ? DEFAULT_CATEGORIES[1]
+      : DEFAULT_CATEGORIES[2];
 
-export const DEFAULT_MEMBERSHIP_PLANS = [
-  {
-    id: 'family-annual-2027',
-    code: 'FAMILY_ANNUAL',
-    name: 'Family Annual Membership',
-    description: 'Covers primary member, spouse, and up to 4 eligible children residing in Utah.',
-    price: 50.0,
-    durationMonths: 12,
-    maxFamilyMembers: 6,
-    isActive: true,
-    isPublic: true,
-    benefitsSummary: 'Free entry to Sankranthi & Ugadi festival feasts, youth sports discounts, voting rights.',
+  return {
+    id: e.id,
+    slug: e.slug,
+    title: e.title,
+    description: e.description,
+    coverImageUrl: e.coverImageUrl,
+    startDateTime: new Date(e.startDateTime),
+    endDateTime: new Date(e.endDateTime),
+    timezone: e.timezone,
+    registrationOpenDate: new Date(e.registrationOpenDate),
+    registrationCloseDate: new Date(e.registrationCloseDate),
+    totalCapacity: e.totalCapacity,
+    isPublished: e.isPublished,
+    isFeatured: e.isFeatured,
+    membersOnly: false,
+    refundPolicy: 'Cancellations eligible for refund up to 72 hours prior to festival opening.',
+    zeffyCampaignUrl: `https://www.zeffy.com/ticketing/${e.slug}`,
+    categoryId: cat.id,
+    venueId: e.venueId,
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
-    benefits: [
-      { id: 'b1', planId: 'family-annual-2027', title: 'Free entry to Sankranthi & Ugadi festival feasts', description: 'Complimentary festival entry for all 6 registered family members' },
-      { id: 'b2', planId: 'family-annual-2027', title: 'Sports Tournament Team Discount', description: '20% off all UTA tournament entries' },
-      { id: 'b3', planId: 'family-annual-2027', title: 'Annual General Body Voting Rights', description: 'Vote in Executive Committee elections' },
-      { id: 'b4', planId: 'family-annual-2027', title: 'Digital Cryptographic QR Membership Pass', description: 'Instant wallet verification' },
-    ],
-  },
-  {
-    id: 'individual-annual-2027',
-    code: 'INDIVIDUAL_ANNUAL',
-    name: 'Individual Membership',
-    description: 'Designed for individual working professionals and independent adults.',
-    price: 25.0,
-    durationMonths: 12,
-    maxFamilyMembers: 1,
-    isActive: true,
-    isPublic: true,
-    benefitsSummary: 'Free entrance to major cultural celebrations and association voting eligibility.',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    benefits: [
-      { id: 'b5', planId: 'individual-annual-2027', title: 'Festival Free Entry', description: 'Free entrance to annual cultural festivals' },
-      { id: 'b6', planId: 'individual-annual-2027', title: 'Voting Eligibility', description: 'Full active member privileges' },
-    ],
-  },
-  {
-    id: 'life-patron-2027',
-    code: 'LIFE_MEMBERSHIP',
-    name: 'Patron Life Membership',
-    description: 'Lifetime association membership for your immediate family with premier recognition.',
-    price: 500.0,
-    durationMonths: 600,
-    maxFamilyMembers: 6,
-    isActive: true,
-    isPublic: true,
-    benefitsSummary: 'Lifetime free admission, priority VIP seating, and permanent UTA Patron Recognition.',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    benefits: [
-      { id: 'b7', planId: 'life-patron-2027', title: 'Lifetime Free Festival Passes', description: 'Never pay annual renewal fees' },
-      { id: 'b8', planId: 'life-patron-2027', title: 'VIP Reserved Seating', description: 'Front-row festival seating at all UTA stage events' },
-      { id: 'b9', planId: 'life-patron-2027', title: 'Patron Directory Plaque', description: 'Permanent recognition on the UTA Digital Universe wall' },
-    ],
-  },
-  {
-    id: 'student-annual-2027',
-    code: 'STUDENT_ANNUAL',
-    name: 'Student / Senior Membership',
-    description: 'Subsidized rate for university students at Utah universities (U of U, BYU, USU, UVU) and seniors (65+).',
-    price: 15.0,
-    durationMonths: 12,
-    maxFamilyMembers: 1,
-    isActive: true,
-    isPublic: true,
-    benefitsSummary: 'All standard member benefits with verified student/senior status.',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    benefits: [
-      { id: 'b10', planId: 'student-annual-2027', title: 'Discounted Access', description: 'Free admission to student cultural workshops' },
-    ],
-  },
-];
+    category: cat,
+    venue: {
+      id: e.venueId,
+      name: e.venueName,
+      address: e.venueAddress.split(',')[0],
+      city: 'Salt Lake County',
+      state: 'UT',
+    },
+    ticketTypes: e.ticketTiers.map((t) => ({
+      id: t.id,
+      name: t.name,
+      price: t.priceGuest,
+      capacity: t.capacityLimit || 300,
+    })),
+  };
+});
+
+export const DEFAULT_MEMBERSHIP_PLANS = CANONICAL_MEMBERSHIP_PLANS.map((p) => ({
+  id: p.id,
+  code: p.code,
+  name: p.name,
+  description: p.description,
+  price: p.price,
+  durationMonths: p.durationMonths,
+  maxFamilyMembers: p.maxFamilyMembers,
+  isActive: true,
+  isPublic: p.isPublic,
+  benefitsSummary: p.benefitsSummary,
+  createdAt: new Date('2026-01-01'),
+  updatedAt: new Date('2026-01-01'),
+  benefits: p.benefits.map((b, idx) => ({
+    id: `b-${p.id}-${idx}`,
+    planId: p.id,
+    title: b,
+    description: null,
+  })),
+}));
 
 export const DEFAULT_SPONSORS = [
   {
@@ -468,7 +332,8 @@ export const DEFAULT_ANNOUNCEMENTS = [
     id: 'ann-1',
     title: 'Sankranthi 2027 Rangoli & Cultural Registrations Are Now Live!',
     slug: 'sankranthi-2027-registrations-open',
-    content: 'Calling all Utah Telugu artists, dancers, and families! Stage performance submissions and Rangoli contest spots are filling up fast.',
+    content:
+      'Calling all Utah Telugu artists, dancers, and families! Stage performance submissions and Rangoli contest spots are filling up fast.',
     priority: 'HIGH',
     isPublished: true,
     publishedAt: new Date('2026-10-01'),
@@ -478,7 +343,8 @@ export const DEFAULT_ANNOUNCEMENTS = [
     id: 'ann-2',
     title: 'Utah Wasatch Cricket Cup 2027 Team Captains Meeting',
     slug: 'cricket-cup-2027-captains-meet',
-    content: 'Team managers and captains will meet virtually on April 1st to finalize pool brackets and match timings.',
+    content:
+      'Team managers and captains will meet virtually on April 1st to finalize pool brackets and match timings.',
     priority: 'NORMAL',
     isPublished: true,
     publishedAt: new Date('2026-10-15'),
@@ -510,8 +376,22 @@ export const DEFAULT_VOLUNTEERS = [
 ];
 
 export const DEFAULT_DONATIONS = [
-  { id: 'don-1', donorName: 'Anonymous Patron', amount: 500, fundCategory: 'TEMPLE_CULTURAL_FUND', paymentMethod: 'ZEFFY', createdAt: new Date('2026-10-05') },
-  { id: 'don-2', donorName: 'Kalyan Chakravarthy', amount: 250, fundCategory: 'YOUTH_SPORTS_INITIATIVE', paymentMethod: 'ZEFFY', createdAt: new Date('2026-10-10') },
+  {
+    id: 'don-1',
+    donorName: 'Anonymous Patron',
+    amount: 500,
+    fundCategory: 'TEMPLE_CULTURAL_FUND',
+    paymentMethod: 'ZEFFY',
+    createdAt: new Date('2026-10-05'),
+  },
+  {
+    id: 'don-2',
+    donorName: 'Kalyan Chakravarthy',
+    amount: 250,
+    fundCategory: 'YOUTH_SPORTS_INITIATIVE',
+    paymentMethod: 'ZEFFY',
+    createdAt: new Date('2026-10-10'),
+  },
 ];
 
 export const DEFAULT_MEDIA = [

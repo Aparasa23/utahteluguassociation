@@ -15,6 +15,7 @@ import {
   AlertCircle,
   RefreshCw,
 } from 'lucide-react';
+import { CANONICAL_EVENTS } from '@/lib/canonicalContent';
 
 interface EventConfig {
   key: string;
@@ -36,14 +37,21 @@ interface ReferenceRegistrationModalProps {
   onSelectEventKey: (key: string) => void;
 }
 
+// Derive festival event configurations directly from the canonical single source of truth
+const getCanonical = (id: string) => CANONICAL_EVENTS.find((e) => e.id === id);
+const rangoliCanonical = getCanonical('evt-rangoli-2027');
+const pickleballCanonical = getCanonical('evt-pickleball-2027');
+const volleyballCanonical = getCanonical('evt-volleyball-2027');
+const grandCanonical = getCanonical('evt-sankranthi-main-2027');
+
 export const FESTIVAL_EVENTS: Record<string, EventConfig> = {
   rangoli: {
     key: 'rangoli',
-    name: 'Rangoli Competition (Muggula Poti)',
-    telugu: 'ముగ్గుల పోటీలు',
-    date: 'Friday, January 15, 2027',
-    time: '4:00 PM – 8:00 PM',
-    venue: 'Sri Ganesha Hindu Temple Hall, South Jordan, UT',
+    name: rangoliCanonical ? rangoliCanonical.title : 'Rangoli Competition (Muggula Poti)',
+    telugu: rangoliCanonical ? rangoliCanonical.teluguTitle : 'ముగ్గుల పోటీలు',
+    date: rangoliCanonical ? rangoliCanonical.displayDate : 'Friday, January 15, 2027',
+    time: rangoliCanonical ? rangoliCanonical.displayTime : '4:00 PM – 8:00 PM',
+    venue: rangoliCanonical ? rangoliCanonical.venueName : 'Sri Ganesha Hindu Temple Hall, South Jordan, UT',
     icon: '🎨',
     accent: '#e34e5b',
     basePriceMember: 'FREE (100% Waived)',
@@ -51,11 +59,11 @@ export const FESTIVAL_EVENTS: Record<string, EventConfig> = {
   },
   pickleball: {
     key: 'pickleball',
-    name: 'DPL Pickleball Tournament',
-    telugu: 'పికిల్‌బాల్ లీగ్',
-    date: 'Saturday, January 16, 2027',
-    time: '8:00 AM – 6:00 PM',
-    venue: 'Salt Lake Tennis & Health Club, Salt Lake City, UT',
+    name: pickleballCanonical ? pickleballCanonical.title : 'DPL Pickleball Tournament',
+    telugu: pickleballCanonical ? pickleballCanonical.teluguTitle : 'పికిల్‌బాల్ లీగ్',
+    date: pickleballCanonical ? pickleballCanonical.displayDate : 'Saturday, January 16, 2027',
+    time: pickleballCanonical ? pickleballCanonical.displayTime : '8:00 AM – 6:00 PM',
+    venue: pickleballCanonical ? pickleballCanonical.venueName : 'Salt Lake Tennis & Health Club, Salt Lake City, UT',
     icon: '🏓',
     accent: '#56b87a',
     basePriceMember: '50% Member Discount ($20 Team)',
@@ -63,11 +71,11 @@ export const FESTIVAL_EVENTS: Record<string, EventConfig> = {
   },
   volleyball: {
     key: 'volleyball',
-    name: 'Walkers Indoor Volleyball Championship',
-    telugu: 'వాలీబాల్ ఛాంపియన్‌షిప్',
-    date: 'Sunday, January 17, 2027',
-    time: '8:00 AM – 8:00 PM',
-    venue: 'Mountain Sports Center, Sandy, UT',
+    name: volleyballCanonical ? volleyballCanonical.title : 'Walkers Indoor Volleyball Championship',
+    telugu: volleyballCanonical ? volleyballCanonical.teluguTitle : 'వాలీబాల్ ఛాంపియన్‌షిప్',
+    date: volleyballCanonical ? volleyballCanonical.displayDate : 'Sunday, January 17, 2027',
+    time: volleyballCanonical ? volleyballCanonical.displayTime : '8:00 AM – 8:00 PM',
+    venue: volleyballCanonical ? volleyballCanonical.venueName : 'Mountain Sports Center, Sandy, UT',
     icon: '🏐',
     accent: '#3a96ee',
     basePriceMember: 'FREE for Member Captains ($0)',
@@ -75,11 +83,11 @@ export const FESTIVAL_EVENTS: Record<string, EventConfig> = {
   },
   grand_festival: {
     key: 'grand_festival',
-    name: 'Grand Sankranthi Celebrations & Festive Feast',
-    telugu: 'సంక్రాంతి సంబరాలు & విందు',
-    date: 'Saturday, January 23, 2027',
-    time: '10:00 AM – 10:00 PM',
-    venue: 'Herriman High School Auditorium & Hall, Herriman, UT',
+    name: grandCanonical ? grandCanonical.title : 'Grand Sankranthi Celebrations & Festive Feast',
+    telugu: grandCanonical ? grandCanonical.teluguTitle : 'సంక్రాంతి సంబరాలు & విందు',
+    date: grandCanonical ? grandCanonical.displayDate : 'Saturday, January 23, 2027',
+    time: grandCanonical ? grandCanonical.displayTime : '10:00 AM – 10:00 PM',
+    venue: grandCanonical ? grandCanonical.venueName : 'Herriman High School Auditorium & Hall, Herriman, UT',
     icon: '🌾',
     accent: 'var(--accent-gold)',
     basePriceMember: '100% Free VIP Family Pass',
@@ -146,13 +154,46 @@ export function ReferenceRegistrationModal({
       setStep(0);
       setErrorMessage('');
       document.body.style.overflow = 'hidden';
+
+      // Auto-prefill authenticated member data
+      fetch('/api/auth/me')
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data && data.authenticated && data.user) {
+            setFullName((prev) => prev || data.user.name || '');
+            setEmail((prev) => prev || data.user.email || '');
+            if (data.membership && data.membership.isActive) {
+              setIsVerifiedMember(true);
+              setMembershipType('active_member');
+              setMemberInput((prev) => prev || data.membership.membershipNumber || '');
+              setMemberData({
+                isValid: true,
+                planName: data.membership.planName,
+                primaryName: data.user.name,
+              });
+            }
+          }
+        })
+        .catch(() => {});
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose();
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        window.removeEventListener('keydown', handleKeyDown);
+        document.body.style.overflow = '';
+      };
     } else {
       document.body.style.overflow = '';
     }
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

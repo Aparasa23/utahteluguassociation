@@ -31,9 +31,8 @@ export async function POST(req: Request) {
         where: {
           OR: [
             { membershipNumber: { equals: trimmed } },
-            { memberships: { some: { qrVerificationToken: trimmed } } },
-            { user: { email: { equals: trimmed } } },
-            { user: { phone: { contains: trimmed } } },
+            { memberships: { some: { qrVerificationToken: { equals: trimmed } } } },
+            { user: { email: { equals: trimmed.toLowerCase() } } },
           ],
         },
         include: {

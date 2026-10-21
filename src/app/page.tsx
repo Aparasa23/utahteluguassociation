@@ -47,10 +47,10 @@ export default async function HomePage() {
     }).catch(() => []),
     prisma.performance.count({
       where: { status: 'APPROVED' },
-    }).catch(() => 16),
+    }).catch(() => 0),
     prisma.memberProfile.count({
       where: { membershipStatus: 'ACTIVE' },
-    }).catch(() => 280),
+    }).catch(() => 0),
   ]);
 
   // Featured 3 rich heritage cultural blogs from festivalBlogs.ts
@@ -148,10 +148,10 @@ export default async function HomePage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
           <div className="glass-panel-interactive p-5 rounded-2xl border border-[var(--border-card)] text-center group bg-[var(--bg-card)] shadow-xl">
             <span className="block text-3xl sm:text-4xl font-extrabold text-[var(--accent-gold)] font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
-              {memberCount > 0 ? `${memberCount}+` : '280+'}
+              {memberCount > 0 ? `${memberCount}+` : 'Est. 2001'}
             </span>
             <span className="text-xs uppercase tracking-wider text-[var(--text-secondary)] font-bold mt-1 block">
-              Active Member Families
+              {memberCount > 0 ? 'Active Member Families' : 'Serving Utah Families'}
             </span>
           </div>
 
@@ -166,10 +166,10 @@ export default async function HomePage() {
 
           <div className="glass-panel-interactive p-5 rounded-2xl border border-[var(--border-card)] text-center group bg-[var(--bg-card)] shadow-xl">
             <span className="block text-3xl sm:text-4xl font-extrabold text-[#38bdf8] font-display tracking-tight group-hover:scale-105 transition-transform duration-300">
-              23+
+              {FESTIVAL_BLOGS.length}
             </span>
             <span className="text-xs uppercase tracking-wider text-[var(--text-secondary)] font-bold mt-1 block">
-              Scholarly Festival Blogs
+              Telugu Heritage Festivals
             </span>
           </div>
 
@@ -178,7 +178,7 @@ export default async function HomePage() {
               25+
             </span>
             <span className="text-xs uppercase tracking-wider text-[var(--text-secondary)] font-bold mt-1 block">
-              Years of Utah Heritage
+              Years of Wasatch Heritage
             </span>
           </div>
         </div>

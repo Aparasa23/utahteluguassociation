@@ -518,15 +518,15 @@ export function Navbar() {
               </Link>
 
               <Link
-                href="/dashboard"
+                href="/account"
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-sm whitespace-nowrap border ${
-                  pathname.startsWith('/dashboard')
+                  pathname.startsWith('/account') || pathname.startsWith('/dashboard')
                     ? 'bg-[var(--accent-gold)]/20 text-[var(--accent-gold)] border-[var(--accent-gold)]/40'
                     : 'text-white/80 hover:text-white hover:bg-white/10 border-white/15'
                 }`}
               >
                 <Users className="w-3.5 h-3.5 text-[var(--accent-gold)]" />
-                <span>{t.membership}</span>
+                <span>My Account</span>
               </Link>
             </div>
 

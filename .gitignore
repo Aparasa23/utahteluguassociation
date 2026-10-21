@@ -23,7 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+.env.production
 
 # vercel
 .vercel
@@ -33,7 +35,10 @@ yarn-error.log*
 next-env.d.ts
 
 # prisma dev database
+*.db
 *.db-journal
+*.sqlite
+prisma/*.db
 
 # python backend
 backend_py/

@@ -1,15 +1,64 @@
 'use client';
-import React,{useRef} from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Canvas,useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
-function FloatLamp({x,z,delay}:{x:number,z:number,delay:number}){const ref=useRef<THREE.Mesh>(null);useFrame(({clock})=>{if(ref.current){ref.current.position.y=2+Math.sin(clock.elapsedTime*.55+delay)*.3;ref.current.rotation.y=clock.elapsedTime*.16+delay}});return <mesh ref={ref} position={[x,2,z]}><sphereGeometry args={[.12,10,10]}/><meshStandardMaterial color="#ffd27d" emissive="#ff972a" emissiveIntensity={2.5}/><pointLight color="#ffb45d" intensity={1.5} distance={3}/></mesh>}
-function Courtyard(){const group=useRef<THREE.Group>(null);useFrame(({clock,pointer,camera})=>{if(group.current)group.current.rotation.y=Math.sin(clock.elapsedTime*.1)*.025+pointer.x*.025;camera.position.x=THREE.MathUtils.lerp(camera.position.x,pointer.x*.25,.03);camera.lookAt(0,0,0)});return <group ref={group} position={[2,-1,-1]}>
- <mesh rotation={[-Math.PI/2,0,0]} position={[0,-1.2,0]}><planeGeometry args={[26,26]}/><meshStandardMaterial color="#2b2432" roughness={.85}/></mesh>
- <mesh position={[0,-.9,0]} rotation={[-Math.PI/2,0,0]}><ringGeometry args={[1.1,2.6,48]}/><meshStandardMaterial side={THREE.DoubleSide} color="#e6a957" emissive="#b15b26" emissiveIntensity={.2}/></mesh>
- {Array.from({length:12},(_,i)=>{const a=i*Math.PI/6;return <mesh key={i} position={[Math.cos(a)*1.8,-.85,Math.sin(a)*1.8]}><sphereGeometry args={[.16,12,12]}/><meshStandardMaterial color={i%2===0?'#edb33b':'#b8473f'} emissive="#6a3218" emissiveIntensity={.2}/></mesh>})}
- {[-1,1].map(side=><group key={side} position={[side*4,0,-1]}><mesh position={[0,1,0]}><cylinderGeometry args={[.26,.35,5,12]}/><meshStandardMaterial color="#bc8c64" roughness={.7}/></mesh><mesh position={[0,3.55,0]}><boxGeometry args={[1.2,.55,1.2]}/><meshStandardMaterial color="#d4a275" roughness={.7}/></mesh><mesh position={[0,3.1,0]}><boxGeometry args={[.9,.24,.9]}/><meshStandardMaterial color="#d8a66b"/></mesh></group>)}
- <mesh position={[0,3.8,-1]}><boxGeometry args={[10,.5,1]}/><meshStandardMaterial color="#a77958" roughness={.65}/></mesh>
- {Array.from({length:22},(_,i)=><mesh key={'flower'+i} position={[-4.8+i*.46,3.49,-.58]}><sphereGeometry args={[.17,8,8]}/><meshStandardMaterial color={i%3?'#e69e25':'#cb5136'} emissive="#bd582b" emissiveIntensity={.3}/></mesh>)}
- {Array.from({length:15},(_,i)=><FloatLamp key={'lamp'+i} x={-6+i*.83} z={-2-(i%3)} delay={i*1.3}/>)}
+
+function Stone({position,size,color='#b48b65'}:{position:[number,number,number];size:[number,number,number];color?:string}){
+ return <mesh position={position} castShadow receiveShadow><boxGeometry args={size}/><meshStandardMaterial color={color} roughness={.87} metalness={.03}/></mesh>
+}
+function Column({x,z}:{x:number;z:number}){return <group position={[x,0,z]}>
+ <Stone position={[0,-.85,0]} size={[.78,.35,.79]} color="#8c6653"/>
+ <Stone position={[0,.9,0]} size={[.56,3.4,.56]} color="#d6aa7c"/>
+ {[-.5,2.42].map(y=><group key={y}><Stone position={[0,y,0]} size={[.84,.2,.86]} color="#e0ba8f"/><Stone position={[0,y+.19,0]} size={[.68,.14,.7]} color="#aa7b5a"/></group>)}
  </group>}
-export default function UTACinematicScene(){return <Canvas dpr={[1,1.5]} camera={{position:[0,2,11],fov:52}} gl={{antialias:true,alpha:true,powerPreference:'low-power'}} fallback={<div aria-hidden="true"/>}><ambientLight intensity={1.1} color="#ffe0c2"/><directionalLight position={[4,7,4]} intensity={2.5} color="#ffce92"/><pointLight position={[-3,1,2]} intensity={18} color="#ffb365" distance={14}/><fog attach="fog" args={['#4d3c57',10,28]}/><Courtyard/></Canvas>}
+function Diya({x,z,scale=1}:{x:number;z:number;scale?:number}){const flame=useRef<THREE.Mesh>(null);
+ useFrame(({clock})=>{if(flame.current){flame.current.scale.y=1+Math.sin(clock.elapsedTime*3+x*2)*.13}});
+ return <group position={[x,-1.08,z]} scale={scale}>
+ <mesh><cylinderGeometry args={[.22,.13,.14,12]}/><meshStandardMaterial color="#b47036" metalness={.6} roughness={.32}/></mesh>
+ <mesh position={[0,.26,0]} ref={flame}><sphereGeometry args={[.09,.23,9,12]}/><meshBasicMaterial color="#ffbb48"/></mesh>
+ <pointLight position={[0,.38,0]} color="#ffb45d" intensity={1.1} distance={2.4}/>
+ </group>}
+function Garlands(){const swags=useMemo(()=>Array.from({length:5},(_,j)=>Array.from({length:17},(_,i)=>{const t=i/16;return [(-5+j*2.5)+(t*2.5),3.62-Math.sin(t*Math.PI)*.56,-2.85] as [number,number,number]})),[]);
+ return <group>{swags.map((swag,j)=>swag.map((p,i)=><mesh key={j+'-'+i} position={p} scale={i%3===0?1.2:1}><sphereGeometry args={[.12,7,7]}/><meshStandardMaterial color={i%4===0?'#f7e0a1':i%2===0?'#da7d29':'#e9b34d'} roughness={1}/></mesh>))}</group>}
+function Rangoli(){return <group position={[0,-1.075,1.5]}>
+ <mesh rotation={[-Math.PI/2,0,0]}><circleGeometry args={[2.15,64]}/><meshStandardMaterial color="#5d2841" side={THREE.DoubleSide}/></mesh>
+ {[.55,1,1.55,2.04].map((r,i)=><mesh key={i} rotation={[-Math.PI/2,0,0]} position={[0,.013+i*.003,0]}><ringGeometry args={[r,r+.07,96]}/><meshStandardMaterial color={i%2===0?'#f5cf69':'#faf0d6'} side={THREE.DoubleSide} roughness={1}/></mesh>)}
+ {Array.from({length:16},(_,i)=>{const angle=i*Math.PI/8;return <mesh key={i} rotation={[-Math.PI/2,0,-angle]} position={[Math.cos(angle)*1.34,.027,Math.sin(angle)*1.34]}><circleGeometry args={[.33,4]}/><meshStandardMaterial color={i%2?'#f1a635':'#d65d4b'} side={THREE.DoubleSide}/></mesh>})}
+ {Array.from({length:12},(_,i)=>{const a=i*Math.PI/6;return <Diya key={i} x={Math.cos(a)*2.5} z={Math.sin(a)*2.5+1.5} scale={.75}/>})}
+ </group>}
+function Petals(){const petals=useRef<THREE.InstancedMesh>(null);
+ const originals=useMemo(()=>Array.from({length:65},(_,i)=>({x:(i*19.17%13)-6.5,y:((i*11.37)%5)+.2,z:-2+(i*7.73%8),v:.15+(i%5)*.025})),[]);
+ const object=useMemo(()=>new THREE.Object3D(),[]);
+ useFrame(({clock})=>{const mesh=petals.current;if(!mesh)return;originals.forEach((p,i)=>{object.position.set(p.x+Math.sin(clock.elapsedTime*.43+i)*.33,((p.y-clock.elapsedTime*p.v)%6+6)%6-1.5,p.z);object.rotation.set(clock.elapsedTime*.3+i,clock.elapsedTime*.15+i*.5,.3);object.scale.set(.07,.025,.11);object.updateMatrix();mesh.setMatrixAt(i,object.matrix)});mesh.instanceMatrix.needsUpdate=true});
+ return <instancedMesh ref={petals} args={[undefined,undefined,originals.length]} frustumCulled={false}><planeGeometry args={[1,1]}/><meshStandardMaterial color="#e9a848" side={THREE.DoubleSide} transparent opacity={.87}/></instancedMesh>}
+function Courtyard(){return <group>
+ <Stone position={[0,-1.3,-.25]} size={[30,.38,23]} color="#916d5b"/>
+ {Array.from({length:10},(_,i)=><Stone key={i} position={[0,-1.09,-6+i*1.2]} size={[15,.045,.035]} color="#dfbb90"/>)}
+ <Stone position={[0,-.52,-4.55]} size={[12.7,1.1,4]} color="#b79072"/>
+ <Stone position={[0,.10,-4.85]} size={[11.9,1.1,3.3]} color="#b58a66"/>
+ <Stone position={[0,2.75,-3]} size={[13.6,.52,4]} color="#ba875d"/>
+ <Stone position={[0,3.18,-3]} size={[14.2,.27,4.7]} color="#6b504e"/>
+ <Stone position={[0,3.44,-3]} size={[14.5,.13,5]} color="#dbab7d"/>
+ {[-5,-2.5,0,2.5,5].map(x=><Column key={x} x={x} z={-2.8}/>)}
+ <Stone position={[0,-.69,-.5]} size={[6.7,.25,4]} color="#e2b989"/>
+ <Stone position={[0,-.91,1.2]} size={[8.2,.2,2.1]} color="#bd906e"/>
+ <Stone position={[0,-1.04,2.15]} size={[9.8,.14,1]} color="#9c7561"/>
+ <Garlands/><Rangoli/>
+ {[-5.7,5.7].map((x,i)=><group key={i} position={[x,-1.03,1]}><mesh><cylinderGeometry args={[.28,.38,1.5,12]}/><meshStandardMaterial color="#bf853b" metalness={.65} roughness={.28}/></mesh><mesh position={[0,.84,0]}><sphereGeometry args={[.23,12,12]}/><meshStandardMaterial color="#ffe1a1" emissive="#f9a444" emissiveIntensity={1.5}/></mesh><pointLight position={[0,1,0]} intensity={2.5} distance={4} color="#ffc46f"/></group>)}
+ <Petals/>
+ </group>}
+function CameraRig({progress}:{progress:number}){useFrame(({camera,pointer})=>{const x=THREE.MathUtils.lerp(0,-1.6,progress)+pointer.x*.27;const y=THREE.MathUtils.lerp(2.1,3.3,progress)+pointer.y*.1;const z=THREE.MathUtils.lerp(13,8.3,progress);camera.position.lerp(new THREE.Vector3(x,y,z),.025);camera.lookAt(0,.3,-1.4)});return null}
+export default function UTACinematicScene(){
+ const [progress,setProgress]=useState(0);
+ useEffect(()=>{let frame=0;const update=()=>{if(frame)cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>setProgress(Math.max(0,Math.min(1,window.scrollY/(window.innerHeight*1.35)))))};
+ window.addEventListener('scroll',update,{passive:true});update();return()=>{window.removeEventListener('scroll',update);cancelAnimationFrame(frame)}},[]);
+ return <Canvas shadows={false} dpr={[1,1.5]} camera={{position:[0,2.1,13],fov:49}} gl={{antialias:true,alpha:true,powerPreference:'high-performance'}} fallback={<div aria-hidden="true"/>}>
+ <color attach="background" args={['#756277']}/>
+ <fog attach="fog" args={['#ac8791',14,30]}/>
+ <ambientLight intensity={1.9} color="#ffe3c7"/>
+ <hemisphereLight args={['#ffe7ba','#624357',2]}/>
+ <directionalLight position={[8,12,9]} intensity={3.7} color="#ffd29d"/>
+ <directionalLight position={[-6,3,-7]} intensity={1.4} color="#ee9a72"/>
+ <Courtyard/><CameraRig progress={progress}/>
+ </Canvas>
+}
